@@ -5,7 +5,7 @@ function mainJQ(){
 };
 
 function showEstateInfo(id){
-	remoteWidgets(["/estate/saving/estateInfo.tmpl"],
+	remoteWidgets(["{{absurl(request,'..')}}/saving/estateInfo.tmpl"],
 		{eid:id},
 		mainJQ(),
 		'replace',
@@ -38,22 +38,22 @@ function menuCall(funcid,text){
 	} else {
 		switch(funcid){
 			case '0.1':
-				popWindow('/estate/selfserv/register.tmpl',{title:'注册',width:"480px",height:"320px"});
+				popWindow('{{absurl(request,'..')}}/selfserv/register.tmpl',{title:'注册',width:"480px",height:"320px"});
 				break;
 			case '0.2':
-				popWindow('/estate/public/login.tmpl',{title:'登录',width:"480px",height:"320px"});
+				popWindow('{{absurl(request,'..')}}/public/login.tmpl',{title:'登录',width:"480px",height:"320px"});
 				break;
 			case '0.3':
-				popWindow('/estate/selfserv/chkpassword1.tmpl',{title:'修改密码',width:"480px",height:"320px"});
+				popWindow('{{absurl(request,'..')}}/selfserv/chkpassword1.tmpl',{title:'修改密码',width:"480px",height:"320px"});
 				break;
 			case '0.4':
 				logout();
 				break;
 			case '1.3':
-				popWindow('/estate/saving/input_estate.tmpl',{title:'新增存房',width:"740px",height:"480px"});
+				popWindow('{{absurl(request,'..')}}/saving/input_estate.tmpl',{title:'新增存房',width:"740px",height:"480px"});
 				break;
 			case '3.3':
-				popWindow('/estate/rentfin/new_rf.tmpl',{title:'新增融房',width:"640px",height:"480px"});
+				popWindow('{{absurl(request,'..')}}/rentfin/new_rf.tmpl',{title:'新增融房',width:"640px",height:"480px"});
 				break;
 			default:
 				unsupportfunc(text);
@@ -89,7 +89,7 @@ function popWindow(url,opts,inIframe){
 };
 
 function showAddressOnMap(addr,city){
-	remoteCall("/estate/public/getGeoPosition.dspy",'GET','json',
+	remoteCall("{{absurl(request,'..')}}/public/getGeoPosition.dspy",'GET','json',
 		{
 			address:addr,
 			city:city
@@ -136,31 +136,31 @@ function startTextCall(peer){
 var users = {
 		"u0001":{
 			name:"林聪",
-			imgs:'/estate/imgs/lc.png',
+			imgs:'{{absurl(request,'..')}}/imgs/lc.png',
 			msgs:[],
 			status:false
 		},
 		"u0002":{
 			name:"张无忌",
-			imgs:'/estate/imgs/zwj.jpg',
+			imgs:'{{absurl(request,'..')}}/imgs/zwj.jpg',
 			msgs:[],
 			status:false
 		},
 		"u0003":{
 			name:"王德妃",
-			imgs:'/estate/imgs/wdf.jpg',
+			imgs:'{{absurl(request,'..')}}/imgs/wdf.jpg',
 			msgs:[],
 			status:false
 		},
 		"u0004":{
 			name:"柳再重",
-			imgs:'/estate/imgs/lzz.jpg',
+			imgs:'{{absurl(request,'..')}}/imgs/lzz.jpg',
 			msgs:[],
 			status:false
 		},
 		"u0005":{
 			name:"武清甜",
-			imgs:'/estate/imgs/wqt.jpg',
+			imgs:'{{absurl(request,'..')}}/imgs/wqt.jpg',
 			msgs:[],
 			status:false
 		},
@@ -171,7 +171,7 @@ var my_rtc = null;
 function logout(){
 	$.messager.confirm('提示','确认要签退吗？',function(yesno){
 		if(yesno){
-			$('#userimg')[0].src="/estate/imgs/nobody.jpg";
+			$('#userimg')[0].src="{{absurl(request,'..')}}/imgs/nobody.jpg";
 			$('#username').html('未登录');
 			users[logined_user].status = false;
 			logined_user = null;
