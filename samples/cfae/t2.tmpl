@@ -1,0 +1,7 @@
+{% include "header.tmpl" %}
+
+<script>
+
+remoteWidget('./top5/monthlyIndicators.tmpl?dimension=participalname',{},$('body'),'replace',function(e){$.messager.alert(e);});
+</script>
+{% include "footer.tmpl" %}

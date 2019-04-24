@@ -1,0 +1,11 @@
+ret = {
+	"field1":"haha",
+	"field2":True,
+	"field3":"2011-12-21",
+	"field4":"/tgr/tgrtgth/rtgr.tmpl",
+	"field5":"2421412421",
+	"field6":"ewrgwergewrgew",
+	"field7":True,
+}
+print(ret)
+return ret

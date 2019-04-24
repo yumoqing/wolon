@@ -1,0 +1,37 @@
+
+<div id="dbmeta">
+</div>
+<script>
+$('#dbmeta').window({width:600,height:400});
+$('#dbmeta').window('open');
+var d = {
+	id:'dbmeta_form',
+	toolbar:[
+		{
+			name:'submit',
+			label:'import',
+		},{
+			name:'clear'
+		}
+	],
+	fields:[
+		{
+			name:'dbname',
+			title:'db name',
+			iotype:'codes',
+			data:[
+{% for db in databases.keys() %}
+				{
+					label:'{{db}}',
+					value:'{{db}}'
+				}{% if not loop.last %},{% endif %}
+{% endfor %}
+			]
+		}
+	]
+};
+
+$(function(){
+	$(tmplRender('form',d)).appendTo($('#dbmeta'));
+});
+</script>

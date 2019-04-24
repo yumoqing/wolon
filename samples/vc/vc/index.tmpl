@@ -1,0 +1,12 @@
+{% include "header.tmpl" %}
+
+<link href="/quill/quill.snow.css" rel="stylesheet">
+<script src="/quill/quill.js"></script>
+
+<script>
+var urls=[
+"{{absurl(request,'./mainlayout.tmpl')}}"
+];
+remoteWidgets(urls,{},$('body'),'append',function(e){$.messager.alert(e);});
+</script>
+{% include "footer.tmpl" %}

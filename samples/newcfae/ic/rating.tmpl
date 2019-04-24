@@ -1,0 +1,36 @@
+__widget_description__ = {
+	__ctmpl__:'pie',
+	data:{
+		widgettype:"echarts",
+		id:'rating1',
+		width:(document.body.clientWidth*35/100 - 2) + 'px',
+		height:((document.body.clientHeight-50)*4/10 - 1) + 'px',
+		class:"lbox",
+		charttype:"pie",
+		title:"投资评级分布图",
+		url:"{{absurl(request,'./rating.dspy')}}",
+		seriename:"亿元", 
+		dimension:"rating", 
+		indicator:"amount",
+		options:{
+			tooltip:{
+				trigger:'item',
+				formatter:function(d){
+					return '<span>' + d.data.name + '<span><br><span>' + d.data.value + '</span';
+				}
+			},
+			series:[
+			{
+				radius:'80%',
+				center:['50%','52%'],
+				label: {
+					normal: {
+						position: 'inner',
+						formatter: "{c}({d}%)"
+					}
+				},
+			}
+			]
+		}
+	}
+}

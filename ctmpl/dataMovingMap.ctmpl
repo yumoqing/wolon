@@ -1,0 +1,310 @@
+/*
+用开显示数据在地址上移动，后台数据要求
+后台返回Json格式数据，格式如下：
+{
+	location:[
+		name1:[longitude,latitude],
+		name2:[longitude,latitude],
+		...
+	]
+	dataMoving:{
+		name1:[
+			[from,to,value]
+			[from,to,value]
+			[from,to,value]
+		],
+		name2:[
+			[from,to,value]
+			[from,to,value]
+		],
+		...		
+	}
+}
+
+{
+id:
+title：
+url:
+
+}
+*/
+
+
+{[=tmplRender('echarts',it)]}
+<script>
+var planePath = 'path://M1705.06,1318.313v-89.254l-319.9-221.799l0.073-208.063c0.521-84.662-26.629-121.796-63.961-121.491c-37.332-0.305-64.482,36.829-63.961,121.491l0.073,208.063l-319.9,221.799v89.254l330.343-157.288l12.238,241.308l-134.449,92.931l0.531,42.034l175.125-42.917l175.125,42.917l0.531-42.034l-134.449-92.931l12.238-241.308L1705.06,1318.313z';
+
+var convertData = function (movelist,locations) {
+    var res = [];
+    for (var i = 0; i < movelist.length; i++) {
+        var dataItem = movelist[i];
+        var fromCoord = locations[movelist[i][0]];
+        var toCoord = locations[movelist[i][1]];
+        if (fromCoord && toCoord) {
+            res.push({
+                fromName: movelist[i][0],
+                toName: movelist[i][1],
+                coords: [fromCoord, toCoord]
+            });
+        }
+    }
+    return res;
+};
+
+obj_{[=it.id]}.getValue = function(params){
+	var series = obj_{[=it.id]}.obj.getOption().series;
+	var data = {
+		event:params.event,
+		data:{
+			{[=it.dimension]}:series[params.seriesIndex].xdata[params.dataIndex]
+		}
+	};
+	data.data[series[params.seriesIndex].indicator] = 
+			series[params.seriesIndex].data[params.dataIndex];
+	return data;
+};
+
+var colors={[=dump(it.colors)||['#a6c84c', '#ffa022', '#46bee9']]};
+obj_{[=it.id]}.setDataOption = function(data){
+	obj_{[=it.id]}.data = data;
+	var series = [];
+	var i;
+	var ldata = [];
+	console.log('data=',data);
+	i = 0;
+	for (var item in data.dataMoving){
+		console.log('item=',item);
+		ldata.push(item);
+		series.push(
+		{
+            name: item,
+            type: 'lines',
+            coordinateSystem: 'bmap',
+            zlevel: 1,
+            effect: {
+                show: true,
+                period: 6,
+                trailLength: 0.7,
+                color: '#fff',
+                symbolSize: 3
+            },
+            lineStyle: {
+                normal: {
+                    color: colors[i],
+                    width: 0,
+                    curveness: 0.2
+                }
+            },
+            data: convertData(data.dataMoving[item],data.location)
+        },
+        {
+            name: item,
+            type: 'lines',
+            coordinateSystem: 'bmap',
+            zlevel: 2,
+            effect: {
+                show: true,
+                period: 6,
+                trailLength: 0,
+                symbol: planePath,
+                symbolSize: 15
+            },
+            lineStyle: {
+                normal: {
+                    color: colors[i],
+                    width: 1,
+                    opacity: 0.4,
+                    curveness: 0.2
+                }
+            },
+            data: convertData(data.dataMoving[item],data.location)
+        },
+        {
+            name: item,
+            type: 'effectScatter',
+            coordinateSystem: 'bmap',
+            zlevel: 2,
+            rippleEffect: {
+                brushType: 'stroke'
+            },
+            label: {
+                normal: {
+                    show: true,
+                    position: 'right',
+                    formatter: '{b}'
+                }
+            },
+            symbolSize: function (val) {
+                return val[2] / 8;
+            },
+            itemStyle: {
+                normal: {
+                    color: colors[i]
+                }
+            },
+            data: data.dataMoving[item].map(function (dataItem) {
+                return {
+                    name: dataItem[1],
+                    value: data.location[dataItem[1]].concat([dataItem[2]])
+                };
+            })
+        });
+		i+=1;
+		if(i>=colors.length){
+			i=0;
+		}
+	}
+
+	var opts = {
+		bmap: {
+			center: [104.114129, 37.550339],
+			zoom: 5,
+			mapStyle: {
+				styleJson: [
+					  {
+						   "featureType": "water",
+						   "elementType": "all",
+						   "stylers": {
+								"color": "#044161"
+						   }
+					  },
+					  {
+						   "featureType": "land",
+						   "elementType": "all",
+						   "stylers": {
+								"color": "#004981"
+						   }
+					  },
+					  {
+						   "featureType": "boundary",
+						   "elementType": "geometry",
+						   "stylers": {
+								"color": "#064f85"
+						   }
+					  },
+					  {
+						   "featureType": "railway",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "highway",
+						   "elementType": "geometry",
+						   "stylers": {
+								"color": "#004981"
+						   }
+					  },
+					  {
+						   "featureType": "highway",
+						   "elementType": "geometry.fill",
+						   "stylers": {
+								"color": "#005b96",
+								"lightness": 1
+						   }
+					  },
+					  {
+						   "featureType": "highway",
+						   "elementType": "labels",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "arterial",
+						   "elementType": "geometry",
+						   "stylers": {
+								"color": "#004981"
+						   }
+					  },
+					  {
+						   "featureType": "arterial",
+						   "elementType": "geometry.fill",
+						   "stylers": {
+								"color": "#00508b"
+						   }
+					  },
+					  {
+						   "featureType": "poi",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "green",
+						   "elementType": "all",
+						   "stylers": {
+								"color": "#056197",
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "subway",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "manmade",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "local",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "arterial",
+						   "elementType": "labels",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "boundary",
+						   "elementType": "geometry.fill",
+						   "stylers": {
+								"color": "#029fd4"
+						   }
+					  },
+					  {
+						   "featureType": "building",
+						   "elementType": "all",
+						   "stylers": {
+								"color": "#1a5787"
+						   }
+					  },
+					  {
+						   "featureType": "label",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  }
+				]
+			}		
+
+		},
+		series: series,
+		legend:{
+			orient: 'vertical',
+			top: 'bottom',
+			left: 'right',
+			data:ldata,
+			selectedMode: 'single'
+		}
+	};
+	return opts;
+};
+
+obj_{[=it.id]}.setValue({});
+
+</script>

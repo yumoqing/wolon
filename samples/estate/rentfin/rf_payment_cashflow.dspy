@@ -1,0 +1,10 @@
+d = {
+        "data_sheet":"payment",
+        "name_at":1,
+        "data_from":2
+}
+
+x = xlsxdata(abspath(absurl(request,'./rf_cashflow.xlsx')),d)
+ret = x.getData({})
+return ret
+

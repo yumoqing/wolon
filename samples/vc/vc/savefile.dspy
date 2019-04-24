@@ -1,0 +1,29 @@
+#savefile.dspy
+def getRoot():
+        return visualcoding().userroot.get(userid,visualcoding().default_root)
+
+print("args=",request.args)
+root=request.args.get('root',[getRoot()])[0]
+url=request.args.get('url',[''])[0]
+text=request.args.get('text',[''])[0]
+data =json.loads(text)
+paths = url.split('?')
+if len(paths)>1:
+	path = paths[1].split('=')[1]
+else:
+	path = paths[0]
+print('url,path=',url,path);
+try:
+	f = openfile(path,'w')
+	f.write(json.dumps(data,indent=4, sort_keys=False, ensure_ascii=False))
+	f.close()
+except Exception as e:
+	print('error',e)
+	return {
+		"status":"error",
+		"errortype":"write file",
+		"errmsg":str(e)
+	}
+return {
+	"status":"OK"
+}

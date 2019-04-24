@@ -1,0 +1,21 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc={
+		"sql_string":"""
+select top 5 * from (
+select top 5 producttype,$[dimension]$,sum(issueamount) as amount
+from issuerview
+where producttype = ${producttype}$
+group by producttype,$[dimension]$
+) a
+order by amount desc
+		"""
+	}
+	return desc
+
+ns={
+	'producttype':request.args.get('producttype',['国金'])[0],
+	'dimension':request.args.get('dimension',['issuerid'])[0]
+}
+
+return [i for i in sql('cfae',ns) ]

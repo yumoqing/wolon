@@ -1,0 +1,89 @@
+{
+    "__ctmpl__": "jsoneditor",
+    "data": {
+        "__jename__": "pie",
+        "roottype": "widgetdesc",
+        "rootname": "__widget_description__",
+        "registerTypes": [
+            {
+                "datatype": "widgetdesc",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "__ctmpl__",
+                        "datatype": "str",
+                        "required": true,
+                        "defaultvalue": "pie",
+                        "readonly": true
+                    },
+                    {
+                        "name": "data",
+                        "datatype": "piedata",
+                        "required": true,
+                        "registed": true
+                    }
+                ]
+            },
+            {
+                "datatype": "piedata",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "widgettype",
+                        "datatype": "str",
+                        "readonly": true,
+                        "required": true,
+                        "defaultvalue": "echarts"
+                    },
+                    {
+                        "name": "id",
+                        "datatype": "str"
+                    },
+                    {
+                        "name": "class",
+                        "datatype": "str"
+                    },
+                    {
+                        "name": "width",
+                        "datatype": "str"
+                    },
+                    {
+                        "name": "height",
+                        "datatype": "str"
+                    },
+                    {
+                        "name": "title",
+                        "datatype": "str"
+                    },
+                    {
+                        "name": "url",
+                        "datatype": "url",
+                        "onValueChange": "function(a){}",
+                        "required": true
+                    },
+                    {
+                        "name": "dimension",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "indicator",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "seriename",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "options",
+                        "datatype": "OBJECT"
+                    }
+                ]
+            }
+        ]
+    }
+}

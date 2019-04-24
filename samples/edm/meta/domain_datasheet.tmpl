@@ -1,0 +1,100 @@
+<div id="domain_datasheet"></div>
+<script>
+var d={
+	toolbar:{
+		position:"north",
+		tools:[
+			{
+				name:"submit",
+				icon:"icon-save",
+				handler:function(e){
+					var modal = $('#edm_modalwindow');
+					var ds = $(this).parents('.datasheet');
+					if (!ds.datasheet('validate')){
+						$.messager.alert('error','validation failed');
+						return;
+					}
+					var d = ds.datasheet('getValue');
+					console.log('hahaha data=',d);
+					remoteCall("{{absurl(request,'./newDomain.dspy')}}","GET","json",d,
+						function(d){
+							if (d.status=='OK'){
+								$.messager.alert('Info','成功');
+								modal.window('close');
+							} else {
+								$.messager.alert('Error','失败');
+							}
+						},showError
+					);
+				}
+			},{
+				name:"discard",
+				icon:"icon-delete",
+				handler:function(e){
+					var modal = $('#edm_modalwindow');
+					modal.window('close');
+				}
+			}
+		]
+	},
+	unitwidth:300,
+	labelwidth:100,
+	fields:[
+		{
+			name:"opps",
+			iotype:"hidden",
+			defaultvalue:"hahaha"
+		},
+		{
+			name:"domain_name",
+			label:"域名",
+			iotype:"str",
+			required:true
+		},{
+			name:"domain_title",
+			label:"域名标题",
+			iotype:"str",
+			required:true
+		},{
+			name:"dbname",
+			label:"数据库名",
+			iotype:"str",
+			required:true
+		},{
+			name:"driver",
+			label:"数据库引擎",
+			iotype:"code",
+			url:"./dbengine.dspy",
+			valueField:"engine",
+			textField:"enginename",
+			required:true
+		},{
+			name:"coding",
+			label:"数据库编码",
+			iotype:"code",
+			defaultvalue:"utf8",
+			url:"./codings.dspy",
+			valueField:"coding",
+			textField:"coding",
+			required:true
+		},{
+			name:"kwargs",
+			label:"连接参数",
+			iotype:"text",
+			height:"260px",
+			required:true
+		},{
+			name:"auth_mode",
+			label:"授权方式",
+			iotype:"code",
+			url:"./auth_modes.dspy",
+			valueField:"mode",
+			textField:"modename",
+			required:true
+		}
+	]
+};
+$(function(){
+$('#domain_datasheet').datasheet(d);
+});
+</script>

@@ -1,0 +1,87 @@
+var wid=getId('treegrid');
+var in_name_id = 'in_filename';
+var root='/vc/test';
+__widget_description__={
+	__ctmpl__:"treegrid",
+	data:{
+		id:wid,
+		title:"source list",
+		url:"{{absurl(request,'./folderlist.dspy')}}",
+		idField:"id",
+		treeField:"name",
+		fields:[
+			{
+				name:"name",
+				width:"320px",
+				label:"{{i18n('filename')}}",
+				iotype:"text"
+			},{
+				name:"type",
+				label:"{{i18n('filetype')}}",
+				iotype:"text"
+			},{
+				name:"size",
+				label:"{{i18n('filesize')}}",
+				iotype:"text"
+			},{
+				name:"mtime",
+				label:"{{i18n('filemtime')}}",
+				iotype:"text"
+			}
+		],
+		options:{
+			pagination:false,
+			newfolderURL:"{{absurl(request,'./newfolder.dspy')}}",
+			openfileURL:"{{absurl(request,'./openfile.dspy')}}",
+			savefileURL:"{{absurl(request,'./savefile.dspy')}}",
+			dnd:false,
+			queryParams:{
+				root:root
+			},
+			pageSize:60,
+			tools:[
+				{
+					iconCls:'icon-addfolder',
+					handler:function(){
+						var options = $('#' + wid).treegrid('options');
+						var row = $('#' + wid).treegrid('getSelected');
+						if (!row) return;
+						if (row.type != 'dir') {
+							$.messager.alert("{{i18n('please select a folder')}}");
+							return;
+						}
+						var fn = $('#in_filename').val();
+						if (!fn) return;
+						var path=row.id;
+						remoteCall(options.newfolderURL,
+							'GET',
+							'json',
+							{
+								path:row.id,
+								root:root,
+								name:fn
+							},
+							function(d){
+								if (d.status=='OK') {
+									$('#' + wid).treegrid('append',{
+										row.id,
+										data:d
+									});
+								} else {
+									$.messager.alert(d);
+								}
+							},
+							function(e){
+							}
+						);
+					}
+				},{
+					iconCls:'icon-addfile',
+					handler:function(){
+					}
+				}
+			]
+			
+		}
+	}
+}

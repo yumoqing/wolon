@@ -1,0 +1,23 @@
+
+def f2():
+	d = random.randint(10000,99999)
+	d = float(d/100)
+	return '%.1f万元' % d
+
+def f4():
+	return random.randint(0,2) - 1
+	
+knames = {
+	'申购量':f2,
+	'配售量':f2,
+	'存量':f2,
+}
+
+data=[{'kpiname':k,'kpivalue':v()} for k,v in knames.items() ]
+for i in range(3):
+	data[i].update({'id':i,'flag':f4()})
+
+return {
+	'total':3,
+	'rows':data
+}

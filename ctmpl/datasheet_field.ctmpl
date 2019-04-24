@@ -1,0 +1,113 @@
+/*
+{
+	unitcnt:输入域占用单位数量
+	label:标题
+	iotype:数据输入类型
+	name:数据字段名字
+	value:数据值
+	defaultvalue：缺省值
+	required：是否必须项
+	valuewidth：输入域宽度
+	valueheight：输入域高度
+	readonly：只读设置
+	valueField
+	textField
+	data
+	url
+	onXXXXXX:输入时的事件
+
+}
+*/
+{[?it.iotype=="str"]}
+<input name="{[=it.name]}" class="easyui-textbox" value="{[=it.value||it.defaultvalue||'']}" {[?it.required]}required="true"{[?]} 
+data-options="{[=dataoption_dump(it)]},onChnage:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+/>
+{[?? it.iotype=="url"]}
+<input name="{[=it.name]}" 
+	class="easyui-textbox" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+/>
+{[?? it.iotype=="number"]}
+<input name="{[=it.name]}" 
+	class="easyui-numberbox" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+/>
+{[??it.iotype=='text']}
+<div name="{[=it.name]}" class="easyui-scripteditor" 
+data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="bool"]}
+<input name="{[=it.name]}" 
+	class="easyui-combobox" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+/>
+{[?? it.iotype=="code"]}
+/*
+<input name="{[=it.name]}" 
+	class="easyui-combobox" 
+	data-options="valueField: '{[=it.valueField]}',
+		textField: '{[=it.textField]}',
+		{[?it.multiple]}multiple:true,{[?]}
+		{[?it.url]}
+		url: '{[=it.url]}',
+		{[??]}
+		data: {[=dump(it.data)]},
+		{[?]}
+		onChange:function(nv,ov){var o = $(this).parents('.datasheet');o.datasheet('valueChanged',{name:'{[=it.name]}',value:nv});}"
+{[?it.required]}required="required"{[?]}
+ value="{[=it.value||it.defaultvalue||'']}"
+style="width:{[=it.valuewidth||'100%']}" 
+{[?it.readonly]}readonly{[?]}
+/>
+*/
+<input name="{[=it.name]}" 
+	class="easyui-combobox" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}" 
+/>
+{[?? it.iotype=="date"]}
+<div class="easyui-datebox" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="select"]}
+<div class="easyui-selectbox" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="onoff"]}
+<div class="easyui-onoff" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="scripteditor"]}
+<div class="easyui-scripteditor" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="codetree"]}
+<div class="easyui-combotree" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="codegrid"]}
+<div class="easyui-combogrid" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="codetreegrid"]}
+<div class="easyui-combotreegrid" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="password"]}
+<div class="easyui-passwordbox" 
+	data-options="{[=dataoption_dump(it)]}"
+></div>
+{[?? it.iotype=="tag"]}
+<div class="easyui-tagbox" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="records"]}
+<div class="easyui-edatagrid" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[?? it.iotype=="jsoneditor"]}
+<div class="easyui-jsoneditor" 
+	data-options="{[=dataoption_dump(it)]},onChange:function(nv,ov){var o=$(this).parents('.datasheet');o.datasheet('valueChanged',this,nv);}"
+></div>
+{[??]}
+{[=it.iotype]} not support
+{[?]}

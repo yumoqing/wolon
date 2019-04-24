@@ -1,0 +1,19 @@
+# openfile.dspy
+
+def getRoot():
+        return visualcoding().userroot.get(userid,visualcoding().default_root)
+
+root=request.args.get('root',[getRoot()])[0]
+path=request.args.get('id',[''])[0]
+name=request.args.get('name',[''])[0]
+if len(path)>0:
+	path = '/'.join(path.split('_#_'))
+
+if name=='':
+	return {}
+
+fn = root+path+name
+f = openfile(fn,'r')
+b = f.read()
+f.close()
+return b

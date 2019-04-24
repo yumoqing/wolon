@@ -1,0 +1,24 @@
+__widget_description__ = {
+	__ctmpl__:'layout',
+	data:{
+		id:'cfaemain',
+		border:true,
+		regions:{
+			north:{
+				height:"40px",
+				"href":"{{absurl(request,'./menu.tmpl')}}"
+			},
+			center:{
+				id:"mainarea",
+				remoteWidgets:[
+					"{{absurl(request,'./workarea.tmpl')}}"
+				]
+			},
+			south:{
+				height:"40px",
+				href:"{{absurl(request,'./company.tmpl')}}",
+				border:false
+			}
+		}
+	}
+}

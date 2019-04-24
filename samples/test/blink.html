@@ -1,0 +1,43 @@
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+    <meta charset="UTF-8">  
+    <title></title>  
+    <style>
+	.cursor_content{
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: auto;
+		  font-size:36px;
+		  max-width: 90%;
+		  word-wrap: break-word;
+		  overflow: hidden;
+		  display: inline-block;
+		  white-space: pre;
+	}
+	.cursor{
+		position: absolute;
+		top: 0;
+		left: 36px;
+		width: 2px;
+		height: 16px;
+		display: inline-block;
+		background: green;
+		z-index: 1000;
+		animation: change 1s  ease-in  infinite;
+	}
+	@keyframes change {  
+		0%	{background: green;}  
+		50%	{background: white;}  
+		100%{background: green;}  
+	}  
+    </style>  
+</head>  
+<body>  
+<div>
+<span class="cursor_content">太阳的后裔</span>
+<span class="cursor"></span>
+</div>
+</body>  
+</html>  

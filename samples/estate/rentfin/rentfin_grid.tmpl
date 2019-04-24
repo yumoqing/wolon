@@ -1,0 +1,15 @@
+d = {
+	__ctmpl__:"datagrid",
+	data:{
+	title:"选择融房",
+	checkbox:true,
+	idField:"f1",
+	url:"{{absurl(request,'./rentfin_grid.xlsxds')}}",
+	fields:[{"name":"f1","label":"\u623f\u5c4b\u7f16\u53f7","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"str"},{"name":"f2","label":"\u878d\u8d44\u89c4\u6a21","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"str"},{"name":"f3","label":"\u4ed8\u6b3e\u6a21\u5f0f","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"code","url":"\/estate\/code\/paymode_code.dspy","valueField":"f1","textField":"f2"},{"name":"f4","label":"\u671f\u9650","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"str"},{"name":"f5","label":"\u878d\u623f\u63cf\u8ff0","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"text","height":"120px"},{"name":"f6","label":"\u878d\u623f\u4ebaid","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"str"},{"name":"f7","label":"\u622a\u81f3\u65e5\u671f","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"date"}],
+	options:{
+		checkOnSelect: false, selectOnCheck: false,
+		rownumbers:false
+	}
+	}
+	
+}

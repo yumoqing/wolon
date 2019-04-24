@@ -1,0 +1,9 @@
+print("checkChage.dspy")
+soid = request.args.get('soid',[None])[0]
+print("soid=",soid)
+if soid is not None and not player.orderList.isInList(soid):
+	print("changed")
+	return {'status':'OK'}
+else:
+	print("not changed")
+	return {'status':'error'}

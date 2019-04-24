@@ -1,0 +1,13 @@
+#dbengine.dspy
+return [
+	{
+		"engine":"cx_Oracle",
+		"enginename":"ORACLE",
+	},{
+		"engine":"pymssql",
+		"enginename":"SQL SERVER"
+	},{
+		"engine":"mysql.connector",
+		"enginename":"MySQL"
+	}
+]

@@ -1,0 +1,62 @@
+__widget_description__={
+	__ctmpl__:'datagrid',
+	data:{
+		id:"ickpi",
+		title:"综合关键指标",
+		width:'100%',
+		height:'28%',
+		idField:'id',
+		url:"{{absurl(request,'./kpi.dspy')}}",
+		fields:[
+			{
+				name:"id",
+				label:"id",
+				hidden:true,
+				iotype:"text"
+			},{
+				name:"kpiname",
+				label:"id",
+				iotype:"text"
+			},{
+				name:"kpivalue",
+				label:"id",
+				iotype:"text"
+			},{
+				name:"flag",
+				label:"id",
+				hidden:true,
+				iotype:"text"
+			}
+		],
+		options:{
+			class:'lbox',
+			rowStyler1:'lbox',
+			rownumbers:false,
+			showHeader:false,
+			columns:[[
+				{
+
+				},
+				{
+					width:'70%'
+				},{
+					width:'30%',
+					formatter:function(value,row,index){
+						if (row.flag != 0){
+							var img="greenup.png";
+							if (row.flag<0){
+								img = "reddown.png";
+							} else if (row.flag > 0){
+								img = "greenup.png";
+							}
+							return '<span>' + value + '%<img src="/imgs/' + img + '" /></span>';
+						}
+						return value;
+					}
+				},
+				{
+				}
+			]]
+		}
+	}
+}

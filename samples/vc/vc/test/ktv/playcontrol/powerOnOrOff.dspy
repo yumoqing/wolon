@@ -1,0 +1,10 @@
+if player.playStatus == 'stoped':
+	player.startPlay()
+else:
+	player.endPlay()
+ret = {
+	"status":"OK",
+	"power":player.playStatus
+}
+print(ret)
+return ret

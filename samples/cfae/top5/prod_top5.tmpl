@@ -1,0 +1,13 @@
+__widget_description__ = {
+	__ctmpl__:'pie',
+	data:{
+		widgettype:"echarts",
+		class:"chartbox",
+		charttype:"pie",
+		title:"{{request.args.get('producttype',['国金'])[0]}}前五{{{'participalname':'融资人','term':'期限','section':'行业','area':'地区'}.get(request.args.get('dimension',['participalname'])[0])}}分析",
+		url:"{{absurl(request,'./prod_top5.dspy')}}?producttype={{request.args.get('producttype',['国金'])[0]}}&dimension={{request.args.get('dimension',['participalname'])[0]}}",
+		seriename:"producttype", 
+		dimension:"{{request.args.get('dimension',['participalname'])[0]}}", 
+		indicator:"amount"
+	}
+}

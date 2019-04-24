@@ -1,0 +1,60 @@
+{
+    "__ctmpl__": "jsoneditor",
+    "data": {
+        "__jename__": "tree",
+        "roottype": "widgetdesc",
+        "rootname": "__widget_description__",
+        "registerTypes": [
+            {
+                "datatype": "widgetdesc",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "__ctmpl__",
+                        "datatype": "str",
+                        "required": true,
+                        "defaultvalue": "tree",
+                        "readonly": true
+                    },
+                    {
+                        "name": "data",
+                        "datatype": "treedata",
+                        "required": true,
+                        "registed": true
+                    }
+                ]
+            },
+            {
+                "datatype": "treedata",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "id",
+                        "datatype": "str"
+                    },
+                    {
+                        "name": "idField",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "url",
+                        "datatype": "url",
+                        "required": true
+                    },
+                    {
+                        "name": "editable",
+                        "datatype": "bool",
+                        "defaultvalue": false
+                    },
+                    {
+                        "name": "options",
+                        "datatype": "OBJECT"
+                    }
+                ]
+            }
+        ]
+    }
+}

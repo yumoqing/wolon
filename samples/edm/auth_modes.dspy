@@ -1,0 +1,9 @@
+return [
+	{
+		"mode":"0",
+		"modename":i18n('readonly')
+	},{
+		"mode":"1",
+		"modename":i18n('readwrite')
+	}
+]

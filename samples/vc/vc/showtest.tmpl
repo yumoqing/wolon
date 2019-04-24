@@ -1,0 +1,8 @@
+{% include "header.tmpl" %}
+<script>
+{{print(request.args)}}
+var d = dump(request.args);
+var html = tmplRender(d.__widget_description__.__ctmpl__,d.__widget_description__.data);
+$('body').html(html);
+</script>
+{% include "footer.tmpl" %}

@@ -1,0 +1,136 @@
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+{[? !it.tools]}
+{[=tmplRender('toolbar',{id:it.id + '_tb',tools:it.tools})]}
+{[?]}
+<div id="{[=it.id]}"></div>
+<script>
+obj_{[=it.id]} = {
+{[? it.editable]}
+	add: function(){
+		var t = $('#{[=it.id]}');
+		var node = t.tree('getSelected');
+		$.post(
+			'{[=it.appendURL]}',
+			{'id':(node?node.id:null) },
+			function(data){
+				t.tree('append',{
+					parent:(node?node.target:null),
+					data:[data]
+				});
+			},
+			'json'
+		);
+	},
+	delete : function removeit(){
+		var t = $('#{[=it.id]}');
+		var node = t.tree('getSelected');
+		if(!node){
+			$.messager.show({title:'hint',msg:i18n('select a node first'),timeout:2000,showType:'slide'});
+			return;
+		}
+		var id = node.id;
+		var name = node.text;
+		$.post('{[=it.deleteURL]}',
+			{'id':id},
+			function(data){
+				var result = data.status;
+				if(result=='OK'){
+				$.messager.show({
+					title:i18n('hint'),
+					msg:'['+name+']' + i18n('deleted'),
+					timeout:2000,
+					showType:'slide'
+				});
+			}
+		});
+	}
+{[?]}
+};
+$(function(){
+	var opts = objExt(
+		{	/* 缺省 */
+			loadFilter: function(data){
+				if (data.hasOwnProperty('d')){
+					return data.d;
+				} else {
+					return data;
+				}
+			},
+			onLoadSuccess:function(node,data){
+			},
+			toolbar: '#{[=it.id]}_tb',
+			{[? it.checkbox]}
+			checkbox:function(node){return true;},
+			{[?]}
+			{[? it.editable]}
+			onDblClick: function(node){
+				$(this).tree('beginEdit',node.target);
+			},
+			onAfterEdit: function(node){
+				var id = node.id;
+				var name = node.text;
+				$.post('{[=it.updateURL]}',
+					{'id':id,'text':name},
+					function(data){
+						var result = data.status;
+						if(result=='OK'){
+							$.messager.show({
+								title:i18n('update'),
+								msg:i18n('update success'),
+								timeout:2000,
+								showType:'slide'
+							});
+						}
+					},'json');
+
+			},
+			{[?]}
+			onClick: function(node){
+				var mc = WidgetCalls.createNew();
+				mc.execute('{[=it.id]}','onClick',node);
+			},
+			
+			onBeforeDrop:function(target,source,point){
+				return {[? it.dropdeny===1]}false{[??]}true{[?]};
+			},
+			onStartDrag:function(node){
+				var mc = WidgetCalls.createNew();
+				mc.execute('{[=it.id]}','onStartDrag',node);
+				$('#{[=it.id]}').tree('options').dragdata = node;
+			},
+			onStopDrag:function(node){
+				var mc = WidgetCalls.createNew();
+				mc.execute('{[=it.id]}','onStopDrag',node);
+			},
+			onBeforeDrag:function(node){
+				return {[? it.dragdeny===1 ]}false{[??]}true{[?]};
+			},
+			dnd:true
+		},
+		{[?it.options]}{[=dump(it.options)]},{[?]}
+		{
+			{[?it.url]}
+			url: '{[=it.url]}',
+			{[?]}
+			{[?it.tools]}
+			toolbar:'{[=it.id]}_tb',
+			{[?]}
+			{[?it.formater]}
+			formarter:{[=it.formater]},
+			{[?]}
+			oops:false
+		}	
+	);
+{[? it.contextmenu]}
+{[=tmplRender('contextmenu',it)]}
+{[?]}
+	$('#{[=it.id]}').tree(opts);
+	$.parser.parse($('#{[=it.id]}'));
+	widgetCreated('tree','{[=it.id]}');
+
+});
+
+</script>
+

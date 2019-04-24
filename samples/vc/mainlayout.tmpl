@@ -1,0 +1,40 @@
+__widget_descript__ = {
+	__ctmpl__:'layout',
+	data:{
+		id:'vc_layout',
+		border:true,
+		regions:{
+			north:{
+				height:'72px',
+				remoteWidgets:[
+					"{{absurl(request,'./menu.tmpl')}}"
+				]
+			},
+			center:{
+				remoteWidgets:[
+
+					"{{absurl(request,'./maintabs.tmpl')}}"
+					/*					
+					"{{absurl(request,'./widgetform.tmpl')}}"
+					*/
+				]
+			},
+			/*
+			east:{
+				width:'48%',
+				remoteWidgets:[
+					"{{absurl(request,'./showit.tmpl')}}"
+				]
+			},
+			*/
+			south:{
+				height:'40px',
+				remoteWidgets:[
+				/*
+					"{{absurl(request,'./copyrights.tmpl')}}"
+					*/
+				]
+			}
+		}
+	}
+}

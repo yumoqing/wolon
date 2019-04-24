@@ -1,0 +1,34 @@
+<div id="new_estate"></div>
+<script>
+var d = {
+	title:"新建不动产",
+	unitwidth:300,
+	labelwidth:100,
+	fields_url:"{{absurl(request,'./input_estate_fields.dspy')}}",
+	toolbar:{
+		tools:[
+			{
+				label:"保存",
+				name:"save",
+				img_url:"/easyui/themes/icons/filesave.png",
+				handler:function(){
+					var ds = $(this).parents('.datasheet');
+					var d = ds.datasheet('getValue');
+					remoteCall('./save_estate_fields.dspy',d,'GET','json');
+				}
+			},
+			{
+				name:'clear',
+				label:'重置',
+				img_url:"/easyui/themes/icons/clear.png",
+				icon:"icon-clear",
+				handler:function(){
+				}
+			}
+		]
+	}
+}
+$(function(){
+	$('#new_estate').datasheet(d);
+});
+</script>

@@ -1,0 +1,404 @@
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+{[?!it.notoolbar]}
+<div id="{[=it.id]}_tb">
+{[? it.filters]}
+	<a href="#" class="easyui-linkbutton" iconCls="icon-search" plain="true" onclick="obj_{[=it.id]}.filter();">{[=i18n('filter')]}</a>
+{[?]}
+{[? it.editable]}
+	<a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="javascript:obj_{[=it.id]}.add()">{[=i18n('add')]}</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-cut" plain="true" onclick="javascript:obj_{[=it.id]}.delete()">{[=i18n('delete')]}</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="obj_{[=it.id]}.edit();">{[=i18n('modify')]}</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-save" plain="true" style="display:none;" id="save" onclick="obj_{[=it.id]}.save();">{[=i18n('save')]}</a>
+	<a href="#" class="easyui-linkbutton" iconCls="icon-redo" plain="true" style="display:none;" id="undo" onclick="obj_{[=it.id]}.undo();">{[=i18n('cancel')]}</a>		
+{[?]}
+</div>
+{[? it.filters]}
+<div id="{[=it.id]}_filter" class="easyui-window">
+{[= tmplRender('form',{id:it.id+'filter_form',submit_title:'filter',func:eval('obj_'+it.id+'.search'),fields:it.filters},'0')]}
+</div>
+{[?]}
+{[?]} 
+<table id="{[=it.id]}"></table>
+<script>
+var tmp_new_id = 'ymq-tempile-id';
+var obj_{[=it.id]} = {
+	codes:{},
+	filter_win:$('#{[=it.id]}_filter').window({
+		title:'{[=i18n('filter condition')]}',
+		width:600,
+		height:400,
+		shadow:true,
+		closed:true,
+	}),
+	editRow : -1,
+	filter:function(){
+		this.$filter_win.window('open');
+	},
+	search:function(){
+		var d={};
+		d = eval('obj_' + '{[=it.id]}' + 'filter_form.getValue()');
+		$('#{[=it.id]}').treegrid('load', d);
+		this.$filter_win.window('close');
+	},
+	add : function () {
+		if (this.editRow == -1) {
+			$('#save,#undo').show();
+			var row = $('#{[=it.id]}').treegrid('getSelected');
+			console.log('row',row);
+			var pid = null;
+			if (!isNull(row))
+			{
+				pid = row['{[=it.idField]}'];
+			}
+			console.log(2,pid);
+			$('#{[=it.id]}').treegrid('append', {
+				parent:pid,
+				data : 
+				[
+					{
+						"{[=it.idField]}":tmp_new_id,
+						"{[=it.treeField]}":"tmpname"
+					}
+				],
+			});
+			$('#{[=it.id]}').treegrid('beginEdit', tmp_new_id);
+			this.editRow = tmp_new_id;
+		}
+	},
+	save : function () {
+		if (this.editRow != -1){
+			$('#{[=it.id]}').treegrid('endEdit', this.editRow);
+		}
+	},
+	undo : function () {
+		$('#save,#undo').hide();
+		$('#{[=it.id]}').treegrid('cancelEdit',this.editRow);
+		if (this.editRow == tmp_new_id){
+			$('#{[=it.id]}').treegrid('remove',this.editRow);
+		}
+		this.editRow = -1;
+	},
+	edit : function () {
+		var rows = $('#{[=it.id]}').treegrid('getSelections');
+		if (rows.length == 1) {
+			if (this.editRow != -1) 
+			{
+				$('#{[=it.id]}').treegrid('endEdit', this.editRow);
+			} else {
+				$('#save,#undo').show();
+				this.editRow = rows[0]['{[=it.idField]}'];
+				$('#{[=it.id]}').treegrid('beginEdit', this.editRow);
+				$('#{[=it.id]}').treegrid('unselectRow', this.editRow);
+			}
+		} else {
+			$.messager.alert("{[=i18n('warnning')]}", "{[=i18n('Must ONLY select one row!')]}", 'warning');
+		}
+	},
+	delete : function () {
+		var rows = $('#{[=it.id]}').treegrid('getSelections');
+		if (rows.length > 0) {
+			$.messager.confirm('{[=i18n('confirm')]}', '{[=i18n('Are you sure to delete selected rows?')]}', function (flag) {
+				if (flag) {
+					console.log('rows[0]',rows[0]);
+					$.ajax({
+						type : 'POST',
+						url : '{[=it.deleteURL]}',
+						data : rows[0],
+						beforeSend : function () {
+							$('#{[=it.id]}').treegrid('loading');
+						},
+						success : function (data) {
+							if (data) {
+								$('#{[=it.id]}').treegrid('loaded');
+								$('#{[=it.id]}').treegrid('reload');
+								$('#{[=it.id]}').treegrid('unselectAll');
+								$.messager.show({
+									title : '{[=i18n('hint')]}',
+									msg : data + "{[=i18n('records deleted!')]}",
+								});
+							}
+						},
+					});
+				}
+			});
+		} else {
+			$.messager.alert('{[=i18n('hint')]}', '{[=i18n('please select rows to delete')]}', 'info');
+		}
+	}	
+};
+
+{[~ it.fields :f]}
+{[? f.iotype == 'urlcodes']}
+$.holdReady(true);
+{[?]}
+{[~]}
+{[~ it.fields :f]}
+	{[?f.iotype == 'codes']}
+obj_{[=it.id]}.codes['{[=f.name]}'] = {[=dump(f.data)]};
+	{[?? f.iotype== 'urlcodes' ]}
+remoteJson('{[=f.url]}',function(d){
+	obj_{[=it.id]}.codes['{[=f.name]}'] = d;
+	$.holdReady(false);
+	});
+	{[?]}
+{[~]}
+
+
+$(function(){
+	var fields = [
+{[ var fieldcnt= 0;]}
+{[?it.checkbox]}
+	{[='{']}
+		field:'ck',
+		checkbox:true
+	{[='}']}
+	{[ fieldcnt++; ]}
+{[?]}
+{[~ it.fields :f]}
+	{[?f.name == it.idField]}
+	{[continue;]}
+	{[?]}
+	{[?fieldcnt>0]}
+	{[= ',{' ]}
+	{[??]}
+	{[= '{' ]}
+	{[?]}
+	{[ fieldcnt ++;]}
+	{[ f = $.extend(f,MetaData.get(f.name)); ]}
+	title:'{[=i18n(f.label||f.name)]}',
+	field:'{[=f.name]}',
+	width:{[=f.width||it.treeField==f.name?200:100]},
+	{[?f.hidden]}hidden:true,{[?]}
+	{[? f.formater]}
+	formater:{[=f.formater]},
+	{[?? f.iotype=='codes']}
+	formatter:function(value,row,index){
+		try
+		{
+			var codes = obj_{[=it.id]}.codes['{[=f.name]}'];
+			for (var i=0;i<codes.length;i++)
+			{
+				if (codes[i].value == value) return codes[i].label;
+			}
+			return value;
+
+		}
+		catch(e)
+		{
+			console.log("error",e);
+			return value;
+		};
+
+	},
+	{[?? f.iotype=='urlcodes']}
+	formatter:function(value,row,index){
+		try
+		{
+			var codes = obj_{[=it.id]}.codes['{[=f.name]}'];
+			for (var i=0;i< codes.length;i++)
+			{
+				if (codes[i]['{[=f.valueField]}'] == value) return codes[i]['{[=f.textField]}'];
+			}
+			return value;
+
+		}
+		catch(e)
+		{
+			console.log("error",e);
+			return value;
+		};
+
+	},
+	{[?]}
+	
+	{[? (it.idField && f.name != it.idField) || (isNull(it.idField) && f.name != it.fields[0].name) ]}
+	editor:{
+	{[? f.iotype == 'date']}
+		type:'datebox',
+		options:{
+		}
+	{[?? f.iotype == 'datetime']}
+		type:"datetime",
+		options:{
+		}
+	},
+	{[?? f.iotype == 'codes']}
+		type:"combobox",
+		options:{
+		valueField: 'value',
+		textField: 'label',
+		data:obj_{[=it.id]}.codes['{[=f.name]}']
+		}
+	{[?? f.iotype == 'urlcodes']}
+		type:"combobox",
+		options:{
+			oops:console.log(obj_{[=it.id]}.codes),
+			valueField: '{[=f.valueField]}',
+			textField: '{[=f.textField]}',
+			url:'{[=f.url]}'
+		}
+	{[?? ]}
+		type:"textbox",
+		options:{
+		}
+
+	{[?]}
+	},	
+	{[?]}
+	width:'{[=f.width||'100px']}',
+	oops:true
+	{[='}']}
+{[~]}
+	];
+	var opts = objExt(
+		{	/* 缺省 */
+			height:'100%',
+			fitColumns:false,
+			rownumbers : true,
+			striped : true,
+			nowrap : true,
+			singleSelect:true,
+			pagination:true,
+			url:'default.url',
+			columns:[fields],
+			loadFilter: function(data){
+				if (data.d){
+					return data.d;
+				} else {
+					return data;
+				}
+			},
+			onAfterEdit : function (row, changes) {
+				$('#save,#undo').hide();
+				console.log('row,changes=',row,changes);
+				/*
+				var inserted = $('#{[=it.id]}').treegrid('getChanges', 'inserted');
+				var updated = $('#{[=it.id]}').treegrid('getChanges', 'updated');
+				console.log('onAfterEdit():data=',rowData);
+				var url = info =  '';
+
+				if (inserted.length > 0) {
+					url = '{[=it.appendURL]}';
+					info = '{[=i18n('add')]}';
+				}
+				
+				if (updated.length > 0) {
+					url = '{[=it.updateURL]}';
+					info = '{[=i18n('update')]}';
+				}
+				console.log(rowData,changes);
+				*/
+				if (obj_{[=it.id]}.editRow == tmp_new_id)
+				{
+					url = '{[=it.appendURL]}';
+				} else {
+					url = '{[=it.updateURL]}';
+				}
+				var up_data = changes;
+				up_data._parentId = row._parentId;
+				$.ajax({
+					type : 'POST',
+					url : url,
+					data : up_data,
+					beforeSend : function () {
+						$('#{[=it.id]}').treegrid('loading');
+					},
+					success : function (data) {
+						if (data) {
+							$('#{[=it.id]}').treegrid('loaded');
+							$('#{[=it.id]}').treegrid('reload');
+							$('#{[=it.id]}').treegrid('unselectAll');
+							$.messager.show({
+								title : '{[=i18n('hint')]}',
+								msg : data + ' records ' + info + 'ed',
+							});
+							obj_{[=it.id]}.editRow = -1;
+						}
+					},
+				});
+			},
+			onClickRow:function(row) {
+				console.log('treegird.ctmpl:onClickRow() d=',d);
+				var mc = WidgetCalls.createNew();
+				d = {'row':row};
+				console.log('treegird.ctmpl:onClickRow() d=',d);
+				mc.execute('{[=it.id]}','onClickRow',d);
+			},
+			onClickCell : function(field,row) {
+				var mc = WidgetCalls.createNew();
+				d = {row:row,field:field};
+				console.log('treegird.ctmpl:onClickCell() d=',d);
+				mc.execute('{[=it.id]}','onClickCell',d);
+			},
+			onSelect : function(row){
+				var mc = WidgetCalls.createNew();
+				d = {row:row};
+				console.log('treegird.ctmpl:onSelect() d=',d);
+				mc.execute('{[=it.id]}','onSelect',d);
+			},
+			onDblClickRow : function (row) {
+				var mc = WidgetCalls.createNew();
+				d = {row:row};
+				console.log('treegird.ctmpl:onDblClickRow() d=',d);
+				mc.execute('{[=it.id]}','onDblClickRow',d);
+			},
+			onLoadSuccess:function(row,newdata){
+				{[?it.dnd]}$('#{[=it.id]}').treegrid('enableDnd');{[?]}
+				if(!isNull(row))
+				{	 
+					var tg = $('#{[=it.id]}');
+					var opts = tg.treegrid('options');
+					tg.treegrid('append',{
+							parent:row[opts.idField],
+							data:newdata['rows']
+						});
+					tg.treegrid('expand',row[opts.idField]);
+					tg.treegrid('select',row[opts.idField]);
+				};
+			},
+			toolbar: '#{[=it.id]}_tb',
+			{[? it.checkbox]}
+			checkbox:function(node){return true;},
+			{[?]}
+
+			onDblClickCell: function(field,row){
+				var mc = WidgetCalls.createNew();
+				d = {field:field,row:row};
+				console.log('treegird.ctmpl:onDblClickRow() d=',d);
+				mc.execute('{[=it.id]}','onDblClickCell',d);
+			},
+			onBeforeDrop:function(target,source,point){
+				console.log("target",target,"source",source);
+				return {[? it.dropdeny===1]}false{[??]}true{[?]};
+			},
+			onBeforeDrag:function(node){
+				return {[? it.dragdeny===1 ]}false{[??]}true{[?]};
+			}
+		},
+		{[?it.options]}{[=dump(it.options)]},{[?]}
+		{
+			url: '{[=it.url]}',
+			{[?it.title]}
+			title:'{[=it.title]}',
+			{[?]}
+			{[?it.icon]}
+			iconCls:'{[=it.icon]}',
+			{[?]}
+			{[? it.notoolbar]}
+			toolbar:false,
+			{[?]}
+			idField:'{[=it.idField||it.fields[0]['name']]}',
+			treeField:'{[=it.treeField||it.idField||it.fields[0]['name']]}'
+		}	
+	);
+{[? it.contextmenu]}
+{[=tmplRender('contextmenu',it)]}
+{[?]}
+	$('#{[=it.id]}').treegrid(opts);
+	widgetCreated('treegrid','{[=it.id]}');
+});
+
+</script>
+

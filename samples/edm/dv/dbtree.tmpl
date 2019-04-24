@@ -1,0 +1,71 @@
+{
+	"__ctmpl__":"tree",
+	"data":{
+		"id":"dbtree",
+		"widgettype":"tree",
+		"idField":"id",
+		"url":"./dv/dbtree.dspy",
+		"drag":true,
+		"editable":false,
+		"contextmenu":
+		[
+			{
+				"type":"database",
+				"identifier":function(d){
+					return d.nodetype=='database';
+				},
+				"registerfunction":"maintabs_url_call",
+				"submenu":
+				[
+					{
+						"label":"sql script",
+						"url":"{{absurl(request,'./sql/sqlLayout.dspy?dbname={[=it.id]}&id={[=guid()]}')}}",
+						"name":"sqlscript"
+					},{
+						"label":"sql builder",
+						"name":"sqlbuilder"
+					},{
+						"label":"create table",
+						"url":"{{absurl(request,'../da/tableDDLedit.tmpl?dbname={[=it.id]}&id={[=guid()]}')}}",
+						"name":"newtable"
+					}
+				]
+			},{
+				"type":"table",
+				"identifier":function(d){ return d.nodetype=='table';},
+				"registerfunction":"maintabs_url_call",
+				"submenu":
+				[
+					{
+						"label":"view structure",
+						"url":"{{absurl(request,'./models/fielddatagrid.dspy?id={[=it.id]}')}}",
+						"name":"v_structure"
+					},{
+						"label":"browse data",
+						"url":"{{absurl(request,'./datagrid.dspy?id={[=it.id]}')}}",
+						"name":"v_data"
+					},{
+						"label":"edit data",
+						"url":"{{absurl(request,'./datagrid.dspy?id={[=it.id]}&editable=1')}}",
+						"name":"v_data"
+					},{
+						"label":"download data",
+						"registerfunction":"newpage_url_call",
+						"url":"{{absurl(request,'./download_xlsx.dspy?id={[=it.id]}&editable=1')}}",
+						"name":"v_data"
+					}
+				]
+			},{
+				"type":'field',
+				"identifier":function(d){ return d.nodetype=='field';},
+				"registerfunction":"maintabs_url_call",
+				"submenu":[
+					{	
+						"label":"set itype",
+						"name":"setiotype"
+					}
+				]
+			}
+		]
+	}
+}

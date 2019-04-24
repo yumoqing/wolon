@@ -1,0 +1,79 @@
+{
+	__ctmpl__:"treegrid",
+	data:{
+		id:"treegridtest",
+		title:"勾稽结果管理",
+		url:"{{absurl(request,'./GouJiJieGuoGuanLi.dspy')}}",
+		idField:"gorid",
+		treeField:"gorname",
+		fields:[
+			{
+				name:"gorname",
+				width:"220px",
+				label:"规则组或规则名称",
+				iotype:"text"
+			},{
+				name:"run_status",
+				label:"执行状态",
+				iotype:"text"
+			},{
+				name:"rule_status",
+				label:"规则结果分支",
+				iotype:"text"
+			},{
+				name:"passormiss",
+				label:"勾稽结果",
+				iotype:"text"
+			},{
+				name:"run_detail",
+				label:"结果详情",
+				iotype:"text"
+			}
+		],
+		options:{
+			pagination:false,
+			dnd:false,
+			pageSize:60,
+			columns:[[
+				{
+				},{
+					formatter:function(value,rec,index){
+						switch(value){
+							case 'done':
+								return '已执行';
+								break;
+							case 'partdone':
+								return '部分执行';
+							case 'failed':
+								return '失败';
+							case 'norun':
+								return '未执行';
+						}
+						return value;
+					}
+				},{},{
+					formatter:function(value,rec,index){
+						switch(value){
+							case 'pass':
+								return '通过';
+								break;
+							case 'miss':
+								return '未通过';
+						}
+						return value;
+					}
+				
+				},{
+					formatter:function(value,rec,index){
+						if (rec.nodetype=='chkrule' && rec.run_status=='done' ){
+							return '<button onclick="alert(\'haha\');">详情</button><button >执行</button>';
+						} else {
+							return '<button onclick="alert(\'haha\');" disabled >详情</button><button >执行</button>'
+						}
+						return value;
+					}
+				}
+			]]
+		}
+	}
+}

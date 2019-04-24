@@ -1,0 +1,21 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc = {
+		"sql_string":"""
+		select a.* 
+			from stock_daily_hist a,stock_dates b 
+			where a.instrument_id = ${instrument_id}$ and 
+				a.trade_date = b.trade_date and 
+				b.sd_id + ${nday}$ > (select max(sd_id) from stock_dates)
+		"""
+	}
+	return desc
+
+ns = {
+	'instrument_id':request.args.get('instrument_id',['600804'])[0],
+	'nday':int(request.args.get('nday',['5'])[0]),
+}
+
+r = [ i for i in sql('fadb',ns) ]
+
+return r

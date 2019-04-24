@@ -1,0 +1,17 @@
+__widget_description__ = {
+	__ctmpl__:"tabs",
+	data:{
+		id:"cfaemain_tabs",
+		narrow:true,
+		items:[
+			{
+				title:"业务概览",
+				icon:"icon-home",
+				remoteWidgets:[
+					"{{absurl(request,'./profile.tmpl')}}"
+				],
+				closable:false
+			}
+		]
+	}
+}

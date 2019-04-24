@@ -1,0 +1,49 @@
+
+sqls = [
+"""
+select natures as naid,'closed' as state,natures as dimname,sum(issueamount) as amount
+from brokerview
+group by natures
+		""",
+"""select natures + '_' + area as naid,'closed' as state,area as dimname,sum(issueamount) as amount
+from brokerview
+where natures=${natures}$
+group by natures,area""",
+"""select natures + '_' + area + '_' + participalname as naid,null as state,participalname as dimname,sum(issueamount) as amount
+from brokerview
+where natures=${natures}$ and area = ${area}$
+group by natures,area,participalname
+
+"""
+
+]
+@runSQLPaging
+def sql(dbname,ns):
+	desc={
+		"sql_string":sqls[ns.get('level',0)]
+	}
+	return desc
+
+id=request.args.get('id',[None])[0]
+
+
+ns = {
+	"page":int(request.args.get('page',['0'])[0]),
+	"rows":int(request.args.get('rows',['60'])[0]),
+	"sort":"naid",
+}
+if id is None:
+	ret = sql('cfae',ns)
+	return ret
+
+ids = id.split('_')
+level = len(ids)
+ns.update({"level":level})
+if level > 0:
+	ns.update({'natures':ids[0]})
+if level > 1:
+	ns.update({'area':ids[1]})
+	
+ret = sql('cfae',ns)
+#print(id,ns,ret)
+return ret

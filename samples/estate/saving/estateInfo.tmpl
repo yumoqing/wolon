@@ -1,0 +1,80 @@
+<div class="estate lbox">
+<div width="100%">
+	<span class="estate-label">所在位置:</span>
+	<span class="estate-value">{[=it.f6]}
+	<a href="#" onclick="showAddressOnMap('{[=it.f6]}','{[=it.f2]}')">
+	<img src="/imgs/location.png" width="18px" height="18px" /></a>
+	</span>
+</div>
+<div width="100%">
+	<span width="50%" >
+		<span class="estate-label">所属小区:</span><span class="estate-value">{[=it.f4]}</span>
+	</span>
+	<span width="50%" >
+		<span class="estate-label">房屋户型:</span><span class="estate-value">{[=it.f5]}</span>
+	</span>
+</div>
+<div width="100%">
+	<span width="50%" >
+		<span class="estate-label">建筑面积:</span><span class="estate-value">{[=it.f8]}</span>
+	</span>
+	<span width="50%" >
+		<span class="estate-label">建造年代:</span><span class="estate-value">{[=it.f9]}</span>
+	</span>
+</div>
+<div width="100%">
+	<span width="50%" >
+		<span class="estate-label">房屋朝向:</span><span class="estate-value">{[=it.f10]}</span>
+	</span>
+</div>
+<div width="100%">
+	<span width="50%" >
+		<span class="estate-label">房屋类型:</span><span class="estate-value">{[=it.f11]}</span>
+	</span>
+	<span width="50%" >
+		<span class="estate-label">总楼层数:</span><span class="estate-value">{[=it.f12]}</span>
+	</span>
+	<span width="50%" >
+		<span class="estate-label">所在楼层:</span><span class="estate-value">{[=it.f13]}</span>
+	</span>
+</div>
+<div width="100%">
+	<span width="50%" >
+		<span class="estate-label">装修程度:</span><span class="estate-value">{[=it.f14]}</span>
+	</span>
+	<span width="50%" >
+		<span class="estate-label">房本年限:</span><span class="estate-value">{[=it.f15]}</span>
+	</span>
+</div>
+<div width="100%">
+	<span width="50%" >
+		<span class="estate-label">配套供暖:</span><span class="estate-value">{[=it.f16]}</span>
+	</span>
+	<span width="50%" >
+		<span class="estate-label">唯一住房:</span><span class="estate-value">{[=it.f17]}</span>
+	</span>
+</div>
+<div width="100%">
+	<span width="50%" >
+		<span class="estate-label">车位:</span><span class="estate-value">{[=it.f18]}</span>
+	</span>
+	<span width="50%" >
+		<span class="estate-label">交通:</span><span class="estate-value">{[=it.f19]}</span>
+	</span>
+</div>
+<div width="100%">
+<span class="estate-label">房屋描述:</span><span class="estate-value">{[=it.f20]}</span>
+</div>
+<div>
+<a href="#" onclick="setRentfin('{[=it.f1]}')">设置融房</a>
+<span>&nbsp&nbsp&nbsp&nbsp</span>
+<a href="#" onclick="setRentfin('{[=it.f1]}')">设置获房</a>
+<span>&nbsp&nbsp&nbsp&nbsp</span>
+<a href="#" onclick="setRentfin('{[=it.f1]}')">设置出房</a>
+</div>
+</div>
+<script>
+function setRentfin(eid){
+	popWindow("{{absurl(request,'../rentfin/new_rf.tmpl')}}?eid=" + eid);
+};
+</script>

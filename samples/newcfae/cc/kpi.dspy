@@ -1,0 +1,40 @@
+def f1():
+	d = random.randint(100,999)
+	d = float(d/10)
+	return '%.1f亿元' % d
+
+def f2():
+	d = random.randint(10000,99999)
+	d = float(d/100)
+	return '%.1f万元' % d
+
+def f3():
+	return random.randint(100,999)
+
+def f4():
+	return random.randint(0,2) - 1
+	
+knames = {
+	'债券市场剩余额度':f1,
+	'债券市场注册金额':f1,
+	'债券市场发行金额':f1,
+	'债券市场承销人数':f3,
+	'债券市场融资人数':f3,
+	'债券信息披露笔数':f3,
+	'债权备案金额':f2,
+	'债权发行量':f2,
+	'债权信息披露笔数':f3,
+	'DFI产品注册数量':f3,
+	'国金挂牌数':f3,
+	'国金发行量':f2,
+	'委债挂牌数':f3,
+}
+
+data=[{'kpiname':k,'kpivalue':v()} for k,v in knames.items() ]
+for i in range(5):
+	data[i].update({'id':i,'flag':f4()})
+
+return {
+	'total':5,
+	'rows':data
+}

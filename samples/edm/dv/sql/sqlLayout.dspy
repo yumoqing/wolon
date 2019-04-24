@@ -1,0 +1,24 @@
+dbname = request.args.get('dbname',[None])[0]
+id = request.args.get('id',['0'])[0]
+ret = {
+	"__ctmpl__":"layout",
+	"data":{
+		"id":id + "_layout",
+		"border":True,
+		"regions":{
+			"west":{
+				"width":"50%",
+				"split":True,
+				"remoteWidgets":[
+					absurl(request,"./sqlscript.tmpl?dbname=" + dbname + '&id=' + id)
+				]
+			},
+			"center":{
+				"split":True,
+			}
+		}
+	}
+}
+print('sqlLayout.dspy','id=',id+ "_layout",dbname,ret)
+
+return ret

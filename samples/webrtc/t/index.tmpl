@@ -1,0 +1,64 @@
+{% include "header.tmpl" %}
+    <video id="localVideo" autoplay muted style="width:40%;"></video>
+    <video id="remoteVideo" autoplay style="width:40%;"></video>
+
+    <br />
+
+    <div id="friends"></div>
+    <input type="button" id="start" onclick="startTalk()" value="Start video chat" />
+    <input type="button" id="stop" onclick="stopTalk()" value="Stop video chat" />
+<!---
+--->
+<script src="/webrtcutils/adapter.js"></script>
+<script src="./webrtcPkg.js"></script>
+<script src="./rtcSession.js"></script>
+<script>
+var my_rtc = null;
+
+function startTalk(){
+	var row = $('#friends').datalist('getSelected');
+	if (typeof(row)=='undefined'){
+		$.messager.aler('error','please select a friend');
+		return;
+	}
+	console.log('row=',row);
+	my_rtc.startCall(row.friendId);
+}
+
+function stopTalk(){
+	if (my_rtc.isBusy()){
+		my_rtc.hangup();
+	}
+}
+$(function(){
+	var opts = {
+		userId:"{{request.args.get('user',['ymq'])[0]}}",
+		authorization:"",
+		ws_url:"wss://bsppo.com:9000",
+		mediaContraints:{
+		    video: true,
+		    audio: true
+		},
+		friendsWidget:"friends",
+		localVideo:"localVideo",
+		remoteVideo:"remoteVideo",
+		iceServers:[   
+			{url: "stun:stunserver.org"},
+   			{url: "stun:stun.xten.com"},
+   			{
+				url: "turn:39.105.105.159:3478",
+				credential:"x",
+				username:"x"
+			}
+		]
+	};
+	my_rtc = new WebRTCClient(opts);
+	var dl_opts = {
+		textField:"friendName",
+		checkbox:false,
+		lines:false
+	};
+	$('#friends').datalist(dl_opts);
+});
+</script> 
+{% include "footer.tmpl" %}

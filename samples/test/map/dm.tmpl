@@ -1,0 +1,13 @@
+{% include "header.tmpl" %}
+<script>
+
+var d = {
+	id:'dm_id',
+	title:"十大资金流入地区",
+	url:"{{absurl(request,'./dm.dspy')}}",
+	colors:['#a6c84c', '#ffa022', '#46bee9']
+}
+$(tmplRender('dataMovingMap',d)).appendTo($('body'));
+
+</script>
+{% include "footer.tmpl" %}

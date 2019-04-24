@@ -1,0 +1,54 @@
+<div id="{{request.args['id'][0]}}_tb_c" ></div>
+<div id="{{request.args['id'][0]}}_sql_input" class="easyui-scripteditor" 
+	data-options="prompt:'sql command...'" 
+	style="width:100%;height:100%;"></div>
+</div>
+<script>
+var tool = {
+	id:"{{request.args['id'][0]}}_tb",
+	tools:[
+		{
+			icon:"icon-play",
+			label:"run",
+			name:"run"
+		},{
+			icon:"icon-clear",
+			label:"clear",
+			name:"clear"
+		}
+	]
+};
+
+var runsql = function(d){
+	console.log('kehrferwgew',d);
+	var data = {
+		sqlid:'{{uuid()}}',
+		id:'{{request.args['id'][0]}}',
+		db:'{{request.args['dbname'][0]}}',
+		sql:$('#{{request.args['id'][0]}}_sql_input').scripteditor('getValue')
+	}
+	console.log('sql=',data.sql);
+	remoteWidgets(['{{absurl(request,'./sqlrunor.dspy')}}'],data,$('#{{request.args['id'][0]}}_layout').layout('panel','center'),'replace',showError);
+};
+
+var clear = function(){
+	$('#{{request.args['id'][0]}}_sql_input').scripteditor('setValue','');
+}
+
+$(function(){
+	var txt=tmplRender('toolbar',tool);
+	$(txt).appendTo($('#{{request.args['id'][0]}}_tb_c'));
+	$.parser.parse($('#{{request.args['id'][0]}}_tb_c'));
+	var p = $('#{{request.args['id'][0]}}_tb_c').parent()
+	p.resize(function(){
+		$('#{{request.args['id'][0]}}_sql_input').css({
+			width:p.width(),
+			height:p.height() - $('#{{request.args['id'][0]}}_tb_c').height()
+		});
+	});
+	var wc = WidgetCalls.createNew();
+	wc.init('{{request.args['id'][0]}}_tb');
+	wc.add('{{request.args['id'][0]}}_tb','run',runsql);
+	wc.add('{{request.args['id'][0]}}_tb','clear',clear);
+});
+</script>

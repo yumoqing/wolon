@@ -1,0 +1,24 @@
+{
+	"id":"sqlcmd_form",
+	"fields":
+	[
+	
+		{
+			"name":"sql",
+			"iotype":"textarea",
+			"width":"100%",
+			"height":"100%"
+		}
+	],
+	"toolbar":{
+		"tools":[
+			{
+				"icon:"icon-run",
+				"name":"run"
+			},{
+				"icon":"con-clear",
+				"name":"clear"
+			}
+		]
+	}
+}

@@ -1,0 +1,50 @@
+<div id="{{request.args.get('id')[0]}}_ctnr" style="width:100%;height=40px;background-color:#7f7f7f" >
+drop table here id={{request.args.get('id')[0]}}_ctnr
+</div>
+<script>
+var d = {
+	id:"{{request.args.get('id')[0]}}_tabs"
+};
+$('#{{request.args.get('id')[0]}}_layout').layout('panel','west').html(tmplRender('tabs',d));
+$.parser.parse($('#{{request.args.get('id')[0]}}_layout'));
+
+/* {{request.args.get('id')[0]}}_ctnr */
+
+$('#{{request.args.get('id')[0]}}_tabs').droppable({
+	onDrop:function(e,s){
+		var node = $('#dbtree').tree('options').dragdata
+		console.log('onDrop():e=',e,'source=',s,'node=',node);
+		var ids = node.id.split(':');
+		var dbname = ids[0];
+		var tablename = ids[1];
+		if(dbname != '{{request.args.get('dbname')[0]}}'){
+			$.messager.show({title:'Error',msg:'differ database: {{request.args.get('dbname')[0]}} vs '+node.id});
+			return;
+		}
+		remoteCall('{{absurl(request,'/dv/models/fielddatagrid.dspy')}}','GET','json',{dbname:dbname,tablename:tablename},
+			function(data){
+				$('#{{request.args.get('id')[0]}}_tabs').tabs('add',{
+					title:tablename,
+					iconCls:'icon-table',
+					content:data,
+					closable:true,
+					selected:true
+				});
+				$.parser.parse($('#{{request.args.get('id')[0]}}_tabs'));
+			},
+			function(err){
+				$.messager.show({title:'Error',msg:'errer message:' + err});
+			}
+		);
+	},
+	onDragEnter:function(e,source){
+		 $(source).draggable('options').cursor='allowed';
+	},
+	onDragLeave:function(e,source){
+		$(source).draggable('options').cursor='not-allowed';
+	}
+
+});
+
+
+</script>

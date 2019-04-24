@@ -1,0 +1,84 @@
+__widget_description__={
+	__ctmpl__:'line',
+	data:{
+		id:"doubleline",
+		widgettype:"echarts",
+		class:"basebox",
+		width:((document.body.clientWidth-50)*7/10 - 1) + 'px',
+		height:((document.body.clientHeight-50)*4/10 - 1) + 'px',
+		title:"",
+		url:"{{absurl(request,'./doubleline.dspy')}}",
+		charttype:"line",
+		dimension:"ccdate",
+		series:[
+			{
+				name:"每日在线主承数",
+				indicator:"onlinecnt",
+			},
+			{
+				name:"Shibor3M",
+				indicator:"rate",
+			}
+		],
+		options:{
+			xAxis:{
+				axisLine:{
+					show:true
+				},
+				splitLine:{
+					show:false
+				}
+			},
+			yAxis:[
+				{
+					type: 'value',
+					splitNumber:4,
+					axisLine:{
+						show:true
+					},
+					name: '每日在线主承数'
+				},{
+					type: 'value',
+					name: '利率',
+					splitNumber:4,
+					splitLine:{
+						show:false,
+						width:0
+					},
+					axisLine:{
+						show:true
+					},
+					min: 4,
+					max: 5,
+					axisLabel: {
+						formatter: '{value}%'
+					}
+				}
+			],
+			series:[
+				{
+					yAxisIndex: 0,
+					itemStyle : {    
+						normal : {    
+							lineStyle:{
+								width:4,
+								color:'#ff0000'    
+							}   
+						}    
+					}    			
+				},
+				{
+					yAxisIndex: 1,
+					itemStyle : {    
+						normal : {    
+							lineStyle:{
+								width:4,
+								color:'#00ff00'    
+							}   
+						}    
+					}    			
+				}
+			]
+		}
+	}
+}

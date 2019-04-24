@@ -1,0 +1,120 @@
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+{[?it.menubar]}
+<div id="{[=it.id]}" style="width:100%">
+{[var sm_cnt=0;]}
+{[~it.submenu :sm]}
+<a id="{[=it.id]}_mb_{[=sm_cnt]}" href="javascript:void(0)" >{[=i18n(sm.label||sm.name)]}</a>
+{[sm_cnt ++;]}
+{[~]}
+</div>
+<div id="{[=it.id]}_menus"></div>
+<script>
+{[var sm_cnt=0;]}
+{[~it.submenu :sm]}
+{[?sm.submenu]}
+var smenu = {
+	id:"{[=it.id]}_{[=sm_cnt]}",
+	{[?it.target]}target:"{[=it.target]}",{[?]}
+	{[?it.url]}url:"{[=it.url]}",{[?]}
+	{[?it.func]}func:"{[=it.func]}",{[?]}
+	{[?it.registerfunction]}registerfunction:"{[=it.registerfunction]}",{[?]}
+	{[?sm.registerfunction]}registerfunction:"{[=sm.registerfunction]}",{[?]}
+	submenu:{[=dump(sm.submenu)]}
+};
+$(tmplRender('menu',smenu)).appendTo($('#{[=it.id]}_menus'));
+$('#{[=it.id]}_mb_{[=sm_cnt]}').menubutton({
+    {[?sm.icon]}iconCls:'{[=sm.icon]}',{[?]}
+    menu:'#{[=it.id]}_{[=sm_cnt]}'
+});
+{[?]}
+{[sm_cnt ++;]}
+{[~]}
+</script>
+{[??]}
+<div id="{[=it.id]}" class="easyui-menu" data-options="onClick:obj_{[=it.id]}.onClick" 
+	style="width:{[=it.width||'120px']};">
+{[= tmplRender('submenu',it)]}
+</div>
+<script>
+obj_{[=it.id]} = {
+	outargs:{},
+	callee:null,
+	disable:function(id){
+		console.log('disable,{[=it.id]},id=',id);
+		var els = $('#' + id);
+		if (els.length>0){
+			var item = $('#{[=it.id]}').menu('getItem',els[0]);
+			$('#{[=it.id]}').menu('disableItem',item.target);
+		} else {
+			console.log('item not find',id);
+		}
+	},
+	enable:function(id){
+		console.log('enable,{[=it.id]},id=',id);
+		var els = $('#' + id);
+		if (els.length>0){
+			var item = $('#{[=it.id]}').menu('getItem',els[0]);
+			$('#{[=it.id]}').menu('enableItem',item.target);
+		} else {
+			console.log('item not find',id);
+		}
+	},
+	change:function(id,newd){
+		console.log('change,{[=it.id]},id=',id);
+		var els = $('#' + id);
+		if (els.length>0){
+			var item = $('#{[=it.id]}').menu('getItem',els[0]);
+			if (newd.hasOwnProperty('label'))
+			{
+				$('#{[=it.id]}').menu('setText',{target:item.target,text:newd.label});
+			}
+			if (newd.hasOwnProperty('icon'))
+			{
+				$('#{[=it.id]}').menu('setIcon',{target:item.target,iconCls:newd.icon});
+			}
+		} else {
+			console.log('item not find',id);
+		}
+	},
+	onClick:function(item){
+		console.log('item=',item);
+		var d = {
+			'id':'{[=it.id]}',
+			'action':item.name,
+			'data':$.extend(item,obj_{[=it.id]}.outargs)
+		};
+		if(item.hasOwnProperty('registerfunction')){
+			var rf = RegisterFunction.createNew();
+			console.log('registerfunction',d);
+			rf.call(item.registerfunction,d);
+			return;
+		}
+		{[? it.registerfunction]}
+			var rf = RegisterFunction.createNew();
+			console.log('registerfunction',d);
+			rf.call('{[=it.registerfunction]}',d);
+			return;
+		{[??]}
+			var mc = WidgetCalls.createNew();
+			mc.execute('{[=it.id]}',item.name,d,null);
+		{[?]}
+	},
+	defaultAction:function(data){
+		$.messager.alert('info',data.action+':' + i18n('not implemented yet'));
+		return data;
+	},
+	setValue:function(d){
+		obj_{[=it.id]}.outargs = d.data;
+		$('#{[=it.id]}').menu('show',{left: d.event.pageX,top: d.event.pageY});
+	}
+};
+$(function(){
+	$.parser.parse($('#{[=it.id]}'));
+	widgetCreated('menu','{[=it.id]}');
+	var mc = WidgetCalls.createNew();
+	mc.add('{[=it.id]}','#',obj_{[=it.id]}.defaultAction);
+});
+</script>
+{[?]}

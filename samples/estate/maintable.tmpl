@@ -1,0 +1,25 @@
+__widget_description__ = {
+	__ctmpl__:"tabs",
+	data:{
+		id:"main_tabs",
+		narrow:true,
+		items:[
+			{
+				title:"存房",
+				icon:"icon-home",
+				remoteWidgets:[
+					"{{absurl(request,'./saving/index.tmpl')}}"
+				],
+				closable:false
+			},
+			{
+				title:"融房",
+				icon:"icon-home",
+				remoteWidgets:[
+					"{{absurl(request,'./rentfin/index.tmpl')}}"
+				],
+				closable:false
+			}
+		]
+	}
+}

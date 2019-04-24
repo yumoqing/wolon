@@ -1,0 +1,72 @@
+<table width="100%" height="100%">
+<tr height="60%">
+<td id="ic_tl" width="70%" colspan=2>
+<!--
+<embed src="{{absurl(request,'./cashflow.swf')}}" width="100%" height="100%"></embed>
+-->
+</td>
+<td id="ic_tr" width="30%">
+上右
+</td>
+</tr>
+<tr height="40%">
+<td id="ic_bl" width="35%">
+下左
+</td>
+<td id="ic_bc" width="35%">
+下左
+</td>
+<td id="ic_br" width="30%">
+下右
+</td>
+</tr>
+</table>
+<script>
+$(function(){
+
+		remoteWidgets([
+			"{{absurl(request,'./kpi.tmpl')}}",
+			"{{absurl(request,'./currbondissue.tmpl')}}",
+			"{{absurl(request,'./curroptionsissue.tmpl')}}"
+			],
+			{},
+			$('#ic_tr'),
+			'replace',
+			function(e){}
+		);
+		remoteWidgets([
+			"{{absurl(request,'./term.tmpl')}}"
+			],
+			{},
+			$('#ic_bl'),
+			'replace',
+			function(e){}
+		);
+
+		remoteWidgets([		
+			"{{absurl(request,'./rating.tmpl')}}"
+			],
+			{},
+			$('#ic_bc'),
+			'replace',
+			function(e){}
+		);
+
+		remoteWidgets([
+			"{{absurl(request,'./eventInfect.tmpl')}}"
+			],
+			{},
+			$('#ic_br'),
+			'replace',
+			function(e){}
+		);
+		remoteWidgets([
+			"{{absurl(request,'./dm.tmpl')}}"
+			],
+			{},
+			$('#ic_tl'),
+			'replace',
+			function(e){}
+		);
+});
+</script>

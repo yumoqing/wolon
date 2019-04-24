@@ -1,0 +1,495 @@
+{
+    "__ctmpl__": "jsoneditor",
+    "data": {
+        "__jename__": "jsoneditor",
+        "roottype": "jeroot",
+        "rootname": "__widget_description__",
+        "includemeta": true,
+        "registerTypes": [
+            {
+                "datatype": "jeroot",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "__ctmpl__",
+                        "datatype": "str",
+                        "defaultvalue": "jsoneditor",
+                        "readonly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "data",
+                        "registed": true,
+                        "datatype": "widgetdesc",
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "datatype": "widgetdesc",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "roottype",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "rootname",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "_jename__",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "includemeta",
+                        "datatype": "bool",
+                        "required": true,
+                        "defaultvalue": true
+                    },
+                    {
+                        "name": "registerTypes",
+                        "datatype": "registerTypes",
+                        "registed": true,
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "datatype": "registerTypes",
+                "basetype": "ARRAY",
+                "allowedTypes": [
+                    "ARRAYExt",
+                    "OBJECTExt"
+                ]
+            },
+            {
+                "datatype": "ARRAYExt",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "basetype",
+                        "datatype": "str",
+                        "required": true,
+                        "readonly": true,
+                        "defaultvalue": "ARRAY"
+                    },
+                    {
+                        "name": "allowedTypes",
+                        "datatype": "allowedTypes",
+                        "registed": true,
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "datatype": "allowedTypes",
+                "basetype": "ARRAY",
+                "allowedTypes": [
+                    "str"
+                ]
+            },
+            {
+                "datatype": "OBJECTExt",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "basetype",
+                        "datatype": "str",
+                        "required": true,
+                        "defaultvalue": "OBJECT"
+                    },
+                    {
+                        "name": "allowNewAttributes",
+                        "datatype": "bool",
+                        "defaultvalue": false
+                    },
+                    {
+                        "name": "fields",
+                        "datatype": "fieldstype",
+                        "registed": true,
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "datatype": "registedType",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "defaultvalue": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "registed",
+                        "datatype": "bool",
+						"defaultvalue": true,
+						"readonly":true,
+                        "required": true
+                    },
+                    {
+                        "name": "required",
+                        "datatype": "bool",
+						"defaultvalue": true,
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "datatype": "strtype",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "defaultvalue": "str",
+                        "readonly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "required",
+                        "datatype": "bool",
+						"defaultvalue": true,
+                        "required": false
+                    },
+                    {
+                        "name": "readonly",
+                        "datatype": "bool",
+						"defaultvalue": true,
+                        "required": false
+                    },
+                    {
+                        "name": "defaultvalue",
+                        "datatype": "str",
+                        "required": false
+                    },
+                    {
+                        "name": "valuewidth",
+                        "datatype": "str",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "datatype": "numbertype",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "defaultvalue": "number",
+                        "readonly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "required",
+						"defaultvalue": true,
+                        "datatype": "bool",
+                        "required": false
+                    },
+                    {
+                        "name": "readonly",
+						"defaultvalue": true,
+                        "datatype": "bool",
+                        "required": false
+                    },
+                    {
+                        "name": "defaultvalue",
+                        "datatype": "str",
+                        "required": false
+                    },
+                    {
+                        "name": "valuewidth",
+                        "datatype": "str",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "datatype": "booltype",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "defaultvalue": "bool",
+                        "readonly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "readonly",
+                        "datatype": "bool",
+						"defaultvalue": true,
+                        "required": false
+                    },
+                    {
+                        "name": "defaultvalue",
+                        "datatype": "bool",
+						"defaultvalue": true,
+                        "required": false
+                    },
+                    {
+                        "name": "required",
+                        "datatype": "bool",
+						"defaultvalue": true,
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "datatype": "urltype",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "defaultvalue": "url",
+                        "readonly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "readonly",
+						"defaultvalue": true,
+                        "datatype": "bool",
+                        "required": false
+                    },
+                    {
+                        "name": "defaultvalue",
+                        "datatype": "str",
+                        "required": false
+                    },
+                    {
+                        "name": "required",
+						"defaultvalue": true,
+                        "datatype": "bool",
+                        "required": false
+                    },
+                    {
+                        "name": "valuewidth",
+                        "datatype": "str",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "datatype": "texttype",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "defaultvalue": "text",
+                        "readonly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "readonly",
+                        "datatype": "bool",
+                        "required": false
+                    },
+                    {
+                        "name": "defaultvalue",
+                        "datatype": "str",
+                        "required": false
+                    },
+                    {
+                        "name": "required",
+						"defaultvalue": true,
+                        "datatype": "bool",
+                        "required": false
+                    },
+                    {
+                        "name": "valuewidth",
+                        "datatype": "str",
+                        "required": false
+                    },
+                    {
+                        "name": "valueheight",
+                        "datatype": "bool",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "datatype": "datetype",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "defaultvalue": "date",
+                        "readonly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "required",
+						"defaultvalue": true,
+                        "datatype": "bool",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "datatype": "codetype",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "defaultvalue": "code",
+                        "readonly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "data",
+                        "datatype": "OBJECT",
+                        "required": true
+                    },
+                    {
+                        "name": "textField",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "valueField",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "required",
+						"defaultvalue": true,
+                        "datatype": "bool",
+                        "required": false
+                    },
+                    {
+                        "name": "valuewidth",
+                        "datatype": "str",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "datatype": "urlcodetype",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "datatype",
+                        "datatype": "str",
+                        "defaultvalue": "urlcode",
+                        "readonly": true,
+                        "required": true
+                    },
+                    {
+                        "name": "url",
+                        "datatype": "url",
+                        "required": true
+                    },
+                    {
+                        "name": "textField",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "valueField",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "required",
+						"defaultvalue": true,
+                        "datatype": "bool",
+                        "required": false
+                    },
+                    {
+                        "name": "valuewidth",
+                        "datatype": "str",
+                        "required": false
+                    }
+                ]
+            },
+            {
+                "datatype": "fieldstype",
+                "basetype": "ARRAY",
+                "allowedTypes": [
+                    "strtype",
+                    "urltype",
+                    "numbertype",
+                    "booltype",
+                    "texttype",
+                    "datetype",
+                    "codetype",
+                    "urlcodetype",
+                    "ARRAY",
+                    "OBJECT",
+                    "registedType",
+                    "ARRAYExt",
+                    "OBJECTExt"
+                ]
+            }
+        ]
+    }
+}

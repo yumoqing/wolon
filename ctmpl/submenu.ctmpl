@@ -1,0 +1,19 @@
+{[var i = 0;]}
+
+{[~ it.submenu :s]}
+{[var id = it.id + '_' + i.toString();]}
+{[? s == '-']}
+<div class="menu-sep"></div>
+{[??]}
+<div id="{[=id]}" data-options="{[for (var attr in s){ var a=true;]}{[?attr!='submenu']}{[=attr]}:'{[=s[attr]]}',{[?]}{[ } ]}oops:true">
+<span>{[=i18n(s.label||s.name)]}</span>
+{[? s.submenu]}
+{[var sub={id:id,submenu:s.submenu}; ]}
+<div style="width:{[=it.width||'120px']};">
+{[=tmplRender('submenu',sub)]}
+</div>
+{[?]}
+</div>
+{[?]}
+{[i ++;]}
+{[~]}

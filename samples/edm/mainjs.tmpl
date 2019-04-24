@@ -1,0 +1,51 @@
+/* mainjs.tmpl */
+
+function maintabs_url_call(d){
+	var data = d[0].data;
+	var url = data.url;
+	var name = data.id;
+	var icon = data.iconCls;
+	var ct = ClientTemplate.createNew();
+	url = ct.tmplTextRender(url,data);
+	console.log('url=',url);
+	obj_edm_maintabs.addOrSelect(name,url,icon);
+	return;
+}
+
+function newpage_url_call(d){
+	var data = d[0].data;
+	var url = data.url;
+	var ct = ClientTemplate.createNew();
+	url = ct.tmplTextRender(url,data);	
+	console.log('url=',url);
+	window.open(url);
+}
+
+function modal_url_call(d){
+	var mwindow = $('#edm_modalwindow');
+	if (mwindow.length == 0){
+		mwindow = $('<div id="edm_modalwindow"></div>');
+		mwindow.appendTo('body');
+	}
+	var data = d[0].data;
+	var url = data.url;
+	var name = data.label||data.id;
+	var icon = data.iconCls;
+	var ct = ClientTemplate.createNew();
+	url = ct.tmplTextRender(url,data);
+	mwindow.window({
+		title:name,
+		iconCls:icon,
+		width:800,
+		height:600,
+		modal:true,
+		closed:false
+	});
+	var panel = mwindow.window('body');
+	remoteWidgets([url],{},panel,'replace',showError);
+}
+
+rf = RegisterFunction.createNew();
+rf.register('maintabs_url_call',maintabs_url_call);
+rf.register('modal_url_call',modal_url_call);
+rf.register('newpage_url_call',newpage_url_call);

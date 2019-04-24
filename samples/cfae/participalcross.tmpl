@@ -1,0 +1,75 @@
+__widget_description__ = {
+	__ctmpl__:"bar",
+	data:{
+		"id":"participalcross",
+		"widgettype":"echarts",
+		"class":"chartbox",
+		"width":"500px",
+		"height":"300px",
+		"title":"参与人产品交叉分析",
+		"url":"{{absurl(request,'./participalcross.dspy')}}",
+		"charttype":"line",
+		"dimension":"catelogname",
+		"titlealign":"left",
+		"legend":{
+			left:"right"
+		},
+		"formater":"{a}<br>{b}:{c}哈哈",
+		"series":[
+			{
+				name:"无",
+				type:"bar",
+				"indicator":"noissue",
+			},{
+				name:"发一",
+				type:"bar",
+				"indicator":"nocross",
+			},{
+				name:"发二",
+				type:"bar",
+				"indicator":"cross1",
+			},{
+				name:"发三",
+				type:"bar",
+				"indicator":"cross2",
+			}
+
+		],
+		options:{
+			tooltip: {
+				trigger:'item',
+				formatter:"{a}<br>{b}:{c}",
+				oops:null
+			},
+			grid:{
+				x:'100px'
+			}
+		},	
+		contextmenu:[
+			{
+				type:"issuer",
+				identifier:"function(node){return node.catelogname=='融资人';}",
+				submenu:
+				[
+					{
+						label:"融资人融资情况",
+						registerfunction:"showIsserIssueProfile",
+						name:"issuerissueprofile"
+					}
+				]
+			},{
+				type:"broker",
+				identifier:"function(node){return node.catelogname=='主承人';}",
+				submenu:
+				[
+					{
+						label:"主承人承销情况",
+						registerfunction:"showIsserIssueProfile",
+						name:"issuerissueprofile"
+					}
+				]
+			}
+		]
+	}
+
+}

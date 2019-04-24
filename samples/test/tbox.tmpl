@@ -1,0 +1,23 @@
+{% include "header.tmpl" %}
+<div style="width:100%">
+<input id="cnt" name="cnt" type="text" onchange="javascript:build()" />
+</div>
+<div id="main" style="width:100%;height:500px"></div>
+<script>
+build=function(){
+	debug('cnt obj=',$('#cnt'));
+	var cnt =  $('#cnt').val();
+	$('#main').empty();
+	for(var i=0;i<parseInt(cnt);i++){
+		var obj = createbox(i);
+		obj.appendTo('#main');
+	}
+};
+
+createbox = function(i){
+	var o = $('<div class="tbox" style="width:150px;height:150px;background:#F10000">box no. ' + i + '</div>');
+	return o;
+}
+
+</script>
+{% include "footer.tmpl" %}

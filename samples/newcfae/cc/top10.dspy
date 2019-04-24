@@ -1,0 +1,50 @@
+def f(x):
+	return x['amount']	
+	
+brokers=[
+'中国建设银行股份有限公司',
+'兴业银行股份有限公司',
+'上海浦东发展银行股份有限公司',
+'中信银行股份有限公司',
+'民生银行股份有限公司',
+'国家开发银行股份有限公司',
+'北京银行股份有限公司',
+'招商银行股份有限公司',
+'交通银行股份有限公司',
+'中国银行股份有限公司',
+'中国工商银行股份有限公司',
+'中国农业银行股份有限公司',
+'重庆银行股份有限公司',
+'山东银行股份有限公司',
+'恒丰银行股份有限公司',
+'杭州银行股份有限公司',
+'南昌银行股份有限公司',
+'天津银行股份有限公司',
+'光大银行股份有限公司',
+'广发银行股份有限公司',
+]
+
+cnt = len(brokers)
+
+b10 = []
+for i in range(10):
+	k = random.randint(0,cnt-1)
+	while brokers[k] in b10:
+		k = random.randint(0,cnt-1)
+	b10.append(brokers[k])
+
+data=[]
+for i in range(10):
+	data.append({
+		'id':i,
+		'broker':b10[i],
+		'amount':float(random.randint(10000,100000))/100,
+		'flag':random.randint(0,2) - 1
+	})
+d = sorted(data,key=f)
+for i in range(10):
+	d[i].update({'id':i+1})
+if d[0]['flag'] == -1:
+	d[0].update({'flag':0})
+
+return d

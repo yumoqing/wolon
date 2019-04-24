@@ -1,0 +1,41 @@
+return [{
+    "id":"startMenu1",
+    "text":"站长素材官方网址",
+    "href":"http://sc.chinaz.com/?",
+    "children":[{
+	    "id":"startMenu1-1",
+	    "text":"新浪微博",
+	    "href":"http://sc.chinaz.com/?",
+	    "iconCls":"icon-ok"
+    },
+	{
+	    "id":"startMenu1-2",
+	    "text":"腾讯微博",
+	    "href":"http://sc.chinaz.com/?",
+	    "iconCls":"icon-ok"
+    }],
+	"iconCls":"icon-ok"
+},{
+    "id":"startMenu2",
+    "text":"网页素材",
+    "href":"http://sc.chinaz.com/?material/",
+	"children":[{
+	    "id":"startMenu2-1",
+	    "text":"设计分享",
+	    "href":"http://sc.chinaz.com/?share/",
+	    "iconCls":"icon-ok"
+    },
+	{
+	    "id":"startMenu2-2",
+	    "text":"网页特效",
+	    "href":"http://sc.chinaz.com/?effects/",
+	    "iconCls":"icon-ok"
+    }],
+    "iconCls":"icon-ok"
+},
+{
+    "id":"startMenu3",
+    "text":"访问官网",
+    "href":"http://sc.chinaz.com/?",
+    "iconCls":"icon-ok"
+},"-"]

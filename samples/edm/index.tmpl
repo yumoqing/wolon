@@ -1,0 +1,6 @@
+{% include "header.tmpl" %}
+<script src="{{absurl(request,'./mainjs.tmpl')}}" ></script>
+<script>
+remoteWidget('./mainlayout.tmpl',{},$('body'),'replace',showError);
+</script>
+{% include "footer.tmpl" %}

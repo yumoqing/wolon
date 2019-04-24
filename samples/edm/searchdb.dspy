@@ -1,0 +1,51 @@
+# search_db_schema.dspy
+
+def exists(str,sub):
+	l = len(sub)
+	l1 = len(str)
+	k = [ str[i:i+l] if i+l<=l1 else '' for i in range(l1) ]
+	return sub in k
+
+def searchdb(db,word):
+	ret = []
+	sqlor = getSqlor(db)
+	try:
+		tables = sqlor.tables()
+		for t in tables:
+			#print('t.title=',t.title,'name=',t.name)
+			if exists(t.title,word) or exists(t.name,word):
+				ret.append('%s:%s' % (db,t.name))
+	finally:
+		closeSqlor(db,sqlor)
+	r = searchtable(db,word)
+	ret += r
+	return ret
+
+def searchtable(db,word):
+	ret = []
+	sqlor = getSqlor(db)
+	try:
+		fields = sqlor.fields()
+		for f in fields:
+			if exists(f.title,word) or exists(f.name,word):
+				ret.append("%s:%s:%s" % (db,f.table_name,f.name))
+	finally:
+		closeSqlor(db,sqlor)
+	return ret
+	
+db = request.args.get('db',[None])[0]
+word = request.args.get('word',[None])[0]
+print('word=',word)
+ret = []
+if word == None:
+	return ret
+	
+if db==None:
+	for db in databases.keys():
+		ret += searchdb(db,word)
+else:
+	ret += searchdb(db,word)
+
+ret.sort()
+return ret
+

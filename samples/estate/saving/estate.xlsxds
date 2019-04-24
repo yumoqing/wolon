@@ -1,0 +1,8 @@
+{
+	"xlsxfile":"./estate.xlsx",
+	"data_sheet":"Sheet1",
+	"label_at":1,
+	"ioattr_at":2,
+	"inputhide_at":3,
+	"data_from":4
+}

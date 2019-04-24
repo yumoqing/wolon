@@ -1,0 +1,494 @@
+/*
+{
+	id:
+	idField:
+	url:
+	fields:[
+	]
+}
+*/
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+<div id="{[=it.id]}_c" style="width:{[=it.width||'100%']};height:{[=it.height||'100%']}" class="{[=it.class||'lbox']}">
+<div id="{[=it.id]}_popup"></div>
+<div id="{[=it.id]}" ></div>
+</div>
+<script>
+obj_{[=it.id]} = {
+	codes:{},
+	fields:{[=dump(it.fields)]},
+	{[? it.toolbar]}
+	onToolClick:function(data){
+		var action = data.action;
+		if (action=='#' || action == '*'){
+			action = data.org_action;
+		}
+		
+		var rows = $('#{[=it.id]}').datagrid('getChecked');
+		if (action == 'add'){
+			return obj_{[=it.id]}.add();
+		}
+		if (action == 'delete'){
+			return obj_{[=it.id]}.delete();
+		}
+		if (action == 'edit'){
+			return obj_{[=it.id]}.edit();
+		}
+		if (action == 'filter'){
+			return obj_{[=it.id]}.filter();
+		}
+		if (action == 'save'){
+			return obj_{[=it.id]}.save();
+		}
+		if (action == 'undo'){
+			return obj_{[=it.id]}.undo();
+		}
+		var mc=WidgetCalls.createNew();
+		mc.execute('{[=it.id]}',action,rows,null);
+	},
+	filter:function(){
+		var d = {
+			"id":'{[=it.id]}' + '_form',
+			"toolposition":"bottom",
+			"fields":obj_{[=it.id]}.fields,
+			"toolbar":{
+				"tools":[
+					{
+						"name":"submit",
+						"icon":"icon-filter"
+					},
+					{
+						"name":"clear"
+					}
+				]
+			}
+		};
+		$('#{[=it.id]}_popup').window({
+			title:'{[=i18n('filter')]}',
+			iconCls:'icon-filter',
+			width:600,
+			height:400,
+			modal:true,
+			shadow:true,
+			minimizable:false,
+			closed:false,
+		});
+
+		$('#{[=it.id]}_popup').html(tmplRender('form',d));
+		$.parser.parse($('#{[=it.id]}_popup'));
+		var mc = WidgetCalls.createNew();
+		mc.init('{[=it.id]}_form');
+		mc.add('{[=it.id]}_form','submit',obj_{[=it.id]}.dataFilter);
+	},
+	dataFilter:function(data){
+		$('#{[=it.id]}_popup').window('close');
+		$('#{[=it.id]}').datagrid('load', data);
+	},
+	search:function(){
+		var d={};
+		d = eval('obj_' + '{[=it.id]}' + 'filter_form.getValue()');
+		this.$filter_win.window('close');
+		obj_{[=it.id]}.setValue(d);
+	},
+	add : function () {
+		var d = {
+			"id":'{[=it.id]}' + '_form',
+			"fields":obj_{[=it.id]}.fields,
+			"toolbar":{
+				"tools":[
+					{
+						"name":"submit",
+						"icon":"icon-save",
+						"label":"save"
+					},
+					{
+							"name":"clear",
+							"icon":"icon-clear",
+							"label":"clear"
+					}
+				]
+			}
+		};
+		$('#{[=it.id]}_popup').window({
+			title:'{[=i18n('add a new record')]}',
+			iconCls:'icon-add',
+			width:600,
+			height:400,
+			modal:true,
+			shadow:true,
+			minimizable:false,
+			closed:false,
+		});
+		console.log('input data=',d);
+		$('#{[=it.id]}_popup').html(tmplRender('form',d));
+		$.parser.parse($('#{[=it.id]}_popup'));
+		var mc = WidgetCalls.createNew();
+		mc.init('{[=it.id]}_form');
+		mc.add('{[=it.id]}_form','submit',obj_{[=it.id]}.dataAdd);
+	},
+	dataAdd:function(data){
+		$('#{[=it.id]}_popup').window('close');
+		$.ajax({
+			type : 'POST',
+			url : '{[=it.appendURL]}',
+			data : data,
+			beforeSend : function () {
+				$('#{[=it.id]}').datagrid('loading');
+			},
+			success : function (data) {
+				if (data) {
+					$('#{[=it.id]}').datagrid('loaded');
+					$('#{[=it.id]}').datagrid('reload');
+					$('#{[=it.id]}').datagrid('unselectAll');
+					$.messager.show({
+						title : '{[=i18n('hint')]}',
+						msg : data + ' records added',
+					});
+				}
+			},
+		});			
+	},
+	edit : function () {
+		var rows = $('#{[=it.id]}').datagrid('getSelections');
+		if (rows.length == 1) {
+			var d = {
+				"id":'{[=it.id]}' + '_form',
+				"fields":obj_{[=it.id]}.fields.concat([{name:'_row_id',iotype:'hidden'}]),
+				"toolbar":{
+					"tools":[
+						{
+							"name":"submit",
+							"icon":"icon-save",
+							"label":"update"
+						},
+						{
+							"name":"clear",
+							"icon":"icon-clear",
+							"label":"clear"
+						}
+					]
+				}
+			};
+			$('#{[=it.id]}_popup').window({
+				title:'{[=i18n('update a new record')]}',
+				iconCls:'icon-edit',
+				width:600,
+				height:400,
+				modal:true,
+				shadow:true,
+				minimizable:false,
+				closed:false,
+			});
+			console.log('input data=',d);
+			$('#{[=it.id]}_popup').html(tmplRender('form',d));
+			$.parser.parse($('#{[=it.id]}_popup'));
+			obj_{[=it.id]}_form.setValue(rows[0]);
+			var mc = WidgetCalls.createNew();
+			mc.init('{[=it.id]}_form');
+			mc.add('{[=it.id]}_form','submit',obj_{[=it.id]}.dataUpdate);
+		} else {
+			$.messager.alert("{[=i18n('warnning')]}", "{[=i18n('Must ONLY select one row!')]}", 'warning');
+		}
+	},
+	dataUpdate(data){
+		$('#{[=it.id]}_popup').window('close');
+		var rows = $('#{[=it.id]}').datagrid('getSelections');
+		if (rows.length == 1) {
+			$.ajax({
+				type : 'POST',
+				url : '{[=it.updateURL]}',
+				data : data,
+				beforeSend : function () {
+					$('#{[=it.id]}').datagrid('loading');
+				},
+				success : function (data) {
+					if (data) {
+						$('#{[=it.id]}').datagrid('loaded');
+						$('#{[=it.id]}').datagrid('reload');
+						$('#{[=it.id]}').datagrid('unselectAll');
+						$.messager.show({
+							title : '{[=i18n('hint')]}',
+							msg : data + ' records updated',
+						});
+					}
+				},
+			});			
+		}
+	},
+	delete : function () {
+		var rows = $('#{[=it.id]}').datagrid('getSelections');
+		if (rows.length > 0) {
+			$.messager.confirm('{[=i18n('confirm')]}', '{[=i18n('Are you sure to delete selected rows?')]}', function (flag) {
+				if (flag) {
+					var rowdatas = [];
+					for (var i = 0; i < rows.length; i ++) {
+						rowdatas.push(rows[i]);
+					}
+					$.ajax({
+						type : 'POST',
+						url : '{[=it.deleteURL]}',
+						data : rows[0],
+						beforeSend : function () {
+							$('#{[=it.id]}').datagrid('loading');
+						},
+						success : function (data) {
+							if (data) {
+								$('#{[=it.id]}').datagrid('loaded');
+								$('#{[=it.id]}').datagrid('reload');
+								$('#{[=it.id]}').datagrid('unselectAll');
+								$.messager.show({
+									title : '{[=i18n('hint')]}',
+									msg : data + "{[=i18n('records deleted!')]}",
+								});
+							}
+						},
+					});
+				}
+			});
+		} else {
+			$.messager.alert('{[=i18n('hint')]}', '{[=i18n('please select rows to delete')]}', 'info');
+		}
+	},
+	{[?]}
+	setValue:function(d){
+		$('#{[=it.id]}').datagrid('load', d);
+	}
+	
+};
+
+{[?it.toolbar]}
+	var tbopts = {[=dump(it.toolbar)]};
+	tbopts.id = '{[=it.id]}_tb';
+	var d = tmplRender('toolbar',tbopts);
+	$(d).appendTo($('#{[=it.id]}_c'));
+	var mc = WidgetCalls.createNew();
+	mc.init('{[=it.id]}_tb');
+	{[~ it.toolbar.tools :t]}
+	mc.add('{[=it.id]}_tb','{[=t.name]}',obj_{[=it.id]}.onToolClick);
+	{[~]}
+{[?]}
+
+
+{[~ it.fields :f]}
+{[? f.iotype == 'urlcodes']}
+$.holdReady(true);
+{[?]}
+{[~]}
+{[~ it.fields :f]}
+	{[?f.iotype == 'codes']}
+obj_{[=it.id]}.codes['{[=f.name]}'] = {[=dump(f.data)]};
+	{[?? f.iotype== 'urlcodes' ]}
+remoteJson('{[=f.url]}',function(d){
+	obj_{[=it.id]}.codes['{[=f.name]}'] = d;
+	$.holdReady(false);
+	});
+	{[?]}
+{[~]}
+
+$(function(){
+	var fields = [
+{[ var fieldcnt= 0;]}
+{[?it.checkbox]}
+	{[='{']}
+		field:'ck',
+		checkbox:true
+	{[='}']}
+	{[ fieldcnt++; ]}
+{[?]}
+{[~ it.fields :f]}
+	{[?fieldcnt>0]}
+	{[= ',{' ]}
+	{[??]}
+	{[= '{' ]}
+	{[?]}
+	{[ fieldcnt ++;]}
+	{[ f = objExt(f,MetaData.get(f.name)); ]}
+	title:'{[=i18n(f.label||f.name)]}',
+	field:'{[=f.name]}',
+	width:{[=f.width||100]},
+	{[?f.align]}align:'{[=f.align]}',{[?]}
+	{[?f.hidden]}hidden:true,{[?]}
+	{[? f.formater]}
+	formater:{[=f.formater]},
+	{[?? f.iotype=='codes']}
+	formatter:function(value,row,index){
+		try
+		{
+			var codes = obj_{[=it.id]}.codes['{[=f.name]}'];
+			for (var i=0;i<codes.length;i++)
+			{
+				if (codes[i].value == value) return codes[i].label;
+			}
+			return value;
+
+		}
+		catch(e)
+		{
+			console.log("error",e);
+			return value;
+		};
+
+	},
+	{[?? f.iotype=='urlcodes']}
+	formatter:function(value,row,index){
+		try
+		{
+			var codes = obj_{[=it.id]}.codes['{[=f.name]}'];
+			for (var i=0;i< codes.length;i++)
+			{
+				if (codes[i]['{[=f.valueField]}'] == value) return codes[i]['{[=f.textField]}'];
+			}
+			return value;
+
+		}
+		catch(e)
+		{
+			console.log("error",e);
+			return value;
+		};
+
+	},
+	{[?]}
+	
+	{[? (it.idField && f.name != it.idField) || (isNull(it.idField) && f.name != it.fields[0].name) ]}
+	editor:{
+	{[? f.iotype == 'date']}
+		type:'datebox',
+		options:{
+		}
+	{[?? f.iotype == 'datetime']}
+		type:"datetime",
+		options:{
+		}
+	},
+	{[?? f.iotype == 'codes']}
+		type:"combobox",
+		options:{
+		valueField: 'value',
+		textField: 'label',
+		data:obj_{[=it.id]}.codes['{[=f.name]}']
+		}
+	{[?? f.iotype == 'urlcodes']}
+		type:"combobox",
+		options:{
+			oops:false,
+			valueField: '{[=f.valueField]}',
+			textField: '{[=f.textField]}',
+			url:'{[=f.url]}'
+		}
+	{[?? ]}
+		type:"textbox",
+		options:{
+		}
+
+	{[?]}
+	},	
+	{[?]}
+	oops:true
+	{[='}']}
+{[~]}
+	];
+	var opts = objExt(
+		{	/* 缺省 */
+			height:'100%',
+			fitColumns:false,
+			fit:false,
+			rownumbers : true,
+			striped : true,
+			nowrap : true,
+			singleSelect:true,
+			pageSize:80,
+			url:'default.url',
+			columns:[fields],
+			loadFilter: function(data){
+				if (data.d){
+					return data.d;
+				} else {
+					return data;
+				}
+			},
+			/*
+			onRowContextMenu : function(e,index,row) {
+				var mc = WidgetCalls.createNew();
+				var d = {'index':index,'row':row,event:e};
+				mc.execute('{[=it.id]}','onRowContextMenu',d,null);
+			},
+			*/
+			onClickRow:function(index,row) {
+				var mc = WidgetCalls.createNew();
+				var d = {'index':index,'row':row};
+				mc.execute('{[=it.id]}','onClickRow',d,null);
+			},
+			onClickCell : function(index,field,value) {
+				var mc = WidgetCalls.createNew();
+				var d = {'index':index,'field':field,'value':value};
+				mc.execute('{[=it.id]}','onClickCell',d,null);
+			},
+			onSelect : function(index,row){
+				var mc = WidgetCalls.createNew();
+				var d = {
+						'index':index,
+						'row':row
+				};
+				mc.execute('{[=it.id]}','onSelect',d,null);
+			},
+			onDblClickRow : function (index, row) {
+				var mc = WidgetCalls.createNew();
+				var d = {
+					'index':index,
+					'row':row
+				};
+				mc.execute('{[=it.id]}','onDblClickRow',d,null);
+			},
+			onDblClickCell: function(index,field,value){
+				var mc = WidgetCalls.createNew();
+				var d = {'index':index,'field':field,'value':value
+				};
+				mc.execute('{[=it.id]}','onDblClickCell',d,null);
+			},
+			onLoadSuccess:function(data){
+				{[?it.dnd]}$('#{[=it.id]}').datagrid('enableDnd');{[?]}
+			},
+			{[? it.checkbox]}
+			onCheck:function(index,row){
+				var mc = WidgetCalls.createNew();
+				var d = {'index':index,'row':row};
+				mc.execute('{[=it.id]}','onCheck',d,null);
+				return true;
+			},
+			{[?]}
+			onBeforeDrop:function(target,source,point){
+				return {[? it.dropdeny===1]}false{[??]}true{[?]};
+			},
+			onBeforeDrag:function(node){
+				return {[? it.dragdeny===1 ]}false{[??]}true{[?]};
+			}
+		},
+		{[?it.options]}{[=dump(it.options)]},{[?]}
+		{
+			url: '{[=it.url]}',
+{[?it.view]}
+			view:{[=it.view]},
+{[?]}
+{[?it.toolbar]}
+			toolbar:'#{[=it.id]}_tb',
+{[?]}
+			title:'{[=it.title]}',
+			iconCls:'{[=it.icon]}',
+			{[?!it.idField]}
+			idField:'{[=it.idField||it.fields[0]['name']]}',
+			{[?]}
+			opps:false
+		}	
+	);
+{[? it.contextmenu]}
+{[=tmplRender('contextmenu',it)]}
+{[?]}
+	debug(opts);
+	$('#{[=it.id]}').datagrid(opts);
+	debug('datagrid, get options=',$('#{[=it.id]}').datagrid('options'));
+	widgetCreated('datagrid','{[=it.id]}');
+
+});
+</script>

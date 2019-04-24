@@ -1,0 +1,24 @@
+__widget_desctription__ = {
+	__ctmpl__:'line',
+	data:{
+		"id":"termissueamount",
+		"widgettype":"echarts",
+		"class":"chartbox",
+		"width":"500px",
+		"height":"300px",
+		"title":"期限(元)",
+		"url":"{{absurl(request,'./protypeissueamount.dspy?groupname1=term')}}",
+		"dimension":"term",
+		"series":[
+			{
+				name:"发行额",
+				"indicator":"issueamount",
+			}
+		],
+		options:{
+			grid:{
+				x:'100px'
+			}
+		}
+	}
+}

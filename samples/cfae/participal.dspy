@@ -1,0 +1,50 @@
+# participal.dspy
+
+r = curDatetime()
+defdate='%4d-%02d-%02d' %(r.year,r.month,r.day)
+print(r,defdate)
+
+@runSQLIterator
+def sql(dbname,ns):
+	desc={
+	"sql_string":"""
+	select catelogname,
+		sum(total_cnt) as total_cnt,
+		sum(year_cnt) as year_cnt,
+		sum(month_cnt) as month_cnt,
+		sum(day_cnt) as day_cnt
+		from (
+	select catelogname,count(1) as total_cnt,0 as year_cnt,0 as month_cnt,0 as day_cnt from participals
+group by catelogname
+union
+select catelogname,0 as total_cnt,cnt as year_cnt,0 as month_cnt,0 as day_cnt from (
+select N'本年' as stype,a.catelogname,b.year_value,count(1) as cnt from participals a,datedimension b
+where a.start_date = b.odate
+	and b.year_value =  (select year_value from datedimension where odate=${b_date}$)
+group by a.catelogname,b.year_value 
+) a
+union
+select catelogname,0 as total_cnt,0 as year_cnt,cnt as month_cnt,0 as day_cnt from (
+select N'本月' as stype,a.catelogname,b.month_id,count(1) as cnt from participals a,datedimension b
+where a.start_date = b.odate
+	and b.month_id =  (select month_id from datedimension where odate=${b_date}$)
+group by a.catelogname,b.month_id
+) a
+union
+select catelogname,0 as total_cnt,0 as year_cnt,0 as month_cnt,cnt as day_cnt  from (
+select N'本日' as stype,a.catelogname,a.start_date,count(1) as cnt from participals a
+where a.start_date =  ${b_date}$
+group by a.catelogname,a.start_date
+) a
+) b
+group by catelogname
+
+"""
+	}
+	return desc
+ns={
+	'b_date':request.args.get('bzdate',[defdate])[0]
+}
+
+r = [ i for i in sql('cfae',ns) ]
+return r

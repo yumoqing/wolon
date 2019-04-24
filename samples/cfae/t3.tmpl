@@ -1,0 +1,55 @@
+{% include "header.tmpl" %}
+
+<script>
+
+var v1 = {
+	series:[
+		{
+			m:[1,2,3,4,5,7],
+			left:'right'
+		},{
+			m:[1,2,3,4,5,7],
+			left:'right'		
+		}
+	],
+	back:100,
+	k10:{
+		x:100,
+		y:50
+	},	
+	layout:{
+		d:12,
+		y:0
+	}
+
+};
+var v2 = {
+	series:[
+		{
+			data:[1,2,3,4,5,7],
+			left:'center'
+		},{
+			data:[4,5,6,7,8,9],
+			left:'left'
+		}
+	],
+	layout:{
+		x:100,
+		y:50
+	}
+
+};
+/*
+console.log(Object.prototype.toString.apply([]),'[]');
+console.log(Object.prototype.toString.apply({}),'{}');
+console.log(Object.prototype.toString.apply('ee'),'"fef"');
+console.log(Object.prototype.toString.apply(12),'12');
+*/
+console.log('v1=',v1,'v2=',v2,objExt(v1,v2));
+</script>
+<!--
+
+<script>
+</script>
+-->
+{% include "footer.tmpl" %}

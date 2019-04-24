@@ -1,0 +1,102 @@
+
+	<div id="search_input_container" style="width:100%;padding-top:4px;display:inline-block">
+		<input id="edm_searchbox" class="easyui-textbox" style="width:100%" data-options="icons: [{
+			iconCls:'icon-clear',
+			handler: function(e){
+				$(e.data.target).textbox('clear');
+			}
+			}]">
+	</div>
+	<div id="search_result_container" style="width:100%;padding-top:4px;display:none">
+		<a href="#" 
+			class="easyui-linkbutton" 
+			data-options="iconCls:'icon-uparrow'" 
+			onclick="select_previous()" ></a>
+		<a href="#" 
+			class="easyui-linkbutton" 
+			data-options="iconCls:'icon-downarrow'" 
+			onclick="select_next()" ></a>
+		<a href="#" 
+			class="easyui-linkbutton" 
+			data-options="iconCls:'icon-clear'" 
+			onclick="show_input()" ></a>
+	</div>
+<script>
+var activeWidget=null;
+var searchResults = [];
+var curpos = 0;
+
+var old_onExpand = null;
+
+var x=$('#search_input_container');
+x.keydown(function(e){
+	if (e.keyCode == 13) {
+	   dosearch();
+	}
+});
+
+var show_input=function(){
+	$('#search_result_container').css('display','none');
+	$('#search_input_container').css('display','inline-block');
+
+};
+
+var showResultNode=function(){
+	if (searchResults.length==0) {
+		console.log('search result is null');
+		return;
+	}
+	var parts = searchResults[curpos].split(':');
+	var ids = []
+	var id='';
+	for (i=0;i<parts.length;i++){
+		if (i>0) id = id + ':';
+		id += parts[i];
+		ids.push(id);
+	}
+	showTreeNodeById(activeWidget,ids);
+};
+
+var select_previous=function(){
+	if (curpos == 0) return;
+	curpos --;
+	showResultNode();
+};
+
+var select_next=function(){
+	if (curpos >= searchResults.length-1) return;
+	curpos ++;
+	showResultNode();
+};
+
+var dosearch = function(){
+	var jq = $('#edm_searchbox');
+	var v = jq.textbox('getValue');
+	var tab = $('#edm_lefttabs').tabs('getSelected');
+	var index = $('#edm_lefttabs').tabs('getTabIndex',tab);
+	if (index==0){
+		activeWidget = $('#dbtree');
+		var node = $('#dbtree').tree('getSelected');
+		var params = {
+			word:v
+		};
+		if (node){
+			params.db = node.id.split(':')[0];
+		}
+		remoteCall("{{absurl(request,'./searchdb.dspy')}}",
+			'GET','json',params,function(d){
+				searchResults = d;
+				curpos = 0;
+				if (searchResults.length==0){
+					$.messager.alert('info','('+v+') not found');
+				} else {
+					showResultNode();
+					$('#search_result_container').css('display','inline-block');
+					$('#search_input_container').css('display','none');
+				}
+				
+			},showError);
+	}
+}
+
+</script>

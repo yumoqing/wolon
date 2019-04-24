@@ -1,0 +1,8 @@
+print("request.args=",request.args)
+
+soid = request.args.get('soid',[None])[0]
+if soid is not None:
+	player.orderList.delete(soid)
+	return {'status':'OK'}
+else:
+	return {'status':'error'}

@@ -1,0 +1,54 @@
+<div id="userRegister" width="400px" height="100%">
+
+</div>
+<script>
+var d = {
+	title:"用户注册",
+	description:"用户注册服务",
+	unitwidth:300,
+	labelwidth:100,
+	toolbar_position:"south",
+	fields:[
+		{
+			name:"userid",
+			iotype:"str",
+			label:"注册名"
+		},
+		{
+			name:"username",
+			iotype:"str",
+			label:"用户名"
+		},
+		{
+			name:"passwd",
+			iotype:"password",
+			label:"用户密码"
+		},
+		{
+			name:"confirm_pwd",
+			iotype:"password",
+			label:"确认密码"
+		}
+	],
+	toolbar:{
+		tools:[
+			{
+				img_url:"/easyui/themes/icons/filesave.png",
+				name:"register",
+				label:"注册",
+				handler:function(e){
+					var target=this;
+					var ds = $(target).parents('.datasheet');
+					var d = ds.datasheet('getValue');
+					$('#modalWindow').window('close');
+					
+				}
+			}
+		]
+	}
+};
+$(function(){
+	$('#userRegister').datasheet(d);
+});
+
+</script>

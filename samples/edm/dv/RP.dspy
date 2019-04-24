@@ -1,0 +1,19 @@
+id=request.args.get('id',[None])[0]
+rows=int(request.args.get('rows',['60'])[0])
+page=int(request.args.get('page',['1'])[0])
+if page<1:
+	page = 1
+print('args=',request.args)
+ns = {
+	'page':page,
+	'rows':rows
+}
+[ns.update({k:request.args.get(k)[0]}) for k in request.args if request.args.get(k)[0] is not '' ]
+dbname,tablename = id.split(':')
+crud = CRUD(dbname)
+ret = crud.RP(tablename,NS=ns)
+#f = open('d:/mydocs/python/codes/3rdEye/wwwroot/dv/lastdata.json','w')
+#f.write(json.dumps(ret))
+#f.close()
+print('total=',ret['total'])
+return ret

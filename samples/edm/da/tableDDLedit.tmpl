@@ -1,0 +1,25 @@
+{
+	__ctmpl__:"tabs",
+	data:{
+        "items":[
+            {
+                "title":"基本信息",
+				"remoteWidgets":[
+					"{{absurl(request,'./baseinfo.tmpl?db=')}}{{request.args.get('dbname')[0]}}"
+				],
+                "closable":false
+            },
+            {
+                "title":"字段",
+                "closable":false
+            },
+            {
+                "title":"约束",
+				"remoteWidgets":[
+					"{{absurl(request,'./contraint.tmpl?db=')}}{{request.args.get('dbname')[0]}}"
+				],
+                "closable":false
+            }
+        ]
+	}
+}

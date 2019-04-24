@@ -1,0 +1,42 @@
+{% include "header.tmpl" %}
+<link rel="stylesheet" type="text/css" href="./newcfae.css" />
+<script>
+
+remoteWidgets([
+		"./tabs.tmpl"
+	],
+	{},
+	$('body'),
+	'replace',
+	function(){}
+);
+$.parser.parse($('body'));
+
+var	refreshs=[
+	[
+		/*
+		'curroptionsissue',
+		'currbondissue',
+		'ickpi'
+		*/
+	],
+	[
+		'rcareaissueamount'
+	],
+	[
+		'ccareaissueamount'
+	]
+];
+changeDatedim=function(d){
+	var tab = $('#cfae_tabs').tabs('getSelected');
+	var index = $('#cfae_tabs').tabs('getTabIndex',tab);
+	for (var i=0;i<refreshs[index].length;i++){
+		var js = 'obj_' + refreshs[index][i] + '.setValue({})';
+		eval(js);
+	}
+};
+
+timer = window.setInterval(changeDatedim,3000);
+
+</script>
+{% include "footer.tmpl" %}

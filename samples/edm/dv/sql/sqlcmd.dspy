@@ -1,0 +1,34 @@
+dbname = request.args.get('dbname',[None])[0]
+return {
+	"data":{
+		"__ctmpl__":"form",
+		"__target__":"$('body')",
+		"data":{
+			"widget_name":"sqlcmd",
+			"fields":[
+				{
+					"name":"dbname",
+					"iotype":"hidden",
+					"value":dbname
+				},
+				{
+					"name":"sqlbody",
+					"iotype":"textarea",
+					"width":"100%",
+					"height":"100%"
+				}
+			],
+			"toolbar":{
+				"tools":[
+					{
+						"name":"submit",
+						"label":"run"
+					},
+					{
+						"name":"clear"
+					}
+				]
+			}
+		}
+	}
+}

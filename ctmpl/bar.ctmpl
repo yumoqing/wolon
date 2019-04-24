@@ -1,0 +1,62 @@
+{[=tmplRender('echarts',it)]}
+<script>
+obj_{[=it.id]}.getValue = function(params){
+	var series = obj_{[=it.id]}.obj.getOption().series;
+	var data = {
+		event:params.event,
+		data:{
+			{[=it.dimension]}:series[params.seriesIndex].xdata[params.dataIndex]
+		}
+	};
+	data.data[series[params.seriesIndex].indicator] = 
+			series[params.seriesIndex].data[params.dataIndex];
+	return data;
+};
+
+obj_{[=it.id]}.setDataOption = function(data){
+	obj_{[=it.id]}.data = data;
+	var series = new Array();
+	var xdata = new Array();
+	var legend = new Array();
+	for (var i=0;i<data.length;i++){
+		xdata.push(data[i].{[=it.dimension]});
+	}
+	{[~ it.series :s]}
+	var dp = new Array();
+	for (var i=0;i<data.length;i++){
+		dp.push(data[i].{[=s.indicator]});
+	};
+	legend.push('{[=s.name]}');
+	series.push({
+		name:'{[=s.name]}',
+		type:'{[=s.type||'bar']}',
+		indicator:'{[=s.indicator]}',
+		data:dp,
+		xdata:xdata
+	});
+	{[~]}
+	var opts = {
+		xAxis:{
+			axisLabel:{
+				interval:0,
+				rotate:50,
+				margin:2
+			}, 		
+			data: xdata
+		},
+		legend:$.extend({
+			left:'right',
+			data:legend
+		},{[=dump(it.legend)]}),
+		yAxis:{
+			type:'value'
+		},
+		series: series
+	};
+	return opts
+};
+
+obj_{[=it.id]}.setValue({});
+
+</script>
+

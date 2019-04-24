@@ -1,0 +1,28 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc={
+		"sql_string":"""select top 20 instrument_id,avg(amplitude) avgamp from
+	(
+		select a.instrument_id,a.trade_date,a.amplitude from stock_daily_hist a , 
+		(
+			select trade_date from stock_dates a
+			where a.sd_id + ${nday}$ >= (select max(sd_id) maxid from stock_dates)
+		) b 
+		where a.trade_date = b.trade_date
+	) a 
+	group by instrument_id
+	order by avgamp desc""",
+	}
+	return desc
+	
+ns = {
+	'nday':int(request.args.get('nday',['5'])[0]),
+	"page":1,
+	"rows":20,
+	"sort":"avgamp",
+	"order":"desc",
+}
+print(ns)
+r = [ i for i in sql('fadb',ns) ]
+
+return r

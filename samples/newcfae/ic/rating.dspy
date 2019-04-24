@@ -1,0 +1,7 @@
+data=[
+{'rating':'AAA','amount':'300'},
+{'rating':'AA+','amount':'400'},
+{'rating':'AA-','amount':'100'},
+{'rating':'AA','amount':'80'},
+]
+return data

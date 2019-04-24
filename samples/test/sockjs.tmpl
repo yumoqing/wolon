@@ -1,0 +1,40 @@
+{% include "header.tmpl" %}
+<button onClick="connect()">open</button>
+<button onClick="disconnect()">close</button>
+<script>
+
+var ws = null;
+var hbflag = true;
+connect = function(){
+	ws = new WebSocket('wss://localhost:9000/'); 
+	console.log('ws=',ws);
+	heartbeet = function(){
+		if (!hbflag) return;
+		ws.send('test');
+		callLater(30,heartbeet);
+	}
+	ws.addEventListener('open',function(){
+		hbflag = true;
+		console.log('opened');
+		callLater(30,heartbeet);
+	});
+	ws.addEventListener('close',function(){
+		console.log('closed');
+		hbflag = false;
+	});
+
+	ws.addEventListener('message',function(e){
+		console.log('message',e.data);
+	});
+};
+
+
+disconnect = function(){
+	ws.close()
+};
+
+
+
+</script>
+
+{% include "footer.tmpl" %}

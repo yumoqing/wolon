@@ -1,0 +1,64 @@
+.icon-blank{
+	background:url('/imgs/blank.gif') no-repeat;
+}
+.icon-add{
+	background:url('/imgs/edit_add.png') no-repeat;
+}
+.icon-edit{
+	background:url('/imgs/pencil.png') no-repeat;
+}
+.icon-remove{
+	background:url('/imgs/edit_remove.png') no-repeat;
+}
+.icon-save{
+	background:url('/imgs/filesave.png') no-repeat;
+}
+.icon-cut{
+	background:url('/imgs/cut.png') no-repeat;
+}
+.icon-ok{
+	background:url('/imgs/ok.png') no-repeat;
+}
+.icon-no{
+	background:url('/imgs/no.png') no-repeat;
+}
+.icon-cancel{
+	background:url('/imgs/cancel.png') no-repeat;
+}
+.icon-reload{
+	background:url('/imgs/reload.png') no-repeat;
+}
+.icon-search{
+	background:url('/imgs/search.png') no-repeat;
+}
+.icon-print{
+	background:url('/imgs/print.png') no-repeat;
+}
+.icon-help{
+	background:url('/imgs/help.png') no-repeat;
+}
+.icon-undo{
+	background:url('/imgs/undo.png') no-repeat;
+}
+.icon-redo{
+	background:url('/imgs/redo.png') no-repeat;
+}
+.icon-back{
+	background:url('/imgs/back.png') no-repeat;
+}
+.icon-sum{
+	background:url('/imgs/sum.png') no-repeat;
+}
+.icon-tip{
+	background:url('/imgs/tip.png') no-repeat;
+}
+
+.icon-mini-add{
+	background:url('/imgs/mini_add.png') no-repeat 2px 2px;
+}
+.icon-mini-edit{
+	background:url('/imgs/mini_edit.png') no-repeat 2px 2px;
+}
+.icon-mini-refresh{
+	background:url('/imgs/mini_refresh.png') no-repeat 3px 2px;
+}

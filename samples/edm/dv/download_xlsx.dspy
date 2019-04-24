@@ -1,0 +1,19 @@
+args = request.args
+print('args=',args)
+id=args.get('id',[None])[0]
+ns = {
+}
+[ns.update({k:args.get(k)[0]}) for k in args if k != 'id' ]
+if id==None:
+	return {
+	
+	}
+dbname,tablename = id.split(':')
+crud = CRUD(dbname)
+ns = crud.fromStr(tablename,ns)
+fields = crud.I(tablename)
+print(fields)
+rows = crud.R(tablename,NS=ns)
+fpath = data2xlsx(rows,fields)
+name= dbname + '_' + tablename + '.xlsx'
+download(request,fpath,name)

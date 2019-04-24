@@ -1,0 +1,5 @@
+{
+	"sql":"select * from atomdata",
+	"db":"kdb",
+	"title":"atomdata",
+}

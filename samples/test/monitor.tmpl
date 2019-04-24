@@ -1,0 +1,21 @@
+{% include "header.tmpl" %}
+<script src="/myjs/monitor.js" ></script>
+<div id="ts"></div>
+<script>
+
+$(function(){
+	var d = {
+		"objtype":"file",
+		"is_atom":false,
+		"show_mode":"tiny",
+		"objid":"id001",
+		"objtitle":"the object",
+		"suburl":"getsubobj.url",
+		"url":"threestate.dspy",
+		"valuetmpl":"{[=it.vaue]}"
+	};
+	$('#ts').monitor(d);
+});
+</script>
+
+{% include "footer.tmpl" %}

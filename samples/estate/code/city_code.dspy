@@ -1,0 +1,6 @@
+desc = {
+	"data_sheet":"city",
+	"data_from":2
+}
+x = xlsxdata(abspath(absurl(request,'./code.xlsx')),desc)
+return x.getData({})

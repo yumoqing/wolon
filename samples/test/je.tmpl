@@ -1,0 +1,81 @@
+{% include "header.tmpl" %}
+<div id="je" width="100%" height="100%">
+d6d790ab-4ec5-42a0-94d7-936efb406ec1
+</div>
+<button onclick="javascript:getdata()">getdata</button>
+<script src="/myjs/jsoneditor.js"></script>
+<script>
+getdata = function(){
+	var data = $('#je').jsoneditor('getValue');
+	console.log('getValue(),data=',data);
+};
+$('#je').jsoneditor({
+	url:'./je.json',
+	registerTypes:[
+		{
+			datatype:'test',
+			basetype:'OBJECT',
+			allowNewAttributes:true,
+			fields:[
+				{
+					name:'age',
+					title:'abc',
+					required:true,
+					nodetype:'single',
+					nodetype:'keyvalue',
+					datatype:'str',
+					defaultvalue:'18'
+				},{
+					name:'name',
+					title:'名字',
+					required:true,
+					nodetype:'single',
+					nodetype:'keyvalue',
+					datatype:'str',
+					defaultvalue:'joe'			
+				},{
+					name:'note',
+					title:'说明',
+					required:true,
+					datatype:'text',
+					defaultvalue:'这是注释'			
+				},{
+					name:'options',
+					datatype:'options',
+					basetype:'OBJECT',
+					registed:true,
+					required:false,
+				}
+			],	
+		},
+		{
+			datatype:'options',
+			basetype:'OBJECT',
+			allowNewAttributes:true,
+			fields:[
+				{
+					name:'user',
+					title:'abc',
+					required:true,
+					nodetype:'single',
+					nodetype:'keyvalue',
+					datatype:'str',
+					defaultvalue:'18'
+				},{
+					name:'password',
+					title:'名字',
+					required:true,
+					nodetype:'single',
+					nodetype:'keyvalue',
+					datatype:'str',
+					defaultvalue:'joe'			
+				}
+			]
+		
+		}
+	],
+	roottype:'test',
+	rootname:'test'
+});
+</script>
+{% include "footer.tmpl" %}

@@ -1,0 +1,203 @@
+/*
+	"contextmenu":[
+		{
+			"type":"database",
+			"identifier":"function(data){return data.ttt=='aaaa';}",
+			"submenu":
+			[
+				{
+					"label":"sql script",
+					"name":"sqlscript"
+				},{
+					"label":"sql builder",
+					"name":"sqlbuilder"
+				}
+			]
+		},{
+			"type":"table",
+			"identifier":"function(data){return data.ttt=='aaaa';}",
+			"submenu":
+			[
+				{
+					"label":"view structure",
+					"name":"v_structure"
+				},{
+					"label":"view data",
+					"name":"v_data"
+				}
+			]
+		},{
+			"type":null,
+			"submenu":[]
+		}
+	],
+*/
+
+{[? it.contextmenu]}
+{[~ it.contextmenu :cm]}
+	{[?cm.submenu.length > 0]}
+		var menuopts = {
+			id:'{[=it.id]}' + '_cm_' + '{[=cm.type]}',
+			submenu:{[=dump(cm.submenu)]}
+		};
+		{[?cm.registerfunction]}
+		menuopts.registerfunction = '{[=cm.registerfunction]}';
+		{[?]}
+		var menutxt = tmplRender('menu',menuopts);
+		$(menutxt).appendTo($('body'));
+		$.parser.parse($('body'));
+	{[?]}
+{[~]}
+{[?]}
+
+{[? it.contextmenu]}
+/*
+document.getElementById('{[=it.id]}').oncontextmenu = function () { return false; }; 
+*/
+{[? it.widgettype && (it.widgettype=='tree')]}
+/* tree右键菜单 */
+
+opts.onContextMenu = function(e,node){
+	e.preventDefault();
+	var d = {
+		event:e,
+		data:{
+			id:node.id,
+			text:node.text,
+			nodetype:node.nodetype
+		}
+	};
+	var checker=new Array();
+	{[~ it.contextmenu :sm]}
+	var f={[=sm.identifier||"function(d){return true;}"]};
+	checker.push(['{[=sm.type]}',f]);
+	{[~]}
+	for (var i=0;i<checker.length;i++){
+		if (checker[i][1](node)){
+			var d = {
+				data:node,
+				event:e,
+			};
+			eval('obj_{[=it.id]}_cm_'+checker[i][0] + '.setValue(d)');
+			return;
+		}
+	}
+};
+
+{[?]}
+{[? it.widgettype && (it.widgettype=='treegrid')]}
+/* treegrid右键菜单 */
+
+/*
+var opts = $('#{[=it.id]}').treegrid('options');
+*/
+opts.onContextMenu = function(e,node){
+	e.preventDefault();
+	$(this).tree('select',node.target);
+	var d = {
+		event:e,
+		data:{
+			id:node.id,
+			text:node.text,
+			nodetype:node.nodetype
+		}
+	};
+	var checker=new Array();
+	{[~ it.contextmenu :sm]}
+	var f={[=sm.identifier||"function(d){return true;}"]};
+	checker.push(['{[=sm.type]}',f]);
+	{[~]}
+	for (var i=0;i<checker.length;i++){
+		if (checker[i][1](node)){
+			var d = {
+				data:node,
+				event:e,
+			};
+			eval('obj_{[=it.id]}_cm_'+checker[i][0] + '.setValue(d)');
+			return;
+		}
+	}
+};
+{[?]}
+
+{[? it.widgettype && it.widgettype=='datagrid']}
+/* Datagrid右键菜单 */
+opts.onRowContextMenu = function(e,index,row) {
+	e.preventDefault();
+	var checker=new Array();
+	{[~ it.contextmenu :sm]}
+	var f={[=sm.identifier||"function(d){return true;}"]};
+	checker.push(['{[=sm.type]}',f]);
+	{[~]}
+	for (var i=0;i<checker.length;i++){
+		if (checker[i][1](row)){
+			var d = {
+				data:row,
+				event:e,
+			};
+			eval('obj_{[=it.id]}_cm_'+checker[i][0] + '.setValue(d)');
+			return;
+		}
+	}
+};
+{[?]}
+
+{[? it.widgettype && it.widgettype=='echarts']}
+/* ECHARTS右键菜单 */
+/*
+parms 结构
+{
+    // 当前点击的图形元素所属的组件名称，
+    // 其值如 'series'、'markLine'、'markPoint'、'timeLine' 等。
+    componentType: string,
+    // 系列类型。值可能为：'line'、'bar'、'pie' 等。当 componentType 为 'series' 时有意义。
+    seriesType: string,
+    // 系列在传入的 option.series 中的 index。当 componentType 为 'series' 时有意义。
+    seriesIndex: number,
+    // 系列名称。当 componentType 为 'series' 时有意义。
+    seriesName: string,
+    // 数据名，类目名
+    name: string,
+    // 数据在传入的 data 数组中的 index
+    dataIndex: number,
+    // 传入的原始数据项
+    data: Object,
+    // sankey、graph 等图表同时含有 nodeData 和 edgeData 两种 data，
+    // dataType 的值会是 'node' 或者 'edge'，表示当前点击在 node 还是 edge 上。
+    // 其他大部分图表中只有一种 data，dataType 无意义。
+    dataType: string,
+    // 传入的数据值
+    value: number|Array
+    // 数据图形的颜色。当 componentType 为 'series' 时有意义。
+    color: string
+	event: 事件
+}
+*/
+obj_{[=it.id]}.onContextmenu = function(params){
+	var checker=new Array();
+	{[~ it.contextmenu :sm]}
+	var f={[=sm.identifier||"function(d){return true;}"]};
+	checker.push(['{[=sm.type]}',f]);
+	{[~]}
+	var node = obj_{[=it.id]}.getValue(params).data;
+	for (var i=0;i<checker.length;i++){
+		if (checker[i][1](node)){
+			var obj = document.getElementById('{[=it.id]}');
+			var d = {
+				data:node,
+				event:{
+					pageX:params.event.event.pageX,/*params.event.offsetX + obj.offsetLeft,*/
+					pageY:params.event.event.pageY  /*params.event.offsetY+obj.offsetTop*/
+				}
+			};
+			eval('obj_{[=it.id]}_cm_'+checker[i][0] + '.setValue(d)');
+			return;
+		}
+	}
+};
+obj_{[=it.id]}.obj.on('contextmenu',obj_{[=it.id]}.onContextmenu);
+document.getElementById('{[=it.id]}').oncontextmenu = function () { return false; }; 
+
+{[?]}
+
+{[?]}

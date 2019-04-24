@@ -1,0 +1,160 @@
+#
+
+def getUDTNodes(domain_id):
+	@runSQLIterator
+	def sql(db,ns):
+		desc = {
+			"sql_string":"select * from udt where domain_id = ${domain_id}$"
+		}
+		return desc
+	
+	ns = {'domain_id':domain_id}
+	return [
+		{
+			"id":domain_id + ":" + r.udt_id,
+			"iconCls":"icon-udt",
+			"text":r.udt_name + '[' + r.udt_title + ']',
+			"state":None,
+			"nodetype":"udt",
+		} for r in sql('metadb',ns)
+	]
+
+def getAtomNodes(domain_id):
+	@runSQLIterator
+	def sql(dbname,ns):
+		return {
+			"sql_string":"""
+				select a.* from atomdata a left join udt on a.udt_id = udt.udt_id
+				where a.domain_id = ${domain_id}$ and atomflag=${atomflag}$ """
+		}
+	ns = {
+		'domain_id':domain_id,
+		'atomflag':'1',
+	}
+	ret = [i for i in sql('metadb',ns) ]
+	#print('domain_id=',domain_id,type(domain_id),'ret=',ret)
+	return [
+		{
+			"id":domain_id + "#" + r.atomdata_id,
+			"iconCls":"icon-udt",
+			"text":r.name + '[' + r.title + ']',
+			"state":None,
+			"nodetype":"atom",	
+		} for r in ret
+	]
+
+def getComplexNodes(domain_id,udt_name):
+	@runSQLIterator
+	def sql(dbname,ns):
+		return {
+			"sql_string":"""
+				select a.*,udt.udt_id,udt.udt_name from atomdata a left join udt on a.udt_id = udt.udt_id
+				where a.domain_id = ${domain_id}$ and atomflag='0' and udt.udt_name=${udt_name}$ """
+		}
+	ns = {
+		'domain_id':domain_id,
+		'atomflag':'0',
+		'udt_name':udt_name,
+	}
+	ret = [ r for r in sql('metadb',NS=ns) ]
+	return [
+		{
+			"id":domain_id + '#' + r.udt_id + '#' + r.atomdata_id,
+			"iconCls":"icon-" + r.udt_name,
+			"text":r.name + '[' + r.title + ']',
+			"state":'closed',
+			"nodetype":r.udt_name,	
+		} for r in ret
+	]
+
+def getDataTypeList(id):
+	retdata = [
+		{
+			"id":id,
+			"iconCls":"icon-udt",
+			"text":"Data Type",
+			"state":"closed",
+			"nodetype":"udts",
+		},
+		{
+			"id":id,
+			"iconCls":"icon-atoms",
+			"text":"Atom data",
+			"state":"closed",
+			"nodetype":"atoms",
+		},
+		{
+			"id":id,
+			"iconCls":"icon-tables",
+			"text":"tables",
+			"state":"closed",
+			"nodetype":"tables",
+		},
+		{
+			"id":id,
+			"iconCls":"icon-views",
+			"text":"views",
+			"state":"closed",
+			"nodetype":"views",
+		}
+	]
+	return retdata
+
+
+def getTopNodes():
+	ret = [
+		{
+			"id":'domains',
+			"iconCls":"icon-domains",
+			"text":'数据域',
+			"state":"closed",
+			"nodetype":"domains"
+		},{
+			"id":'basetypes',
+			"iconCls":"icon-basetypes",
+			"text":'基础数据类型',
+			"state":"closed",
+			"nodetype":"basetypes"
+		}
+	]
+	return ret
+
+def getDomain(n):
+	@runSQLIterator
+	def sql(db,ns):
+		desc={
+			"sql_string":"select * from domains"
+		}
+		return desc
+	r = [{
+			"id":i.domain_id,
+			"iconCls":"icon-domain",
+			"text":i.domain_name,
+			"state":"closed",
+			"nodetype":"domain"
+		} for i in sql('metadb',{})]
+	return r;
+		
+def getTables(id):
+	return getComplexNodes(id,'table')
+
+def getViews(id):
+	return getComplexNodes(id,'view')
+
+print(request.args)		
+id = request.args.get('id',[None])[0]
+if id is None:
+	return getTopNodes()
+id,ntype = id.split('#')
+funcs={
+	'domains':getDomain,
+	'domain':getDataTypeList,
+	'tables':getTables,
+	'views':getViews,
+	'udts':getUDTNodes,
+	'atoms':getAtomNodes,
+}
+f = funcs.get(ntype,None)
+if f is None:
+	return []
+return f(id)

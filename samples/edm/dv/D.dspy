@@ -1,0 +1,15 @@
+args = request.args
+id=args.get('id',[None])[0]
+ns = {}
+print('args=',args)
+[ns.update({k:args.get(k)[0]}) for k in args if k != 'id' ]
+print('ns=',ns)
+if id==None:
+	return {
+	
+	}
+dbname,tablename = id.split(':')
+crud = CRUD(dbname)
+ns = crud.fromStr(tablename,ns)
+ret = crud.D(tablename,ns)
+return ret

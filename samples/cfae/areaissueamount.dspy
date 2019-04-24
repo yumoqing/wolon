@@ -1,0 +1,29 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc={
+		"sql_string":"""
+select 
+	a.seriename,
+	a.area,
+	b.longitude,
+	b.latitude,
+	a.issueamount
+from (
+select '$[datedim_value]$' as seriename,
+	area,
+	sum(issueamount) as issueamount
+from issuerview a
+where a.$[datedim]$ = ${datedim_value}$
+group by area
+) a left join earthlocation b
+on a.area = b.addressname
+		"""
+	}
+	return desc
+
+ns = request2ns()
+print(ns)
+ret = [ r for r in sql('cfae',ns) ]
+if len(ret)==0:
+	print("null data",request.args)
+return ret

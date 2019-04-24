@@ -1,0 +1,21 @@
+__widget_description__ = {
+	__ctmpl__:'layout',
+	data:{
+		id:'profile_left',
+		fit:true,
+		border:true,
+		regions:{
+			center:{
+				remoteWidgets:[
+					"{{absurl(request,'./datetree.tmpl')}}"
+				]
+			},
+			south:{
+				height:'240px',
+				remoteWidgets:[
+					"{{absurl(request,'./producttypeissueamount.tmpl')}}",
+				]
+			}
+		}
+	}
+}

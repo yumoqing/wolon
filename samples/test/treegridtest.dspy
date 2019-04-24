@@ -1,0 +1,56 @@
+# treegridtest.dspy
+
+request.args = uObject(request.args)
+ns = {}
+ns.update(request.args)
+print ns
+
+for k,v in ns.items():
+
+	if type(v) == type([]) and len(v) == 1:
+
+		ns[k] = v[0]
+
+sqldesc = {
+	"writer":{
+		"filetype":"records",
+		"kwargs":{
+		}
+	},
+	"sql_string":"select * from relatetree where pid=${ip}$",
+	"db":"test",
+	"default":{"id":0}
+}
+dadesc = {
+	"actionlist":[],
+	"data":{
+		"sqldesc":{
+			"writer":{
+				"filetype":"records",
+				"kwargs":{
+				}
+			},
+			"sql_string":"""select a.*
+,case when (select count(id) cnt from relatetree where a.id = pid)> 0 then 'closed' else null end as state
+from relatetree a  where a.pid=${id}$ """,
+			"db":"test",
+			"default":{"id":0}
+		}
+	}
+}
+
+data1 = sqlds(dadesc,ns,rowcount=True)
+
+total_data = data1['data'][0]['rcnt']
+
+data = sqlds(dadesc,ns)
+
+ret = {
+'total':total_data,
+'rows':data['data'],
+}
+print ret
+return {"actionlist":[],"data":ret}
+
+
+

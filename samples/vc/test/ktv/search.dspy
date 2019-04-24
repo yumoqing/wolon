@@ -1,0 +1,66 @@
+@runSQLIterator
+def cnt(dbname,data):
+	sqlcmd = u"select * from songs where 1=1 "
+	sort="songid"
+	if singor is not None:
+		sqlcmd += u"and (singer like N'%" + singor + u"%' "
+		sqlcmd += u"or songname like N'%" + singor + u"%') "
+		sort = 'singer'
+
+	sqldesc={
+		"sql_string":sqlcmd,
+		"count":True,
+		"paging":{
+			"rowsname":"rows",
+			"pagename":"page",
+			"sortname":"sort",
+			"ordername":"order"
+		},
+		"db":"ktv",
+	}
+	return sqldesc
+
+@runSQLIterator
+def p_recs(dbname,data):
+	sqlcmd = u"select * from songs where 1=1 "
+	sort="songid"
+	if singor is not None:
+		sqlcmd += u"and (singer like N'%" + singor + u"%' "
+		sqlcmd += u"or songname like N'%" + singor + u"%') "
+		sort = 'singer'
+
+	sqldesc={
+		"sql_string":sqlcmd,
+		"paging":{
+			"rowsname":"rows",
+			"pagename":"page",
+			"sortname":"sort",
+			"ordername":"order"
+		},
+		"db":"ktv",
+		"default":{"rows":100,"page":1}
+	}
+	return sqldesc
+
+
+print("argust=",request.args)
+rows = int(request.args.get('rows',['50'])[0])
+page = int(request.args.get('page',['1'])[0])
+singor = request.args.get('singor',[None])[0]
+print("rows=",rows,"page=",page)
+print(type(singor),singor)
+print("uuid=",uuid)
+ns = {
+	"singor":singor,
+	"rows":rows,
+	"page":page,
+	"sort":"songid",
+}
+cntRec = [ i for i in cnt('ktv',ns) ]
+data = [ i for i in p_recs('ktv',ns) ]
+retdata={
+	"total":cntRec[0].rcnt,
+	"rows":data
+}
+print(retdata['total'],len(retdata['rows']))
+return retdata

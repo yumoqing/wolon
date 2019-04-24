@@ -1,0 +1,79 @@
+/*
+'{[=t.name||t.icon]}'
+{[=dump(t)]}
+*/
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+<div id='{[=it.id]}' class="{[=it.class||'toolbarClass']} m-buttongroup m-buttongroup-justified" >
+{[ var i = 0; ]}
+{[~ it.tools :t]}
+{[? t.icon||t.name]}
+<a id="{[=it.id]}_{[=i]}" class="easyui-linkbutton" iconCls="{[=t.icon]}" href="#" onclick="javascript:obj_{[=it.id]}.onClick('{[=t.name]}')" >{[?!it.disabletext]}{[=t.label||t.name||'']}{[?]}</a>
+{[?t.tip]}
+<script>
+addTooltip('{[=t.tip]}','{[=it.id]}_{[=i]}');
+</script>
+{[?]}
+{[??]}
+<img class="easyui-linkbutton" src="/imgs/splitter.png" />
+{[?]}
+{[ i++;]}
+{[~]}
+</div>
+<script>
+var handlers={
+{[~ it.tools :t]}
+{[?it.handler]}
+	toolbar:{[=it.handler]},
+{[?]}
+{[?t.handler&&t.name]}
+	{[=t.name]}:{[=t.handler]},
+{[?]}
+{[~]}
+		oops:false
+};
+var obj_{[=it.id]} = {
+	tools:{[=dump(it.tools)]},
+	outargs:{},
+	onClick:function(s){
+		target = $('#{[=it.id]}');
+		if(handlers.hasOwnProperty(s)){
+			return handlers[s].call(target,s);
+		}
+		if(handlers.toolbar){
+			return handlers.toolbar.call(target,s);
+		}
+		var mc = WidgetCalls.createNew();
+		var data = {
+			target:target,
+			id:'{[=it.id]}',
+			action:s
+		};
+		mc.execute('{[=it.id]}',s,data,null);
+	},
+	disable:function(idOrText,flag){
+		var id;
+		if (typeof idOrText == typeof 1){
+			id = idOrText;
+		} else if (typeof idOrText == typeof "oops")
+		{
+			for (var i=0;i<obj_{[=it.id]}.tools.length;i++)
+			{
+				if (obj_{[=it.id]}.tools.text == idOrText){
+					id = i;
+					break;
+				}
+			}
+		} else {
+			return;
+		}
+		if (flag){
+			$('{[=it.id]}_' + id.tostring ).linkbutton('disable');
+		} else {
+			$('{[=it.id]}_' + id.tostring ).linkbutton('enable');
+		}
+	}
+};
+
+</script>

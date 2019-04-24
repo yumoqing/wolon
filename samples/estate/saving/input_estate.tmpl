@@ -1,0 +1,52 @@
+<div id="input_estate">
+<script>
+d={
+	__widget__:'datasheet',
+	data:{
+		title:"不动产录入",
+		description:"录入不动产信息",
+		unitwidth:300,
+		labelwidth:100,
+		toolbar_position:"south",
+		// fielddesc_url:"{{absurl(request,'./input_estate_fields.dspy')}}",
+		fields:[
+			{"name":"f2","label":"\u7701\u4efd","iotype":"code","url":"\/estate\/code\/province_code.dspy","valueField":"f1","textField":"f2"},
+			{"name":"f3","label":"\u57ce\u5e02","iotype":"code","url":"\/estate\/code\/city_code.dspy","valueField":"f1","textField":"f2"},
+			{"name":"f4","label":"\u6240\u5c5e\u5c0f\u533a","iotype":"str"},
+			{"name":"f5","label":"\u623f\u5c4b\u6237\u578b","iotype":"code","url":"\/estate\/code\/house_shape.dspy","valueField":"f1","textField":"f2"},
+			{"name":"f6","label":"\u6240\u5728\u4f4d\u7f6e","iotype":"str"},{"name":"f7","label":"\u7ecf\u7eac\u5ea6","iotype":"str"},
+			{"name":"f8","label":"\u5efa\u7b51\u9762\u79ef","iotype":"str"},
+			{"name":"f9","label":"\u5efa\u9020\u5e74\u4ee3","iotype":"str"},
+			{"name":"f10","label":"\u623f\u5c4b\u671d\u5411","iotype":"str"},
+			{"name":"f11","label":"\u623f\u5c4b\u7c7b\u578b","iotype":"code","url":"\/estate\/code\/house_catelog.dspy","valueField":"f1","textField":"f2"},
+			{"name":"f12","label":null,"iotype":"number"},
+			{"name":"f13","label":"\u6240\u5728\u697c\u5c42","iotype":"number"},
+			{"name":"f14","label":"\u88c5\u4fee\u7a0b\u5ea6","iotype":"code","url":"\/estate\/code\/decorate_level.dspy","valueField":"f1","textField":"f2"},
+			{"name":"f15","label":"\u623f\u672c\u5e74\u9650","iotype":"number"},
+			{"name":"f16","label":"\u914d\u5957\u4f9b\u6696","iotype":"str"},
+			{"name":"f17","label":"\u552f\u4e00\u4f4f\u623f","iotype":"code","url":"\/estate\/code\/yesno_code.dspy","textField":"f2","valueField":"f1"},
+			{"name":"f18","label":"\u8f66\u4f4d","iotype":"str"},
+			{"name":"f21","label":"\u623f\u5c4b\u4f30\u503c","iotype":"number"},
+			{"name":"f20","label":"\u623f\u5c4b\u63cf\u8ff0","iotype":"text","height":"260px","unitcnt":2},
+			{"name":"f19","label":"\u4ea4\u901a","iotype":"text","height":"260px","unitcnt":2}
+		],
+		toolbar:{
+			tools:[
+				{
+					icon:'icon-save',
+					name:'save',
+					img_url:"/easyui/themes/icons/filesave.png",
+					label:'保存',
+					handler:function(){
+						$.messager.show({title:'提示',msg:'保存成功'});
+						$('#modalWindow').window('close');
+					}
+				}
+			]
+		}
+	}
+};
+$(function(){
+	$('#input_estate').datasheet(d.data);
+});
+</script>

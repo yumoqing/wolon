@@ -1,0 +1,8 @@
+print("orderSong.dspy",request.args)
+songid = request.args.get('songid',[None])[0]
+ordertype=int(request.args.get('ordertype',['1'])[0])
+
+player.orderList.order(songid,ordertype,userid)
+
+return {'status':'OK'}
+ 

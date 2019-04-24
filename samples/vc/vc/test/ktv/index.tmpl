@@ -1,0 +1,20 @@
+{% include "header.tmpl" %}
+<script>
+remoteWidget('./mainlayout.tmpl',{},$('body'),'html','replace',showError);
+$.parser.parse($('body'));
+console.log('eeggggggggggg');
+var options = $('#maintabs').tabs('options');
+console.log('options = ',options);
+options.onSelect = function(title,index){
+	alert('eeeeeeee');
+	if (index==1){
+		remoteWidget('./playList.tmpl',{},$('#maintabs').tabs('getSelected'),'html','replace',showError);
+	} else if (index==2){
+		remoteWidget('./playControl.tmpl',{},$('#maintabs').tabs('getSelected'),'html','replace',showError);
+	}
+};
+console.log('eeeeeeeeeeeeeeeeeeee',options);
+$('#maintabs').tabs(options);
+console.log('eeeeeeeeeeeeeeeeeeee',options);
+</script>
+{% include "footer.tmpl" %}

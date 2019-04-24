@@ -1,0 +1,12 @@
+import random
+objid=request.args.get('objid',['obj0001'])[0]
+states = [
+	"normal",
+	"warning",
+	"error"
+]
+return {
+	"objid":objid,
+	"state":states[random.randint(0,2)],
+	"value":random.randint(0,100)
+}

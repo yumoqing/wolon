@@ -1,0 +1,103 @@
+{
+    "__ctmpl__": "jsoneditor",
+    "data": {
+        "__jename__": "menu",
+        "roottype": "widgetdesc",
+        "rootname": "__widget_description__",
+        "registerTypes": [
+            {
+                "datatype": "widgetdesc",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "__ctmpl__",
+                        "datatype": "str",
+                        "required": true,
+                        "defaultvalue": "menu",
+                        "readonly": true
+                    },
+                    {
+                        "name": "data",
+                        "datatype": "menudata",
+                        "required": true,
+                        "registed": true
+                    }
+                ]
+            },
+            {
+                "datatype": "menudata",
+                "allowNewAttributes": false,
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "id",
+                        "datatype": "str",
+                        "title": "编号",
+                        "required": true
+                    },
+                    {
+                        "name": "menubar",
+                        "datatype": "bool",
+                        "title": "是否要menubar",
+                        "required": false
+                    },
+                    {
+                        "name": "registerfunction",
+                        "datatype": "str",
+                        "required": false
+                    },
+                    {
+                        "name": "submenu",
+                        "required": true,
+                        "registed": true,
+                        "datatype": "submenus"
+                    }
+                ]
+            },
+            {
+                "datatype": "submenus",
+                "basetype": "ARRAY",
+                "allowedTypes": [
+                    "submenu"
+                ]
+            },
+            {
+                "datatype": "submenu",
+                "allowNewAttributes": true,
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "required": true,
+                        "datatype": "str"
+                    },
+                    {
+                        "name": "label",
+                        "datatype": "str"
+                    },
+                    {
+                        "name": "icon",
+                        "datatype": "str"
+                    },
+                    {
+                        "name": "submenu",
+                        "datatype": "submenus",
+                        "registed": true,
+                        "required": false
+                    },
+                    {
+                        "name": "url",
+                        "datatype": "url",
+                        "required": false
+                    },
+                    {
+                        "name": "registerfunction",
+                        "datatype": "str",
+                        "required": false
+                    }
+                ]
+            }
+        ]
+    }
+}

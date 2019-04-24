@@ -1,0 +1,39 @@
+__widget_desctription__ = {
+	__ctmpl__:'baidumap',
+	data:{
+		id:"areaissueamount",
+		widgettype:"echarts",
+		class:"chartbox",
+		width:"500px",
+		height:"300px",
+		title:"地区(元)",
+		url:"{{absurl(request,'./areaissueamount.dspy')}}",
+		dimension:"area",
+		series:[
+			{
+				name:"发行额",
+				indicator:"issueamount",
+				longitude:"longitude",
+				latitude:"latitude"
+			}
+		],
+		options:{
+			bmap: {
+				zoom: 4,
+			},
+			tooltip: {
+				formatter:function(a){
+					return a.seriesName + '<br>' + a.name + ':' + money(a.value[2]);
+				}
+			},
+			series:[
+				{
+					symbolSize: function (val) {
+						var v = Math.sqrt(val[2]) / 1000;
+						return v;
+					}
+				}
+			]		
+		}
+	}
+}

@@ -1,0 +1,71 @@
+/*
+monthlyIndicators.tmpl
+*/
+__widget_description__ = {
+	__ctmpl__:'datagrid',
+	data:{
+		id:"monthlyIndicators",
+		widgettype:"datagrid",
+		title:"产品指标",
+		width:"500px",
+		height:"300px",
+		idField:"productname",
+		view:"scrollview",
+		url:"{{absurl(request,'./monthlyindicators.dspy')}}",
+		fields:[
+			{
+				name:"productname",
+				label:"产品名称",
+				iotype:"text"
+			},{
+				name:"indname",
+				label:"指标名称",
+				iotype:"text"
+			},{
+				name:"dimension",
+				label:"时间维",
+				iotype:"text"
+			},{
+				name:"indicator",
+				label:"指标值",
+				iotype:"number"
+			},{
+				name:"inc_pz",
+				label:"环比",
+				iotype:"number"
+			}
+		],
+		options:{
+			loadMsg:null,
+			columns:[[
+				{
+					width:'80px'
+				},{
+					width:'80px'
+				},{
+					formatter:function(value,row,index){
+						var s = value.split('_');
+						if(s.length==1){
+							return value + '年';
+						}
+						return s[1] + '年' + s[2] + '月';
+					}								
+				},{
+					align:'right',
+					formatter:function(value,row,index){
+						return money(value);
+					}				
+				},{
+					align:'right',
+					formatter:function(value,row,index){
+						var img="greenup.png";
+						if (value<0){
+							img = "reddown.png";
+						}
+						return '<span>' + value + '%<img src="/imgs/' + img + '" /></span>';
+					}
+				}
+			]]
+		}
+	}
+}

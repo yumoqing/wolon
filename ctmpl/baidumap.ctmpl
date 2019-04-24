@@ -1,0 +1,219 @@
+/*
+{
+id:
+dimension:
+series:[
+{
+	name:
+	type:
+	indicator:
+	longitude:
+	latitude:
+}
+]
+
+}
+*/
+{[=tmplRender('echarts',it)]}
+<script>
+
+obj_{[=it.id]}.getValue = function(params){
+	var series = obj_{[=it.id]}.obj.getOption().series;
+	var data = {
+		event:params.event,
+		data:{
+			{[=it.dimension]}:series[params.seriesIndex].xdata[params.dataIndex]
+		}
+	};
+	data.data[series[params.seriesIndex].indicator] = 
+			series[params.seriesIndex].data[params.dataIndex];
+	return data;
+};
+
+obj_{[=it.id]}.setDataOption = function(data){
+	obj_{[=it.id]}.data = data;
+	var series = new Array();
+	var xdata = new Array();
+	var legend = new Array();
+	for (var i=0;i<data.length;i++){
+		xdata.push(data[i].{[=it.dimension]});
+	}
+	{[~ it.series :s]}
+	var dp = new Array();
+	for (var i=0;i<data.length;i++){
+		dp.push({name:data[i].{[=it.dimension]},value:[
+			data[i].{[=s.latitude]},
+			data[i].{[=s.longitude]},
+			data[i].{[=s.indicator]}]});
+	};
+	legend.push('{[=s.name]}');
+	series.push({
+		name:'{[=s.name]}',
+		type:'{[=s.type||'scatter']}',
+		data:dp,
+		coordinateSystem: 'bmap',
+		symbolSize: function (val) {
+			return val[2] / 10;
+        },
+		itemStyle: {
+			normal: {
+				color: '#f4e925',
+				shadowBlur: 10,
+				shadowColor: '#333'
+			}
+		},
+		zlevel: 0,
+		xdata:xdata
+	});
+	{[~]}
+	var opts = {
+		legend:$.extend({
+			left:'right',
+			data:legend
+		},{[=dump(it.legend)]}),
+		bmap: {
+			center: [104.114129, 37.550339],
+			zoom: 8,
+			roam: true,
+			mapStyle: {
+				styleJson: [
+					  {
+						   "featureType": "water",
+						   "elementType": "all",
+						   "stylers": {
+								"color": "#044161"
+						   }
+					  },
+					  {
+						   "featureType": "land",
+						   "elementType": "all",
+						   "stylers": {
+								"color": "#004981"
+						   }
+					  },
+					  {
+						   "featureType": "boundary",
+						   "elementType": "geometry",
+						   "stylers": {
+								"color": "#064f85"
+						   }
+					  },
+					  {
+						   "featureType": "railway",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "highway",
+						   "elementType": "geometry",
+						   "stylers": {
+								"color": "#004981"
+						   }
+					  },
+					  {
+						   "featureType": "highway",
+						   "elementType": "geometry.fill",
+						   "stylers": {
+								"color": "#005b96",
+								"lightness": 1
+						   }
+					  },
+					  {
+						   "featureType": "highway",
+						   "elementType": "labels",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "arterial",
+						   "elementType": "geometry",
+						   "stylers": {
+								"color": "#004981"
+						   }
+					  },
+					  {
+						   "featureType": "arterial",
+						   "elementType": "geometry.fill",
+						   "stylers": {
+								"color": "#00508b"
+						   }
+					  },
+					  {
+						   "featureType": "poi",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "green",
+						   "elementType": "all",
+						   "stylers": {
+								"color": "#056197",
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "subway",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "manmade",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "local",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "arterial",
+						   "elementType": "labels",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  },
+					  {
+						   "featureType": "boundary",
+						   "elementType": "geometry.fill",
+						   "stylers": {
+								"color": "#029fd4"
+						   }
+					  },
+					  {
+						   "featureType": "building",
+						   "elementType": "all",
+						   "stylers": {
+								"color": "#1a5787"
+						   }
+					  },
+					  {
+						   "featureType": "label",
+						   "elementType": "all",
+						   "stylers": {
+								"visibility": "off"
+						   }
+					  }
+				]
+			}
+		},
+		series: series
+	};
+	console.log('setDataOption(),options=',opts);
+	return opts;
+};
+
+obj_{[=it.id]}.setValue({});
+
+</script>

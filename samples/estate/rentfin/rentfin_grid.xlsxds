@@ -1,0 +1,7 @@
+{
+	"xlsxfile":"./rentfin.xlsx",
+	"data_sheet":"Sheet1",
+	"data_from":4,
+	"ioattrs_at":2,
+	"inputhide_at":3
+}

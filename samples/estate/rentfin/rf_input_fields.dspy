@@ -1,0 +1,8 @@
+d = {
+	"data_sheet":"Sheet1",
+	"ioattrs_at":2,
+	"inputhide_at":3
+}
+x  = xlsxdata(abspath(absurl(request,'./rentfin.xlsx')),d)
+d = x.getBaseFieldsInfo()
+return [ i for i in d if not i.get('inputhide') ]

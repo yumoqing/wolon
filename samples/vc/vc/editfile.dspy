@@ -1,0 +1,37 @@
+#editfile.dspy
+print('editfile.dspy',request.args)
+options = {
+	"roottype":"OBJECT",
+	"rootname":"root",
+}
+url = request.args.get('url',[None])[0]
+f = openfile(absurl(request,url),'r')
+if f is None:
+	return {
+		"status":"error",
+		"errortype":"open error",
+		"errmsg":url + ':cannt open',
+	}
+b = f.read()
+f.close()
+a = b.split('__widget_description__ = ')
+
+if len(a)>1:
+	a = a[1]
+else:
+	a = a[0]
+data = json.loads(a)
+
+jename = 'json'
+if data.get('__metadata__',False):
+	metadata = data.get('__metadata__')
+	jename = metadata.get('__jename__')
+f = openfile(absurl(request,'./default/'+jename + '.tmpl'),'r')
+b = f.read()
+f.close()
+url1 = absurl(request,'./readdata.dspy') + '?data=' + url
+b += ';\n'
+b += '__widget_description__.data.url = "' + url1 + '";\n'
+b += '__widget_description__\n'
+
+return b

@@ -1,0 +1,29 @@
+__widget_description__ = {
+	__ctmpl__:'layout',
+	data:{
+		id:'profile',
+		fit:true,
+		border:true,
+		regions:{
+			west:{
+				width:'300px',
+				remoteWidgets:[
+					"{{absurl(request,'./profile_left.tmpl')}}"
+				]
+			},
+			center:{
+				remoteWidgets:[
+					"{{absurl(request,'./profiletitle.js')}}",
+					"{{absurl(request,'./areaissueamount.tmpl')}}",
+					"{{absurl(request,'./termissueamount.tmpl')}}",
+					"{{absurl(request,'./ratingissueamount.tmpl')}}",
+					"{{absurl(request,'./top5/monthlyIndicators.tmpl')}}"
+
+				]
+			},
+			east:{
+				width:'0px'
+			},
+		}
+	}
+}

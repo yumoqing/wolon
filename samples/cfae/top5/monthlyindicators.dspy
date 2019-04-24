@@ -1,0 +1,21 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc= {
+			"sql_string":"""select 
+productname,
+indname,
+dimension,
+indicator,
+l_indicator,
+case when l_indicator is null then null
+     when l_indicator = 0 then null
+     else (indicator - l_indicator)/l_indicator * 100
+end as inc_pz
+from indicatorview
+where dimension = ${dim}$
+			"""
+	}
+	return desc
+
+ns=request2ns()
+return [i for i in sql('cfae',ns)]

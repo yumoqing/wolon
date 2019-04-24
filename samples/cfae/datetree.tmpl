@@ -1,0 +1,45 @@
+__widget_description__={
+	__ctmpl__:"tree",
+	data:{
+		id:"cfaedatetree",
+		widgettype:'tree',
+		options:{
+			height:"600px",
+			dnd:false
+		},
+		url:"{{absurl(request,'./datetree.dspy')}}",
+		idField:"id",
+		contextmenu:[
+			{
+				"type":"year",
+				"identifier":"function(node){return node.type=='year_value';}",
+				"func":"doTest",
+				"submenu":
+				[
+					{
+						"label":"开始定时显示",
+						"name":"startyearlyupdate",
+						"registerfunction":"startAutoChangePlot"
+					},
+					{
+						"label":"结束定时显示",
+						"name":"endyearlyupdate",
+						"registerfunction":"stopAutoChangePlot"
+					}
+				]
+			},
+			{
+				"type":"month",
+				"identifier":"function(node){return node.type=='month_id';}",
+				"func":"doTest",
+				"submenu":
+				[
+					{
+						"label":"按月更新",
+						"name":"monthlyupdate"
+					}
+				]
+			}
+		]
+	}
+}

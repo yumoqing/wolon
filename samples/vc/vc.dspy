@@ -1,0 +1,110 @@
+# vc.dspy
+ok = {"status":"OK"}
+def getRoot():
+	return visualcoding().userroot.get(userid,visualcoding().default_root)
+
+def urltrasfer(url):
+	root = getRoot()
+	if url[:len(root)] != root:
+		return root + url
+	return url
+		
+def fileList(ns):
+	uri = uriop()
+	
+	print('root=',uri.realPath,uri.abspath())
+	id = ns.get('id',None)
+	path = getRoot()
+	if id is not None:
+		 path = '/'.join(id.split('_#_'))
+	d = uri.fileList(path)
+	return d
+	
+def getJrj(jrjname):
+	url = visualcoding().jrjpath + '/' + jrjname + '.jrj'
+	print('getJrj():url=',url)
+	f = openfile(url,'r')
+	b = f.read()
+	f.close()
+	return json.loads(b)
+	
+def newje(ns):
+	jrjname = ns['jrjname']
+	obj = getJrj(jrjname)
+	obj['data']['vc_url'] = resource.extract_path(request)
+	return obj
+	
+def editje(ns):
+	url = ns['url']
+	url = urltrasfer(url)
+	b = _read(url)
+	obj = json.loads(b)
+	jrjname = 'json'
+	if obj.get('__metadata__',False):
+		jrjname = obj['__metadata__'].get('__jename__','json')
+
+	jrjObj = getJrj(jrjname)
+	jrjObj['data']['url'] = resource.extract_path(request) + '?action=read&url=' + url
+	jrjObj['data']['vc_url'] = resource.extract_path(request)
+	print("edit==============",jrjObj)
+	return jrjObj
+
+def saveje(ns):
+	url = ns['url']
+	url = urltrasfer(url)
+	print('7777777777777777',ns['url'],url)
+	if url[0:10] == 'undefined/':
+		url = url[10:]
+	text = ns['text']
+	obj = json.loads(text)
+	uri = uriop()
+	uri.write(url,json.dumps(obj,indent=4))
+	return ok
+
+def _read(url):
+	uri = uriop()
+	b = uri.read(url)
+	return b
+
+def read(ns):
+	url = ns['url']
+	url = urltrasfer(url)
+	b = _read(url)
+	obj = json.loads(b)
+	if obj.get('__metadata__',False):
+		del obj['__metadata__']
+	return obj
+	
+def saveAsJrj(ns):
+	jrjname = ns['jrjname']
+	jrjname = urltrasfer(jrjname)
+
+	text = ns['text']
+	
+	obj = json.loads(text)
+	url = visualcoding().jrjpath + name + '.jrj'
+	f = openfile(url,'r')
+	b = f.write(json.dumps(obj,indent=4))
+	f.close()
+	return ok
+	
+def remove(ns):
+	return []
+	
+def rename(ns):
+	return []
+	
+
+actions={
+	'new':newje,
+	'edit':editje,
+	'save':saveje,
+	'savejrj':saveAsJrj,
+	'list':fileList,
+	'read':read,
+	'rename':rename,
+	'remove':remove,
+}
+ns = request2ns()
+act = actions.get(ns.get('action','new'))
+return act(ns)

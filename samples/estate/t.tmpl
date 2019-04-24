@@ -1,0 +1,12 @@
+{% include "header.tmpl" %}
+<script>
+$(function(){
+var url="{{request2ns().get('url')}}";
+{% if request2ns().get('popup',False) %}
+popWindow(url,{title:'Testing'});
+{% else %}
+remoteWidget(url,{},$('body'),'append',showError);
+{% endif %}
+});
+</script>
+{% include "footer.tmpl" %}

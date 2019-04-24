@@ -1,0 +1,58 @@
+<div class="rentfin_info lbox">
+<img src="/estate/imgs/fang{[=Math.round(Math.random()*20)+1]}.jpg" width="100%" height="200px"/>
+<div>
+<span clsss="label">付款模式:</span><span class="value">{[=it.f3]}</span>
+</div>
+<div>
+<span class="label">期限:</span><span class="value">{[=it.f4]}</span>
+</div>
+<div>
+<span class="label">融房人:</span><span class="value" >{[=it.f6]}</span>
+</div>
+<div>
+<span class="label">融资规模:</span><span class="value">{[=it.f2]}</span>
+</div>
+<div>
+<span style="margin:3px;">
+<a href="#" onclick="showEstateInfo('{[=it.f1]}')">
+<img id="rfview_cmd1" src="/imgs/house.png" width="24px" height="24px" alt="房屋详情" />
+</a>
+</span><span style="margin:3px;">
+<a href="#" onclick="favoriting('{[=it.f1]}')">
+<img id="rfview_cmd2" src="/imgs/favorit.png" width="24px" height="24px" alt="收藏"/>
+</a>
+</span><span style="margin:3px;">
+<a href="#" onclick="cashflow('{[=it.f1]}')">
+<img id="rfview_cmd3" src="/imgs/cashflow.png" width="24px" height="24px" alt="现金流" />
+</a>
+<!---
+</span><span style="margin:3px;">
+<a href="#" onclick="valuating('{[=it.f1]}')">
+<img id="rfview_cmd4" src="/imgs/valuation.png" width="24px" height="24px" alt="估值" />
+</a>
+--->
+</span><span style="margin:3px;">
+<a href="#" onclick="startTextCall('{[=it.f6]}')">
+<img id="rfview_cmd5" src="/imgs/textCall.png" width="24px" height="24px" alt="发起文本通讯" />
+</a>
+</span><span style="margin:3px;">
+<a href="#" onclick="startVoiceCall('{[=it.f6]}')">
+<img id="rfview_cmd6" src="/imgs/voicecall.png" width="24px" height="24px" alt="发起语音通讯" />
+</a>
+</span><span style="margin:3px;">
+<a href="#" onclick="startVideoCall('{[=it.f6]}')">
+<img id="rfview_cmd7" src="/imgs/videoCall.png" width="24px" height="24px" alt="发起视频通讯" />
+</a>
+</span>
+
+</div>
+</div>
+<script>
+addTooltip('查看房屋详情','rfview_cmd1');
+addTooltip('收藏此融房','rfview_cmd2');
+addTooltip('计算此融房的现金流','rfview_cmd3');
+addTooltip('估值此融房','rfview_cmd4');
+addTooltip('发送文本消息','rfview_cmd5');
+addTooltip('发起音频通话','rfview_cmd6');
+addTooltip('发起视频通话','rfview_cmd7');
+</script>

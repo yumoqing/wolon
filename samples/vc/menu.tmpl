@@ -1,0 +1,317 @@
+<div width="100%" style="margin-bottom:0px">
+	<div id="vc_menuc" width="100%"></div>
+</div>
+<div width="100%" style="clear:both">
+	<div id="vc_toolbarc"></div>
+</div>
+<script>
+var mainfunc=function(d){
+	
+}
+
+var newid = 1;
+var fbwin = null;
+
+var newfile=function(d){
+	var d = d[0];
+	console.log(d);
+	var s = d.data.name;
+	var url = "{{absurl(request,'./vc.dspy?action=new&jrjname=')}}" + s;
+	var label='new ' + newid;
+	var icon='icon-' + s;
+	obj_vc_tabs.addOrSelect(label,url,icon);
+	newid ++;
+};
+function editfile(url){
+	var url1 = "{{absurl(request,'./vc.dspy?action=edit&url=')}}" + url;
+	var label=url;
+	obj_vc_tabs.addOrSelect(label,url1,null);
+
+};
+var openfile=function(d){
+	var fbwin = getFBwin();
+	fbwin.urlbrowser({
+		browsetype:'open',
+		/*
+		browsetype:'save',
+		browsetype:'saveas',
+		*/
+		root:"{{visualcoding().userroot.get(userid,visualcoding().default_root)}}",
+		url:'/vc/vc.dspy?action=list',
+		onSelectFile:editfile
+	});
+};
+
+var _savefile=function(url){
+	var tab = $('#vc_tabs').tabs('getSelected');
+	var dom = getElementByClass(tab[0],'jsoneditor');
+	if (!$(dom).jsoneditor('validate')){
+		console.log('fegerg');
+		return;
+	}
+	var data = $(dom).jsoneditor('getValue');
+	var args = {
+		action:'save',
+		url:url,
+		text:JSON.stringify(data)
+	}
+	var _url = "{{absurl(request,'./vc.dspy')}}";
+	remoteCall(_url,"POST","json",args,
+		function(d){
+			if (isError(d)){
+				showError(d);
+			} else {
+				$.messager.alert('save',url + ':finished');
+				$('#vc_tabs').tabs('update', {
+						tab: tab,
+						options: {
+						   title: url
+						}
+				});
+				$(dom).jsoneditor('setUrl',url);
+			}
+		},
+		function(e){
+			$.messager.alert('error',e);
+		}
+	);
+	
+};
+var getFBwin=function(){
+	var fbwin = $('#filebrowserw');
+	if(fbwin.length<1) {
+		fbwin = $('<div id="filebrowserw"><div>').appendTo($('body'));
+	}
+	return fbwin;
+};
+var savefile=function(d){
+	var tab = $('#vc_tabs').tabs('getSelected');
+	var dom = getElementByClass(tab[0],'jsoneditor');
+	if (!$(dom).jsoneditor('validate')){
+		console.log('fegerg');
+		return;
+	}
+	var url = $(dom).jsoneditor('getUrl');
+	if (url){
+		console.log('url=',url);
+		_savefile(url);
+		return;
+	}
+	var fbwin = getFBwin();
+	fbwin.urlbrowser({
+		browsetype:'save',
+		url:"{{absurl(request,'./vc.dspy?action=list')}}",
+		onSelectFile:_savefile
+	});
+};
+var saveasfile=function(d){
+	var tab = $('#vc_tabs').tabs('getSelected');
+	var dom = getElementByClass(tab[0],'jsoneditor');
+	if (!$(dom).jsoneditor('validate')){
+		console.log('fegerg');
+		return;
+	}
+	var fbwin = getFBwin();
+	fbwin.urlbrowser({
+		browsetype:'saveas',
+		url:"{{absurl(request,'./vc.dspy?action=list')}}",
+		onSelectFile:_savefile
+	});
+
+};
+var testwin = null;
+var showtest=function(d){
+	var tab = $('#vc_tabs').tabs('getSelected');
+	var dom = getElementByClass(tab[0],'jsoneditor');
+	if (!$(dom).jsoneditor('validate')){
+		$.messager.alert('error','validate fail');
+		return;
+	}
+	var url = $(dom).jsoneditor('getUrl');
+	if (url){
+		var fbwin = getFBwin();
+		$(fbwin).window('open');
+		$(fbwin).window('body').empty();
+		var iframe = $('<iframe/>').attr({
+					width : '100%',
+					height : '99%',
+					frameborder : 0,
+					src : "{{absurl(request,'./testshow.tmpl')}}" + '?url=' + url
+				});
+		$(fbwin).window('body').append(iframe);
+	} else {
+		$.messager.alert('error','please save it first');
+	}
+};
+var rf = RegisterFunction.createNew();
+rf.register('openfile',openfile);
+rf.register('savefile',savefile);
+rf.register('saveasfile',saveasfile);
+rf.register('showtest',showtest);
+rf.register('newfile',newfile);
+
+var d = {
+	id:"vc_menu",
+	menubar:true,
+	registerfunction:"mainfunc",
+	submenu:[
+		{
+			name:"jsoneditor",
+			submenu:[
+				{
+					name:"jsoneditor",
+					icon:"icon-jsoneditor",
+					registerfunction:"newfile"
+				}
+			]
+		},
+		{
+			name:"frontend",
+			label:"front end",
+			submenu:[
+				{
+					name:"new",
+					icon:"icon-new",
+					submenu:[
+						{
+							name:"layout",
+							submenu:[
+								{
+									name:"win7ui",
+									registerfunction:"newfile",
+									icon:"icon-windows"
+								},{
+									name:"layout",
+									registerfunction:"newfile",
+									icon:"icon-layout"
+								},{
+									name:"tabs",
+									registerfunction:"newfile",
+									icon:"icon-tabs"
+								},{
+									name:"accordion",
+									registerfunction:"newfile",
+									icon:"icon-accordion"
+								}
+							]
+						},{
+							name:"menu&toolbar",
+							submenu:[
+								{
+									icon:'icon-menu',
+									registerfunction:"newfile",
+									name:'menu'
+								},{
+									icon:'icon-toolbar',
+									registerfunction:"newfile",
+									name:'toolbar'
+								}
+							]
+						},{
+							name:"present",
+							icon:"icon-presennt",
+							submenu:[
+								{
+									icon:'icon-datagrid',
+									registerfunction:"newfile",
+									name:'datagrid'
+								},{
+									icon:'icon-tree',
+									registerfunction:"newfile",
+									name:'tree'
+								},{
+									icon:'icon-treegrid',
+									registerfunction:"newfile",
+									name:'treegrid'
+								},{
+									icon:'icon-datalist',
+									registerfunction:"newfile",
+									name:'datalist'
+								},{
+									icon:'icon-formattext',
+									registerfunction:"newfile",
+									name:'formattext'
+								}
+							]
+						},{
+							name:"charts",
+							icon:"icon-chart",
+							submenu:[
+								{
+									icon:'icon-pie',
+									registerfunction:"newfile",
+									name:'pie'
+								},{
+									name:'bar',
+									registerfunction:"newfile",
+									icon:'icon-bar'
+								},{
+									icon:'icon-line',
+									registerfunction:"newfile",
+									name:'line'
+								},{
+									icon:'icon-map',
+									registerfunction:"newfile",
+									name:'bmap'
+								}
+							]
+						},{
+							icon:'icon-form',
+							registerfunction:"newfile",
+							name:'form'
+						}
+					]
+				},{
+					name:"open",
+					registerfunction:"openfile",
+					icon:"icon-open"
+				},{
+					name:"save",
+					registerfunction:"savefile",
+					icon:"icon-save"
+				},{
+					name:"saveas",
+					registerfunction:"saveasfile",
+					icon:"icon-saveas"
+				}
+			]
+		},{
+			name:"serverend",
+			label:"server end",
+			icon:"icon-sscript",
+			submenu:[
+				{
+					icon:'icon-json',
+					registerfunction:"newfile",
+					name:'json'
+				},{
+					icon:'icon-sqlds',
+					registerfunction:"newfile",
+					name:'sqlds'
+				},{
+					icon:'icon-sqlds',
+					registerfunction:"newfile",
+					name:'sqlds'
+				},{
+					icon:'icon-xlsxds',
+					registerfunction:"newfile",
+					name:'xlsxds'
+				}
+			]
+		},{
+			name:"test",
+			submenu:[
+				{
+					name:"test",
+					registerfunction:"showtest",
+					icon:"icon-showtest"
+				}
+			]
+		}
+	]
+};
+
+var menuhtml = tmplRender('menu',d);
+$(menuhtml).appendTo($('#vc_menuc'));
+
+</script>

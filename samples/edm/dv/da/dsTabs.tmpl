@@ -1,0 +1,15 @@
+<div id="{{request.args.get('id')[0]}}_tabs" >
+</div>
+<script>
+$('#{{request.args.get('id')[0]}}_tabs').tabs({
+	id:"{{request.args.get('id')[0]}}_tabs",
+	items:[
+		{
+			title:"main",
+			iconCls:"icon-save",
+			content:"main page",
+			closable:false
+		}
+	]
+});
+</script>

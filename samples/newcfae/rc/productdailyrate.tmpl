@@ -1,0 +1,29 @@
+__widget_description__={
+	__ctmpl__:'bar',
+	data:{
+		id:"productdailyrate",
+		widgettype:"echarts",
+		width:(document.body.clientWidth*3/10 - 2) + 'px',
+		height:((document.body.clientHeight-50)*6/10 - 4) + 'px',
+		title:"",
+		url:"{{absurl(request,'./productdailyrate.dspy')}}",
+		charttype:"bar",
+		dimension:"ccdate",
+		series:[
+			{
+				name:"债券",
+				indicator:"bond",
+			},
+			{
+				name:"债权",
+				indicator:"options",
+			},
+			{
+				name:"国金",
+				indicator:"nationalfund",
+			}
+		],
+		options:{
+		}
+	}
+}

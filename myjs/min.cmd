@@ -1,0 +1,1 @@
+uglifyjs urlbrowser.js misc.js bufferedpanel.js datasheet.js jsoneditor.js clientTemplate.js oneofcontext.js pagingContext.js videoplayer.js windowbar.js jquery.app.js selectbox.js onoff.js scripteditor.js edatagrid.js toolbar.js markdown.js mobileapp.js menupage.js --compress --mangle --output wolon.min.js

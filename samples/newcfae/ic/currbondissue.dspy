@@ -1,0 +1,34 @@
+data=[
+{'id':'11751029','shortname':'17宁沪高SCP001','issuer':'宁沪高速公司','amount':'55亿元','issuetime':'2018-01-11'},
+{'id':'101658077','shortname':'16国新控股MTN001','issuer':'国新控股','amount':'54亿元','issuetime':'2017-12-30'},
+{'id':'11759078','shortname':'17牧原食品SCP003','issuer':'牧原食品','amount':'62亿元','issuetime':'2018-01-19'},
+{'id':'101658067','shortname':'16中药控股MTN001','issuer':'中药控股','amount':'60亿元','issuetime':'2017-12-25'},
+{'id':'101758036','shortname':'17京能电力MTN001','issuer':'京能电力','amount':'8亿元','issuetime':'2018-01-09'},
+{'id':'11759103','shortname':'17苏交通SCP025','issuer':'苏交通','amount':'78亿元','issuetime':'2018-01-24'},
+{'id':'101758034','shortname':'17苏交通MTN001','issuer':'苏交通','amount':'80亿元','issuetime':'2017-12-26'},
+{'id':'11770023','shortname':'17中建材SCP018','issuer':'中建材','amount':'74亿元','issuetime':'2018-01-24'},
+{'id':'11766029','shortname':'17中电投SCP029','issuer':'中电投','amount':'76亿元','issuetime':'2017-12-25'},
+{'id':'101653025','shortname':'16铁道MTN001','issuer':'铁道总公司','amount':'42亿元','issuetime':'2018-01-16'},
+{'id':'11770024','shortname':'17悦达资本SCP001','issuer':'悦达资本','amount':'103亿元','issuetime':'2018-01-15'},
+{'id':'11751076','shortname':'17联通SCP006','issuer':'联通公司','amount':'73亿元','issuetime':'2018-01-08'},
+{'id':'11751091','shortname':'17国电SCP006','issuer':'国电公司','amount':'73亿元','issuetime':'2017-12-28'},
+{'id':'11754080','shortname':'17淮南矿SCP003','issuer':'淮南矿业','amount':'20亿元','issuetime':'2017-12-24'},
+{'id':'11754026','shortname':'17浦东土地SCP001','issuer':'浦东土地','amount':'19亿元','issuetime':'2017-12-26'},
+{'id':'11760178','shortname':'17南电SCP002','issuer':'南电公司','amount':'55亿元','issuetime':'2018-01-09'},
+{'id':'101760012','shortname':'17晋江城投MTN001','issuer':'晋江城投','amount':'61亿元','issuetime':'2018-01-19'},
+{'id':'11754055','shortname':'17中电投SCP007','issuer':'中电投','amount':'88亿元','issuetime':'2017-12-27'},
+{'id':'11754067','shortname':'17雅砻江SCP001','issuer':'雅砻江','amount':'27亿元','issuetime':'2018-01-30'},
+{'id':'101760007','shortname':'17象屿MTN001','issuer':'象屿集团','amount':'96亿元','issuetime':'2018-01-30'},
+]
+id=int(request.args.get('id',[0])[0])
+cnt = len(data)-1
+id = random.randint(0,cnt)
+if id>=cnt:
+	id = id % cnt
+	
+ret = {
+	'total':2,
+	'rows':data[id:id+3]
+}
+
+return ret

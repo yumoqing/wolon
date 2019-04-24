@@ -1,0 +1,7 @@
+{% include "header.tmpl" %}
+<script>
+console.log('t.tmpl:here1');
+remoteWidgets(['./textchat.tmpl'],{},$('body'),'GET',showError);
+console.log('t.tmpl:here2');
+</script>
+{% include "footer.tmpl" %}

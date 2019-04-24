@@ -1,0 +1,22 @@
+{% include "header.tmpl" %}
+<script src="/sockjs/sockjs.min.js" ></script>
+<script src="/myjs/threestate.js" ></script>
+<div id="ts"></div>
+<script>
+
+$(function(){
+	var d = {
+		"objtype":"file",
+		"is_atom":false,
+		"show_mode":"tiny",
+		"objid":"id001",
+		"objtitle":"the object",
+		"suburl":"getsubobj.url",
+		"url":"threestate.dspy",
+		"valuetmpl":"{[=it.vaue]}"
+	};
+	$('#ts').threestate(d);
+});
+</script>
+
+{% include "footer.tmpl" %}

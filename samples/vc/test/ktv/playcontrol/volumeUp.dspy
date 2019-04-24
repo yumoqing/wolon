@@ -1,0 +1,7 @@
+volume = player.volumeup()
+ret = {
+	"status":"OK",
+	"volume":volume
+}
+printf("ret=",ret)
+return ret

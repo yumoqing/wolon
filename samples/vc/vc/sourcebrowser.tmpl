@@ -1,0 +1,105 @@
+__widget_description__={
+	__ctmpl__:"treegrid",
+	data:{
+		id:'fb_tg',
+		title:"source list",
+		url:"{{absurl(request,'./folderlist.dspy')}}",
+		idField:"id",
+		treeField:"name",
+		fields:[
+			{
+				name:"name",
+				width:"290px",
+				label:"{{i18n('filename')}}",
+				iotype:"text"
+			},{
+				name:"type",
+				width:"70px",
+				label:"{{i18n('filetype')}}",
+				iotype:"text"
+			},{
+				name:"size",
+				label:"{{i18n('filesize')}}",
+				iotype:"text"
+			},{
+				name:"mtime",
+				label:"{{i18n('filemtime')}}",
+				iotype:"text"
+			}
+		],
+		options:{
+			pagination:false,
+			newfolderURL:"{{absurl(request,'./newfolder.dspy')}}",
+			openfileURL:"{{absurl(request,'./openfile.dspy')}}",
+			savefileURL:"{{absurl(request,'./savefile.dspy')}}",
+			checkExistUrl:"{{absurl(request,'./existfile.dspy')}}",
+			dnd:false,
+			toolbar:'#sbtb',
+			queryParams:{
+				root:"{{visualcoding().userroot.get(userid,visualcoding().default_root)}}"
+			},
+			pageSize:60,
+			onDblClickRow:function(row){
+				if (row.type == 'dir'){
+					$('#fb_tg').treegrid('expand',row.id);
+					return;
+				}
+				var p='/vc/test' + row.path + '/' + row.name;
+				console.log('p = ',p);
+				editfile(p);
+			},
+			tools:[
+				{
+					iconCls:'icon-addfolder',
+					handler:function(){
+						console.log('this=',this,arguments);
+						var tg = $('#fb_tg');/* $(this).parents('.treegrid'); */
+						console.log('treegrid = ',tg);
+						var row = tg.treegrid('getSelected');
+						if (row && row.type != 'dir') {
+							$.messager.alert("error","{{i18n('please select a folder')}}");
+							return;
+						}
+						var fn = $('#in_filename').val();
+						if (!fn) return;
+						var path = '/vc/test';
+						var id = null;
+						if (row){
+							path = row.path + '/' + row.name;
+							id = row.id;
+						}
+						
+						var options = tg.treegrid('options');
+						remoteCall(options.newfolderURL,
+							'GET',
+							'json',
+							{
+								path:path,
+								root:'/vc/test',
+								name:fn
+							},
+							function(d){
+								if (d.status=='OK') {
+									$('#' + wid).treegrid('append',{
+										parent:id,
+										data:d.data
+									});
+								} else {
+									$.messager.alert(d.errortype,d.errmsg);
+								}
+							},
+							function(e){
+								$.messager.alert('error',e);
+							}
+						);
+					}
+				},{
+					iconCls:'icon-addfile',
+					handler:function(){
+					}
+				}
+			]
+			
+		}
+	}
+}

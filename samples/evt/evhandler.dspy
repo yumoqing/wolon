@@ -1,0 +1,5 @@
+
+def callback(event,objid,data):
+	printf('event=',event,'objid=',objid,'data=',data)
+
+EventEngine.consume('evt.#',callback)

@@ -1,0 +1,18 @@
+objtype=request.args.get('objtype',['file'])[0]
+state = request.args.get('state',['normal'])[0]
+
+imgs = {
+	'file':{
+		'normal':'/imgs/correct.png',
+		'warning':'/imgs/warning.png',
+		'error':'/imgs/error.png'
+	}
+}
+f = open(abspath(imgs[objtype][state]),'rb')
+d = f.read()
+f.close()
+request.setHeader(b'Content-Type',b'image/png')
+request.setHeader(b'Content-Length',len(d))
+request.write(d)
+request.finish()
+return None

@@ -1,0 +1,97 @@
+__widget_description__={
+	__ctmpl__:"toolbar",
+	"data":{
+		id:"vc_toolbar",
+		disabletext:true,
+		class:'lbox',
+		handler:function(s){
+			var url = "{{absurl(request,'./default/')}}" + s + ".tmpl";
+			remoteCall(url,'GET','html',{ctmpl:s},
+				function(data){
+					var editor = $.data($('#editor')[0],'editor');
+					editor.setText(data + '\n');
+				},
+				function(e){
+					var options = {
+						title: e,
+						msg: 'error:' + url + ':' + e,
+						showType: 'slide',
+						icon:'error',
+						timeout: 5000
+					};
+					$.messager.show(options);
+				}
+			);
+		},
+		tools:[
+			{
+				icon:'icon-layout',
+				name:'layout',
+				tip:'layout'
+			},{
+				icon:'icon-tabs',
+				name:'tabs',
+				tip:'tabs'
+			},{
+				icon:'icon-accordion',
+				name:'accordion',
+				tip:'accordion'
+			},{},{
+				icon:'icon-datagrid',
+				name:'datagrid',
+				tip:'datagrid'
+			},{
+				icon:'icon-tree',
+				name:'tree',
+				tip:'tree'
+			},{
+				icon:'icon-treegrid',
+				name:'treegrid',
+				tip:'treegrid'
+			},{
+				icon:'icon-pie',
+				name:'pie',
+				tip:'pie'
+			},{
+				icon:'icon-bar',
+				tip:'bar'
+			},{
+				icon:'icon-line',
+				name:'line',
+				tip:'line'
+			},{
+				icon:'icon-map',
+				name:'bmap',
+				tip:'baidu map'
+			},{
+				icon:'icon-form',
+				name:'form',
+				tip:'input form'
+			},{
+				icon:'icon-formattext',
+				name:'formattext',
+				tip:'formated text'
+			},{
+				icon:'icon-menu',
+				name:'menu',
+				tip:'menu'
+			},{
+				icon:'icon-toolbar',
+				name:'toolbar',
+				tip:'toolbar'
+			},{
+				icon:'icon-dspy',
+				name:'dapy',
+				tip:'server side python script'
+			},{
+				icon:'icon-sqlds',
+				name:'sqlds',
+				tip:'server side sql datasource'
+			},{
+				icon:'icon-xlsxds',
+				name:'xlsxds',
+				tip:'server side xlsx datasourcec'
+			}
+		]
+	}
+}

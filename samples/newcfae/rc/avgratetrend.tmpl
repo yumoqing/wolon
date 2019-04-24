@@ -1,0 +1,69 @@
+__widget_description__={
+	__ctmpl__:'line',
+	data:{
+		id:"avgratetrend",
+		widgettype:"echarts",
+		class:"rc_br",
+		width:(document.body.clientWidth*7/10 - 4) + 'px',
+		height:((document.body.clientHeight-50)*4/10 - 4) + 'px',
+		title:"",
+		url:"{{absurl(request,'./avgratetrend.dspy')}}",
+		charttype:"bar",
+		dimension:"ccmonth",
+		series:[
+			{
+				name:"债券",
+				indicator:"bond"
+			},
+			{
+				name:"债权",
+				indicator:"options"
+			},
+			{
+				name:"Shibor3M",
+				indicator:"shibor3m"
+			}
+		],
+		options:{
+			yAxis:[
+				{
+					min: 4,
+					max: 6
+				}
+			],
+			series:[
+				{
+					itemStyle : {    
+						normal : {    
+							lineStyle:{
+								width:4,
+								color:'#ff0000'    
+							}   
+						}    
+					}    			
+				},
+				{
+					itemStyle : {    
+						normal : {    
+							lineStyle:{
+								width:4,
+								color:'#00ff00'    
+							}   
+						}    
+					}    			
+				},
+				{
+					itemStyle : {    
+						normal : {    
+							lineStyle:{
+								width:4,
+								color:'#0000ff'
+							}   
+						}    
+					}    			
+				}
+
+			]
+		}
+	}
+}

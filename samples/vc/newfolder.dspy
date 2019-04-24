@@ -1,0 +1,35 @@
+#newfolder.dspy
+def getRoot():
+        return visualcoding().userroot.get(userid,visualcoding().default_root)
+
+root=request.args.get('root',[getRoot()])[0]
+path=request.args.get('path',[''])[0]
+name=request.args.get('name',[''])[0]
+print('root=',root,'path=',path,'name=',name);
+if name=='':
+	return {
+		"status":"error",
+		"errortype":"missing file",
+		"errmsg":"missing file"
+	}
+
+try:
+	p = root+path+'/'+name
+	print(p);
+	r = mkdir()
+	return {
+		'status':'OK',
+		'data':{
+			'total':0,
+			'rows':[]	
+		}
+	}
+except Exception as e:
+	return {
+		"status":"error",
+		"errortype":"mkdir error",
+		"errmsg":str(e),
+	
+	}
+
+

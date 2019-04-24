@@ -1,0 +1,16 @@
+{% include "header.tmpl" %}
+<div id='bp' style="width:500px"></div>
+<script src="/myjs/bufferedpanel.js" ></script>
+
+<script>
+$(function(){
+	var d = {
+		pattern:'<div class="box" style="width:145px;height=100px;margin:10px">{[=it.songname]}</box>',
+		url:"./getSongs.dspy",
+	}
+
+	var o = $('#bp').bufferedpanel(d);
+}
+</script>
+
+{% include "footer.tmpl" %}

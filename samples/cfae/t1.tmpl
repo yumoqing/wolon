@@ -1,0 +1,218 @@
+{% include "header.tmpl" %}
+
+<script>
+
+var d = {
+	"id":"top20amplitude",
+	"widgettype":"echarts",
+	"class":"chartbox",
+	"width":"300px",
+	"height":"100%",
+	"left":60,
+	"height":"600px",
+	"title":"振幅最大",
+	"url":"stock_maxamp.dspy",
+	"dimension":"instrument_id",
+	"series":[
+		{
+			name:"振幅",
+			"indicator":"avgamp",
+		}
+	]
+
+}
+// $(tmplRender('hbar',d)).appendTo('body');
+
+
+var d = {
+	"id":"stock1",
+	"widgettype":"echarts",
+	"class":"chartbox",
+	"width":"500px",
+	"height":"300px",
+	"title":"最高最低",
+	"url":"stock_nday.dspy",
+	"charttype":"line",
+	"dimension":"trade_date",
+	"series":[
+		{
+			name:"最高",
+			"indicator":"p_high",
+		},
+		{
+			name:"最低",
+			type:"bar",
+			"indicator":"p_low",
+		}
+	],
+	"contextmenu":[
+		{
+			"type":"amplitude",
+			"identifier":"function(data){return true;}",
+			"func":"doTest",
+			"submenu":
+			[
+				{
+					"label":"sql script",
+					"name":"sqlscript"
+				},{
+					"label":"sql builder",
+					"name":"sqlbuilder"
+				}
+			]
+		},
+		{
+			"type":"p_change",
+			/*
+			"identifier":"function(data){return data.ttt=='aaaa';}",
+			*/
+			"func":"doTest",
+			"submenu":
+			[
+				{
+					"label":"p_change 1",
+					"name":"p_change1"
+				},{
+					"label":"p_change 2",
+					"name":"p_change2"
+				}
+			]
+		}
+	]
+}
+$(tmplRender('line',d)).appendTo('body');
+var d = {
+	"id":"stock2",
+	"widgettype":"echarts",
+	"class":"chartbox",
+	"width":"500px",
+	"height":"300px",
+	"title":"开盘收盘",
+	"url":"stock_nday.dspy",
+
+	"charttype":"line",
+	"dimension":"trade_date",
+	"series":[
+		{
+			name:"开盘",
+			"indicator":"p_open",
+		},
+		{
+			name:"收盘",
+			type:"bar",
+			"indicator":"p_close",
+		}
+	]
+
+}
+$(tmplRender('line',d)).appendTo('body');
+
+var d = {
+	"id":"stock3",
+	"widgettype":"echarts",
+	"class":"chartbox",
+	"width":"500px",
+	"height":"300px",
+	"title":"振幅,涨幅",
+	"url":"stock_nday.dspy",
+	"charttype":"bar",
+	"dimension":"trade_date",
+	"series":[
+		{
+			name:"振幅",
+			type:"bar",
+			"indicator":"amplitude",
+		},
+		{
+			name:"涨幅",
+			"indicator":"p_change",
+		}
+	]
+}
+$(tmplRender('bar',d)).appendTo('body');
+
+var d = {
+	"id":"stock4",
+	"widgettype":"echarts",
+	"class":"chartbox",
+	"charttype":"bubble",
+	"width":"500px",
+	"height":"300px",
+	"title":"振幅最大",
+	"url":"bubbletest.dspy",
+	"dimension":"instrument_id",
+	"subdimension":"trade_date",
+	"x_field":"volume",
+	"y_field":"p_close",
+	"size_field":"turnover",
+	"sizefunc":"function(d){return Math.sqrt(d[2])*10;}",
+	"contextmenu":[
+		{
+			"type":"amplitude",
+			"identifier":"function(data){return true;}",
+			"func":"doTest",
+			"submenu":
+			[
+				{
+					"label":"sql script",
+					"name":"sqlscript"
+				},{
+					"label":"sql builder",
+					"name":"sqlbuilder"
+				}
+			]
+		},
+		{
+			"type":"p_change",
+			/*
+			"identifier":"function(data){return data.ttt=='aaaa';}",
+			*/
+			"func":"doTest",
+			"submenu":
+			[
+				{
+					"label":"p_change 1",
+					"name":"p_change1"
+				},{
+					"label":"p_change 2",
+					"name":"p_change2"
+				}
+			]
+		}
+	]
+}
+
+$(tmplRender('bubble',d)).appendTo('body');
+
+var d = {
+	"id":"stock5",
+	"widgettype":"echarts",
+
+	"class":"chartbox",
+	"charttype":"pie",
+	"width":"500px",
+	"height":"300px",
+	"title":"饼图",
+	"url":"stock_nday.dspy",
+
+	"seriename":"instrument_id", 
+	"dimension":"trade_date", 
+	"indicator":"volume"
+}
+$(tmplRender('pie',d)).appendTo('body');
+
+
+var wc = WidgetCalls.createNew();
+wc.add('top20amplitude','onClick',function(d){
+	console.log("hahahah",d);
+	obj_stock1.setValue(d);
+	obj_stock2.setValue(d);
+	obj_stock3.setValue(d);
+	obj_stock4.setValue(d);
+	obj_stock5.setValue(d);
+
+	
+});
+
+</script>
+{% include "footer.tmpl" %}

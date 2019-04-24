@@ -1,0 +1,17 @@
+{% include "header.tmpl" %}
+<script>
+$(document).ready(function(){
+console.log($.browser,$.jquery);
+});
+
+$(function(){
+	$('body').desktop({
+		loadUrl : { //远程数据加载路径
+			app : '{{absurl(request,'./app.dspy')}}', //app数据
+			startMenu : '{{absurl(request,'./startMenu.dspy')}}', //开始菜单数据
+			widget : '{{absurl(request,'./widget.dspy')}}'
+		},
+	});
+});
+</script>
+{% include "footer.tmpl" %}

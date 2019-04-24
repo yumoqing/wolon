@@ -1,0 +1,22 @@
+<div id="mainmenu" style="height:100%;width:100%;background-color:#0a1929;color:white;"></div>
+<script>
+$(function(){
+	var d= {
+    "__ctmpl__":"tree",
+    "data":{
+        "idField":"funcid",
+        "url":"{{absurl(request,'./functionlists.dspy')}}",
+	"options":{
+		"onSelect":function(node){
+			menuCall(node.funcid,node.text);
+		}
+	}
+    },
+    "__metadata__":{
+        "__jename__":"tree"
+    }
+};
+	$(tmplRender(d.__ctmpl__,d.data)).appendTo($('#mainmenu'));
+});
+</script>
+

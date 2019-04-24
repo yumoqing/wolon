@@ -1,0 +1,44 @@
+#getSQLResult.dspy
+# parameters:
+# sqlid? page,rows,
+
+@runSQLPaging
+def result_sql(db,ns):
+	sqlid = request.args.get('sqlid',[None])[0]
+	sdata = sessiondata().get(sqlid)
+	sql = sdata.get('sql')
+	desc={
+		"sql_string":sql,
+	}
+	return desc
+
+@runSQLResultFields
+def fields_sql(db,ns):
+	sdata = sessiondata().get(request.args.get('sqlid',[None])[0])
+	sql = sdata.get('sql')
+	desc = {
+		"sql_string":sql
+	}
+	return desc
+	
+
+print("request.args=",request.args)
+sqlid = request.args.get('sqlid',[None])[0]
+rows = int(request.args.get('rows',['50'])[0])
+page = int(request.args.get('page',['1'])[0])
+sdata = sessiondata().get(sqlid)
+sql = sdata.get('sql')
+db = sdata.get('db')
+print('db=',db,'sql=',sql,'sqlid=',sqlid)
+fs = [ i for i in fields_sql(db,{}) ]
+sortname = request.args.get('sort',[fs[0]['name']])[0]
+ns = {
+	"rows":rows,
+	"sort":sortname,
+	"order":"",
+	"page":page,
+}
+
+ret = result_sql(db,ns)
+
+return ret

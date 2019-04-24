@@ -1,0 +1,104 @@
+/*
+
+数据定义
+var d = {
+	"id":"top20amplitude",
+	"class":"chartbox",
+	"charttype":"pie",
+	"width":"300px",
+	"height":"600px",
+	"title":"振幅最大",
+	"url":"someurl",
+	"seriename":"instrument_id", 序列名
+	"dimension":"trade_date", 维度
+	"indicator":"valumns",	  指标
+	"contextmenu":{
+		"items":[
+			{
+				"name":"test1",
+				"url":"http://www.baidu.com",
+			},
+			{
+				"name":"test2",
+				"url":"http://www.sina.com.cn",
+			}
+		],
+		"function":"doTest"
+	}
+}
+
+*/
+{[=tmplRender('echarts',it)]}
+<script>
+var option = {
+	{[?it.title]}
+    title : {
+        text: '{[=it.title]}',
+        x:'center'
+    },
+	{[?]}
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    }
+};
+{[? it.options]}
+option = $.extend(option,{[=dump(it.options)]});
+{[?]}
+
+obj_{[=it.id]}.getValue = function(params){
+	var series = obj_{[=it.id]}.obj.getOption().series;
+	var d = series[params.seriesIndex].data[params.dataIndex];
+	var data = {
+		event:params.event,
+		data:{
+			{[=it.indicator]}:d.value,
+			{[=it.dimension]}:d.name
+		}
+	};
+	return data;
+};
+
+obj_{[=it.id]}.setDataOption = function(data){
+	if (data.length == 0) {
+		delete obj_{[=it.id]}.obj;
+		obj_{[=it.id]}.obj = echarts.init(document.getElementById('{[=it.id]}'));
+		return;
+	}
+	obj_{[=it.id]}.data = data;
+	var legend = new Array();
+	var series = new Array();
+	var dp = new Array();
+	var legend_name = '';
+	var dlist = new Array();
+	for (var i=0;i<data.length;i++){
+		legend.push(data[i].{[=it.dimension]});
+		dp.push({value:data[i].{[=it.indicator]},name:data[i].{[=it.dimension]},oops:1});
+	};
+	series.push({
+				name:'{[=it.seriename]}',
+				type:'pie',
+				radius:'70%',
+				center:['50%','53%'],
+				data:dp,
+				itemStyle:{
+					emphasis: {
+						shadowBlur: 10,
+						shadowOffsetX: 0,
+						shadowColor: 'rgba(0, 0, 0, 0.5)'
+					}
+				}
+			});
+	return {
+		legend:{
+			left:'left',
+			orient:'vertical',
+			data:legend
+		},
+		series:series
+	}
+};
+
+obj_{[=it.id]}.setValue({});
+</script>
+

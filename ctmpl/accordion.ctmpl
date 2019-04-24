@@ -1,0 +1,42 @@
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+
+<div id="{[=it.id]}" class="{[=it.class||'lbox']}"
+	style="width:{[=it.width||'100%']};height:{[=it.height||'100%']};"
+>
+</div>
+<script>
+var opts={
+	animate:false
+};
+{[?it.options]}
+opts = objExt(opts,{[=dump(it.options)]});
+{[?]}
+$('#{[=it.id]}').accordion(opts);
+$(function(){
+	$.parser.parse('#{[=it.id]}');
+	widgetCreated('accordion','{[=it.id]}');
+	{[~it.items :i]}
+	$('#{[=it.id]}').accordion('add', {
+		title: '{[=i.title||i.label]}',
+		{[?i.icon]}
+		iconCls:'{[=i.icon]}',
+		{[?]}
+		{[?i.url]}
+		href:"{[=i.url]}",
+		{[??]}
+		content: "{[=i.content||'']}",
+		{[?]}
+		selected: false
+	});
+		{[?i.remoteWidgets]}
+	remoteWidgets({[=dump(i.remoteWidgets)]},{},
+		$('#{[=it.id]}').accordion('getPanel','{[=i.title||i.label]}'),'replace',function(e){console.log(e);});
+		{[?]}
+	{[~]}
+
+});
+
+</script>
+

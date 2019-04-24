@@ -1,0 +1,8 @@
+ret = player.toggleMediaTrack()
+printf("toggleMediaTrack() return=",ret)
+ret = {
+	"status":"OK",
+	"track":player.track
+}
+printf("ret=",ret)
+return ret

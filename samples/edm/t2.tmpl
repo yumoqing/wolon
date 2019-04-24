@@ -1,0 +1,68 @@
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="/css/wolon.css">
+<script src="/jquery/jquery-3.1.0.min.js"></script>
+<script src="/easyui/jquery.easyui.min.js"></script>
+<script src="/myjs/edatagrid.js"></script>
+
+</head>
+<body>
+<div id="gg"></div>
+<script>
+(function ($){ 
+	var d = {
+		url:"./t2.dspy",
+		width:'100%',
+		height:'100%',
+		onAdded:function(row){
+			console.log('row added',row);
+		},
+		onUpdated:function(oldrow,newrow){
+			console.log('row updated,old=',oldrow,'new row=',newrow);
+		},
+		onDeleted:function(row){
+			console.log('row deleted',row);
+		},
+		singleSelect:true,
+		columns:[[
+			{
+				field:'f_name',
+				title:'field name',
+				width:100,
+				editor:"textbox"
+			},{
+				field:'f_title',
+				title:'field title',
+				width:100,
+				editor:"textbox"
+			},{
+				field:'f_type',
+				title:'field type',
+				width:100,
+				editor:"textbox"
+			},{
+				field:'f_length',
+				title:'field length',
+				width:100,
+				editor:"textbox"
+			},{
+				field:'f_dec',
+				title:'field dec',
+				width:100,
+				editor:"textbox"
+			},{
+				field:'f_comments',
+				title:'field comments',
+				width:100,
+				editor:"textbox"
+			}
+		]]
+	};
+	$('#gg').edatagrid(d);
+	$.parser.parse($('#gg'));
+}( jQuery ));
+</script>
+</body>
+</html>

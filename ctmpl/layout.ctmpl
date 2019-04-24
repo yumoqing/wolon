@@ -1,0 +1,25 @@
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+
+<div id="{[=it.id]}" class="easyui-layout" 
+		style="width:{[=it.width||'100%']};height:{[=it.height||'100%']};">
+</div>
+<script>
+$("#{[=it.id]}").layout();
+var opts;
+{[for(var opt in it.regions){ ]}
+opts = {[=dump(it.regions[opt])]};
+opts.region = '{[=opt]}';
+$("#{[=it.id]}").layout('add',opts);
+{[} ]}
+
+{[for(var opt in it.regions){ ]}
+	{[?it.regions[opt].remoteWidgets]}
+remoteWidgets({[=dump(it.regions[opt].remoteWidgets)]},{},
+	$('#{[=it.id]}').layout('panel','{[=opt]}'),'replace',function(e){console.log(e);});
+	{[?]}
+{[} ]}
+
+widgetCreated('layout','{[=it.id]}');
+</script>

@@ -1,0 +1,11 @@
+{% include "header.tmpl" %}
+<script src="/myjs/videoplayer.js"></script>
+<div id='test'></div>
+<script>
+var d = {
+	url:'video.json',
+	oops:true
+}
+var v = $('#test').videoplayer(d);
+</script>
+{% include "footer.tmpl" %}

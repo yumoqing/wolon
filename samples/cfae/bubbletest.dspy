@@ -1,0 +1,10 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc = {
+		"sql_string":"select top 20 * from stock_daily_hist where instrument_id = ${instrument_id}$ order by trade_date desc"
+	}
+	return desc
+ns = {
+	'instrument_id':request.args.get('instrument_id',['600804'])[0]
+}
+return [i for i in sql('fadb',ns) ]

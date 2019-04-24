@@ -1,0 +1,83 @@
+<div id="cfaemain_tabs" ></div>
+<script>
+var obj_cfaemain_tabs = {
+    add: function(label, url, icon) {
+        $('#cfaemain_tabs').tabs('add', {
+            title: label,
+            label: label,
+            iconCls: icon,
+            closable: true,
+            selected: true
+        });
+        if (typeof(url) == typeof([]) {
+            remoteWidgets(url, {},
+            $('#cfaemain_tabs').tabs('getTab', label), 'replace',
+            function(e) {
+                $.messager.alert(e);
+            });
+        } else {
+            remoteWidget(url, {},
+            $('#cfaemain_tabs').tabs('getTab', label), 'replace',
+            function(e) {
+                $.messager.alert(e);
+            });
+        }
+    },
+    addOrSelect: function(label, url, icon) {
+        var f = $('#cfaemain_tabs').tabs('getTab', label);
+        if (isNull(f) || f.length == 0) {
+            obj_cfaemain_tabs.add(label, url, icon);
+        } else {
+            $('#cfaemain_tabs').tabs('select', label);
+        }
+    }
+};
+var opts = $.extend({
+    fit: true,
+    border: true,
+    onSelect: function(title, index) {
+        var tab = $('#cfaemain_tabs').tabs('getSelected');
+        var mc = WidgetCalls.createNew();
+        var data = {
+            data: {
+                title: title,
+                index: index
+            },
+            id: 'cfaemain_tabs',
+            action: 'onSelect'
+        };
+        mc.execute('cfaemain_tabs', 'onSelect', data, null);
+    },
+    onUnselect: function(title, index) {
+        var mc = WidgetCalls.createNew();
+        var data = {
+            data: {
+                title: title,
+                index: index
+            },
+            id: 'cfaemain_tabs',
+            action: 'onUnselect'
+        };
+        mc.execute('cfaemain_tabs', 'onUnselect', data, null);
+    },
+},
+{
+    id: 'cfaemain_tabs'
+});
+$('#cfaemain_tabs').tabs(opts);
+$('#cfaemain_tabs').tabs('add', {
+    title: "home",
+    icon: "icon-home",
+    remoteWidgets: ["/cfae/profiletitle.js", "/cfae/issuer/productcross.tmpl", "/cfae/producttypeissueamount.tmpl", "/cfae/areaissueamount.tmpl", "/cfae/termissueamount.tmpl", "/cfae/ratingissueamount.tmpl"],
+    closable: false
+});
+$(document).ready(function() {
+    remoteWidgets(["/cfae/profiletitle.js", "/cfae/issuer/productcross.tmpl", "/cfae/producttypeissueamount.tmpl", "/cfae/areaissueamount.tmpl", "/cfae/termissueamount.tmpl", "/cfae/ratingissueamount.tmpl"], {},
+    $('#cfaemain_tabs').tabs('getTab', 'home'), 'replace',
+    function(e) {
+        console.log(e);
+    });
+    $.parser.parse($('#cfaemain_tabs'));
+    widgetCreated('tabs', 'cfaemain_tabs');
+});
+</script>

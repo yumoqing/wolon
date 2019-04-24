@@ -1,0 +1,23 @@
+/* jsoneditor.ctmpl
+*/
+{[?!it.id]}
+{[it.id = getId('jsoneditor');]}
+{[?]}
+<div id="{[=it.id]}" width="{[=it.width||'100%']}" height="{[=it.height||'100%']}">
+jsoneditor
+</div>
+<script>
+var opts = {[=dump(it)]};
+{[?it.width]}
+delete opts.width;
+{[?]}
+{[?it.height]}
+delete opts.height;
+{[?]}
+
+if (!opts.roottype){
+	opts.roottype='OBJECT';
+}
+console.log("jsoneditor:options=",opts);
+$('#{[=it.id]}').jsoneditor(opts);
+</script>

@@ -1,0 +1,37 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc={
+		"sql_string":"""
+ select N'无' as party,count(1) as cnt from participals where participalid not in (select issuerid from product) and  catelogname = N'融资人'
+ 
+ union
+ 
+ select producttype as party,count(1) as cnt from pcaview 
+ group by producttype
+ 
+ union
+ 
+ select top 3 producttype as party,count(1) as cnt from (
+ select a.producttype + N'.'+ b.producttype as producttype,a.issuerid 
+ from pcaview a,pcaview b
+ where a.issuerid = b.issuerid and a.producttype <>b.producttype
+ ) b
+ group by producttype
+ 
+ union
+ 
+ select top 1 producttype as party,count(1) as cnt from (
+ select a.producttype + N'.'+ b.producttype + '.' + c.producttype as producttype,a.issuerid 
+ from pcaview a,pcaview b,pcaview c
+ where a.issuerid = b.issuerid and a.producttype <> b.producttype 
+	and a.issuerid = c.issuerid and a.producttype <> c.producttype
+	and b.producttype <> c.producttype
+ ) b
+ group by producttype
+		"""
+}
+	return desc
+
+
+return [i for i in sql('cfae',{}) ]
+

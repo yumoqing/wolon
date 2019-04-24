@@ -1,0 +1,7 @@
+player.playNext()
+ret = {
+	'status':'OK',
+	'action':'next'
+}
+print(ret)
+return ret

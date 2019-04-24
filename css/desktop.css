@@ -1,0 +1,234 @@
+img {
+	border: none;
+}
+.desktop-wall {
+	background: url('/imgs/wallpaper.jpg') fixed no-repeat center;
+	position: relative;
+	overflow: hidden;
+}
+.desktop-container {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	margin: 0;
+	padding: 0;
+}
+.desktop-container li {
+	list-style: none;
+	position: absolute;
+	padding: 10px 0;
+	text-align: center;
+	color: #fff;
+	margin: 0;
+}
+.shortcut-container li img {
+	display: block;
+	margin: auto;
+	border-radius: 3px;
+}
+.desktop-container li em {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 0;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	background: #fff;
+	opacity: 0.12;
+	filter: alpha(opacity=12);
+}
+.desktop-container li:hover em,
+.desktop-container li.hover em,
+.desktop-container li.select em {
+	display: block;
+}
+.desktop-container li.focus em {
+	display: block;
+	opacity: 0.25;
+	filter: alpha(opacity=25);
+}
+.desktop-container li span {
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+	height: 20px;
+	margin-top: 5px;
+	padding: 0 8px;
+	line-height: 20px;
+	text-align: center;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	color: white;
+	filter: progid: DXImageTransform.Microsoft.AlphaImageLoader(src='/imgs/shortcut_text.png', sizingMethod='scale');
+	_filter: none;
+	_background: #1B3E65;
+	cursor: default;
+	_cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+}
+/************************************************************/
+.desktop-taskBar {
+	padding: 0;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	position: relative;
+}
+.desktop-taskList-x {
+	border: none;
+	position: relative;
+	overflow: hidden;
+	padding: 2px;
+	overflow: hidden;
+	float: left;
+	height: 30px;
+}
+.desktop-taskList-y {
+	border: none;
+	position: absolute;
+	overflow: hidden;
+	padding: 2px;
+	overflow: hidden;
+	top: 30px;
+	width: 30px;
+}
+.desktop-taskBar-bg1 {
+	background: url(/imgs/taskbuttons-panel-bg.gif);
+}
+.desktop-taskBar-bg2 {
+	background: url(/imgs/taskbuttons-panel-bg2.gif);
+}
+.desktop-scroll-left {
+	position: absolute;
+	left: 0px;
+	top: 1px;
+	width: 18px;
+	height: 28px!important;
+	height: 30px;
+	border: 1px solid #8DB2E3;
+	font-size: 1px;
+	z-index: 1;
+	display: none;
+	cursor: pointer;
+	background: #E0ECFF url('/imgs/leftarrow.png') no-repeat 1px 5px;
+}
+.desktop-scroll-right {
+	position: absolute;
+	right: 0;
+	top: 1px;
+	width: 18px;
+	height: 28px!important;
+	height: 30px;
+	border: 1px solid #8DB2E3;
+	font-size: 1px;
+	z-index: 1;
+	display: none;
+	cursor: pointer;
+	background: #E0ECFF url('/imgs/rightarrow.png') no-repeat 2px 5px;
+}
+.desktop-scroll-top {
+	z-index: 1;
+}
+.desktop-scroll-bottom {
+	z-index: 1;
+}
+.desktop-list-wrap {
+	position: relative;
+	left: 0px;
+	overflow: hidden;
+	margin: 0px;
+	padding: 0px;
+}
+.desktop-list-list {
+	list-style-type: none;
+	height: 30px;
+	margin: 1px 0 0 5px;
+	padding: 0px;
+	padding-left: 4px;
+	font-size: 12px;
+	width: 5000px;
+}
+.desktop-list-list li {
+	float: left;
+	display: inline-block;
+	margin-right: 4px;
+	margin-bottom: -1px;
+	padding: 0;
+	position: relative;
+	radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	height: 25px;
+	width: 100px;
+	line-height: 25px;
+	text-align: center;
+	white-space: nowrap;
+	padding: 0px 10px;
+	color: #FFF;
+	cursor: pointer;
+	background: url(/imgs/taskbg.png) no-repeat;
+}
+.desktop-list-list li.selected{
+	width: 100px;
+	font-weight:bolder;
+	cursor: pointer;
+	background: url(/imgs/taskbg-select.png) no-repeat;
+}
+.desktop-taskBar-calendar-x {
+	color: white;
+	text-align: center;
+	position: absolute;
+	right: 2px;
+	top:2px;
+	_top:4px;
+	cursor: default;
+}
+.desktop-taskBar-calendar-y {
+	position: absolute;
+	vertical-align: middle;
+	text-align: center;
+	bottom: 0px;
+	color: white;
+	cursor: default;
+}
+/******************************************************************/
+span.desktop-startMenu-x {
+	margin-left: 5px;
+	float: left;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	background: url(/imgs/start.png) left center no-repeat;
+}
+span.desktop-startMenu-y {
+	margin-left: 4px;
+	width: 30px;
+	height: 30px;
+	cursor: pointer;
+	position: absolute;
+	top: 4px;
+	background: url(/imgs/start.png) left center no-repeat;
+}
+span.desktop-startMenu-x:hover,
+span.desktop-startMenu-y:hover,
+span.desktop-startMenu-hover {
+	background: url(/imgs/start2.png) left center no-repeat;
+}
+/******************************************************************/
+.desktop-spacer{
+	border:2px dashed #eee;
+}
+.desktop-widget{
+	position: absolute;
+	right: 0;
+cursor: default;
+}

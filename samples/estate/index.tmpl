@@ -1,0 +1,12 @@
+{% include "header.tmpl" %}
+<p>-------------------------------------</p>
+<script>
+$(function(){
+{% if terminalType.lower() in [ 'iphone','ipad','androidpad' ] %}
+	remoteWidgets(["{{absurl(request,"./mobile_main.tmpl")}}"],{},$('body'),'replace',showError);
+{% else %}
+	remoteWidgets(["{{absurl(request,"./main.tmpl")}}"],{},$('body'),'replace',showError);
+{% endif %}
+});
+</script>
+{% include "footer.tmpl" %}

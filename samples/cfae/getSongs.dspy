@@ -1,0 +1,17 @@
+#getSongs.dspy
+@runSQLPaging
+def sql(db,ns):
+	desc = {
+		"sql_string":"select * from songs"
+	}
+	return desc
+page = int(request.args.get('page',['1'])[0])
+rows = int(request.args.get('pageSize',['50'])[0])
+ns = {
+	"page":page,
+	"rows":rows,
+	"sort":"songname"
+}
+d = sql('ktv',ns)
+print('page=',page,'rows=',rows,'d=',d['total'],'cnt=',len(d['rows']))
+return d

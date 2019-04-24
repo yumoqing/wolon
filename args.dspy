@@ -1,0 +1,4 @@
+print('method=',request.method)
+ret = request2ns()
+print('ret=',ret)
+return ret

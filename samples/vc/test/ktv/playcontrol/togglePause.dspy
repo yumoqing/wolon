@@ -1,0 +1,5 @@
+player.togglePause()
+return {
+	'status':'OK',
+	'pausestatus':player.pausedStatus
+}

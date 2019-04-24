@@ -1,0 +1,26 @@
+{% include "header.tmpl" %}
+
+<script>
+var d = {
+	__ctmpl__:'layout',
+	data:{
+		regions:{
+			center:{
+				remoteWidgets:[
+					"docs/bsppo.md"
+				]
+			},
+			south:{
+				height:"50px",
+				remoteWidgets:[
+					"docs/icpinfo.md"
+				]
+			}
+		}
+	}
+}
+;
+$(tmplRender(d.__ctmpl__,d.data)).appendTo($('body'));
+</script>
+
+{% include "footer.tmpl" %}

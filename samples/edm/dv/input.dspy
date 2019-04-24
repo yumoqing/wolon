@@ -1,0 +1,46 @@
+id = request.args.get('id',[None])[0]
+args = {}
+target = request.args.get('__target__',["$('body')"])[0]
+dbname,tablename = id.split(':')
+name = dbname + '_' + tablename
+crud = CRUD(dbname)
+infos = crud.I(tablename)
+[ i.update(crud.defaultIOField(i)) for i in infos ]
+
+ns = {}
+[ns.update({k:request.args.get(k)[0]}) for k in request.args if k in [i.name for i in infos if i.primarykey ] ]
+
+if len(ns.keys()) > 0:
+
+	fs = [ {'lv':{'field':'%s' % i},'op':'=','rv':{'type':'parameter','parameter':'${%s}$' % i}} for i in ns.keys() ]
+
+	if len(fs) > 1:
+		filters = {
+			"and":fs
+		}
+	else:
+		filters = fs[0]
+	recs = [ i for i in crud.R(tablename,filters=filters,NS=ns) ]
+	[ i.update({'value':recs[0][i.name]}) for i in infos ]
+
+return {
+	"tmplname":"widget_js.tmpl",
+	"data":{
+		"__ctmpl__":"form",
+		"__target__":target,
+		"data":{
+			"id":name +'_form',
+			"fields":infos,
+			"toolbar":{
+				"tools":[
+					{
+						"name":"submit"
+					},
+					{
+						"name":"clear"
+					}
+				]
+			}
+		}
+	}
+}

@@ -1,0 +1,20 @@
+{% include "header.tmpl" %}
+<script src="/sockjs/sockjs.min.js"></script>
+<button onClick="connect()">open</button>
+<button onClick="disconnect()">close</button>
+<script>
+
+var ws = null;
+connect = function(){
+	ws =  new SockJS('https://localhost:8900/websock');
+};
+
+disconnect = function(){
+	ws.close()
+};
+
+
+
+</script>
+
+{% include "footer.tmpl" %}

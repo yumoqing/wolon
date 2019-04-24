@@ -1,0 +1,28 @@
+<div></div>
+<script>
+var d = {
+	"id":"{{request.args.get('id')[0]}}_acc",
+	"items":[
+		{
+			"label":"fields",
+			"icon":"icon-field",
+			"tools":[
+				{
+					
+				},
+				{
+				}
+			]
+		},
+		{
+			"label":"join",
+			"icon":"icon-join"
+		},
+		{
+			"label":"filter",
+			"icon":"icon-search"
+		}
+	]
+};
+$('#{{request.args.get('id')[0]}}_layout').layout('panel','east').html(tmplRender('accordion',d));
+</script>

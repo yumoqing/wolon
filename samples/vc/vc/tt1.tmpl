@@ -1,0 +1,16 @@
+{% include "header.tmpl" %}
+<button onclick="doit()">go</button>
+<script>
+function doit()
+{
+	remoteCall('/vc/index.tmpl','GET','html',{},
+		function(d){
+			$.messager.alert('done','finished');
+		},
+		function(e){
+			$.messager.alert('error',e);
+		}
+	);
+}
+</script>
+{% include "footer.tmpl" %}

@@ -1,0 +1,6 @@
+{
+	"xlsxfile":"./sellfin.xlsx",
+	"data_sheet":"Sheet1",
+	"data_from":4,
+	"ioattrs_at":2
+}

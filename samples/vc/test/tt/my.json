@@ -1,0 +1,28 @@
+__widget_description__ = {
+    "abc":"efeer",
+    "newattr":"\/vc\/test\/tt\/ly.tmpl",
+    "__metadata__":{
+        "__ctmpl__":"jsoneditor",
+        "data":{
+            "width":"100%",
+            "height":"100%",
+            "roottype":"OBJECT",
+            "rootname":"json",
+            "id":"jsoneditor_0",
+            "menuc_id":"0407011c830611f3c3ca8e310f5f352",
+            "atomtypes":[
+                "str",
+                "text",
+                "number",
+                "url",
+                "date",
+                "bool",
+                "code",
+                "urlcode"
+            ],
+            "data":{
+
+            }
+        }
+    }
+}

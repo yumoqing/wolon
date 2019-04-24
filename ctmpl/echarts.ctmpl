@@ -1,0 +1,138 @@
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+
+<div id="{[=it.id]}" 
+	style="width:{[=it.width||'100%']};
+		height:{[=it.height||'100%']};
+		border:'2px solid #F0F0F0';" 
+	{[?it.class]}class="{[=it.class]}"{[?]}
+>
+</div>
+<script>
+	obj_{[=it.id]} = {
+		obj:echarts.init(document.getElementById('{[=it.id]}')),
+		options:{
+			title:{
+				text:'{[=it.title]}',
+				x:'{[=it.titlealign||"center"]}',
+				textStyle:{
+					color:'#F0F0F0'
+				}
+			},
+			borderColor: '#ccc',       /* 标题边框颜色 */
+			borderWidth: 1,            /* 标题边框线宽，单位px，默认为0（无边框）*/
+			
+			backgroundColor: '#2c343c',
+			textStyle: {
+				color: 'rgba(255, 255, 255, 0.3)'
+			},
+			labelLine: {
+				normal: {
+					lineStyle: {
+						color: 'rgba(255, 255, 255, 0.3)'
+					}
+				}
+			},
+			label: {
+				normal: {
+					textStyle: {
+						color: 'rgba(255, 255, 255, 0.8)'
+					}
+				}
+			},
+			itemStyle: {
+				normal: {
+					/* 设置扇形的颜色 
+					color: '#f0f0f0',*/
+					shadowBlur: 200,
+					shadowColor: 'rgba(0, 0, 0, 0.5)'
+				}
+			},
+			legend:{
+				textStyle:{ 
+					color:'#f0f0f0',
+					fontSize:12
+				}
+			},
+			tooltip: {
+				formatter:function(a){
+					return a.seriesName + '<br>' + a.name + ':' + money(a.value);
+				},
+				trigger:'item'
+			}
+		},
+		onClick:function(params){
+			var d = obj_{[=it.id]}.getValue(params);
+			var wc = WidgetCalls.createNew();
+			wc.execute('{[=it.id]}','onClick',d);
+		},
+		onDblclick:function(params){
+			var d = obj_{[=it.id]}.getValue(params);
+			var wc = WidgetCalls.createNew();
+			wc.execute('{[=it.id]}','onDblclick',d);
+		},
+		onMousedown:function(params){
+			var d = obj_{[=it.id]}.getValue(params);
+			var wc = WidgetCalls.createNew();
+			wc.execute('{[=it.id]}','onMousedown',d);
+		},
+		onMousemove:function(params){
+			var d = obj_{[=it.id]}.getValue(params);
+			var wc = WidgetCalls.createNew();
+			wc.execute('{[=it.id]}','onMousemove',d);
+		},
+		onMouseup:function(params){
+			var d = obj_{[=it.id]}.getValue(params);
+			var wc = WidgetCalls.createNew();
+			wc.execute('{[=it.id]}','onMouseup',d);
+		},
+		
+		onMouseover:function(params){
+			var d = obj_{[=it.id]}.getValue(params);
+			var wc = WidgetCalls.createNew();
+			wc.execute('{[=it.id]}','onMouseover',d);
+		},
+		onMouseout:function(params){
+			var d = obj_{[=it.id]}.getValue(params);
+			var wc = WidgetCalls.createNew();
+			wc.execute('{[=it.id]}','onMouseout',d);
+		},
+		onLoaded:function(d){
+			var wc = WidgetCalls.createNew();
+			wc.execute('{[=it.id]}','onLoaded',d);		
+		},
+		setValue:function(d){
+			{[?it.url]}
+			remoteCall('{[=it.url]}','GET','json',d,obj_{[=it.id]}.loadData,
+				function(e){
+					$.messager.alert('error');
+				}
+			);
+			{[?]}
+		},
+		loadData:function(data){
+			var opts = objExt(
+				obj_{[=it.id]}.options,
+				obj_{[=it.id]}.setDataOption(data)
+				{[?it.options]}
+				,{[=dump(it.options)]}
+				{[?]}
+			);
+			console.log('options=',opts);
+			obj_{[=it.id]}.obj.setOption(opts,true);
+			$("#{[=it.id]}").css( 'width', $("#{[=it.id]}").width() );
+			$("#{[=it.id]}").css( 'height', $("#{[=it.id]}").height() );
+			obj_{[=it.id]}.onLoaded(data);
+		}
+	};
+	
+	obj_{[=it.id]}.obj.on('click',obj_{[=it.id]}.onClick);
+	obj_{[=it.id]}.obj.on('dblclick',obj_{[=it.id]}.onDblclick);
+	
+{[? it.contextmenu]}
+{[=tmplRender('contextmenu',it)]}
+{[?]}
+
+</script>
+

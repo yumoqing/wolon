@@ -1,0 +1,9 @@
+data=[
+{'sect':'钢铁','amount':'200'},
+{'sect':'煤炭','amount':'500'},
+{'sect':'房地产','amount':'230'},
+{'sect':'基建','amount':'260'},
+{'sect':'纺织','amount':'150'},
+{'sect':'其他','amount':'362'},
+]
+return data

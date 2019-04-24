@@ -1,0 +1,12 @@
+#codings.dspy
+return [
+	{
+		"coding":"utf8",
+	},{
+		"coding":"iso-8859-1",
+	},{
+		"coding":"gb2312",
+	},{
+		"coding":"gbk",
+	}
+]

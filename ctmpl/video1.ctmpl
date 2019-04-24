@@ -1,0 +1,129 @@
+/*
+{
+	id:
+	title:
+	url:video url
+}
+*/
+<video id="{[=it.id]}" controls style="border: 1px solid blue;" height="{[=it.height||'240']}" width="{[=it.width||'320']}" title="{[=it.title]}"> 
+HTML5 Video is required for this example
+</video>
+<script type="text/javascript">
+$(function(){
+	var video = document.getElementById("{[=it.id]}");
+	obj_{[=it.id]} = {
+		obj : video,
+		play:function() {
+			if (video.src == "") { 
+				getVideo();
+			}
+			/* get the button id to swap the text based on the state */
+			if (video.paused) { 
+				/* play the file, and display pause symbol */
+				video.play();
+			} else { 
+				/* pause the file, and display play symbol  */
+				video.pause();
+			}
+		},
+		/* load video file from input field */
+		load:function() {
+			video.src = '{[=it.url]}';
+			video.load(); /* if HTML source element is used */
+		},
+		  
+		/* button helper functions */
+		/* skip forward, backward, or restart */
+		function setTime(tValue) {
+			/* if no video is loaded, this throws an exception */
+			try {
+				if (tValue == 0) {
+					video.currentTime = tValue;
+				}
+				else {
+					video.currentTime += tValue;
+				}
+			 
+			} catch (err) {
+				/* errMessage(err) show exception */
+				errMessage("Video content might not be loaded");
+			}
+		}
+		/* display an error message */
+		function errMessage(msg) {
+			/* displays an error message for 5 seconds then clears it */
+			document.getElementById("errorMsg").textContent = msg;
+			setTimeout("document.getElementById('errorMsg').textContent=''", 5000);
+		}
+		/* change volume based on incoming value */
+		function setVol(value) {
+			var vol = video.volume;
+			vol += value;
+			/* test for range 0 - 1 to avoid exceptions */
+			if (vol >= 0 && vol <= 1) {
+				/* if valid value, use it */
+				video.volume = vol;
+			} else {
+				/* otherwise substitute a 0 or 1 */
+				video.volume = (vol < 0) ? 0 : 1; 
+			}
+		}
+		/* button events */
+		/* Play */
+		document.getElementById("play_{[=it.id]}").addEventListener("click", vidplay, false);
+		/* Restart */
+		document.getElementById("restart_{[=it.id]}").addEventListener("click", function () {
+		setTime(0);
+		}, false);
+		/* Skip backward 10 seconds */
+		document.getElementById("rew_{[=it.id]}").addEventListener("click", function () {
+			setTime(-10);
+		}, false);
+		/* Skip forward 10 seconds */
+		document.getElementById("fwd_{[=it.id]}").addEventListener("click", function () {
+			setTime(10);
+		}, false);
+		video.addEventListener("error", function (err) {
+			errMessage(err);
+		}, true);
+		/* volume buttons */
+		document.getElementById("volDn_{[=it.id]}").addEventListener("click", function () {
+		setVol(-.1); /* down by 10% */
+		}, false);
+		document.getElementById("volUp_{[=it.id]}").addEventListener("click", function () {
+		setVol(.1); 
+		/* up by 10% */
+		}, false);
+		/* playback speed buttons */
+		document.getElementById("slower_{[=it.id]}").addEventListener("click", function () {
+		video.playbackRate -= .25;
+		}, false);
+		document.getElementById("faster_{[=it.id]}").addEventListener("click", function () {
+		video.playbackRate += .25;
+		}, false);
+		document.getElementById("normal").addEventListener("click", function () {
+		video.playbackRate = 1;
+		}, false);
+		document.getElementById("mute_{[=it.id]}").addEventListener("click", function (evt) {
+			if (video.muted) {
+				video.muted = false;
+				evt.target.innerHTML = "<img alt='volume on button' src='vol2.png' />"
+			} else {
+				video.muted = true;
+				evt.target.innerHTML = "<img alt='volume off button' src='mute2.png' />"
+			}
+		}, false);
+		video.onprogress = function(e){
+			console.log('onprogress event happended:duration=',e.target.duration,'curtimestamp=',e.target.currentTime,'is ended=',e.target.ended);
+		};
+		video.oncanplay=function(){
+			console.log('oncanplay event happened',arguments);
+		};
+	} 
+	/* end of runtime */
+	getVideo();
+});
+</script>
+
+ 
+

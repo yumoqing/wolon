@@ -1,0 +1,260 @@
+<div width="100%">
+<button id="pc_power" onclick="power()">电源</button>
+<span width="10px"/>
+<button id="pc_pause" onclick="play_or_pause()" >暂停</button>
+<span width="5px"/>
+<button id="pc_mute" onclick="volume_mute()">静音</button>
+<span width="5px"/>
+<button id="pc_track" onclick="swich_track()" >伴唱</button>
+<span width="5px"/>
+</div>
+<div width="100%">
+<button id="pc_next" onclick="play_next()">切歌</button>
+<span width="5px"/>
+<button id="pc_replay" onclick="play_replay()">重唱</button>
+<span width="5px"/>
+<button id="pc_volumedec" onclick="volume_dec()">音量-</button>
+<span width="5px"/>
+<button id="pc_volumeinc" onclick="volume_inc()" >音量+</button>
+<span width="5px"/>
+</div>
+<div width="100%">
+<button id="pc_backpage" onclick="backPage()">上页</button>
+<span width="5px"/>
+<button id="pc_delete" onclick="deleteSong()">删除</button>
+<span width="5px"/>
+<button id="pc_toTop" onclick="toTopSong()">置顶</button>
+<span width="5px"/>
+<button id="pc_forwardpage" onclick="forwardPage()" >下页</button>
+<span width="5px"/>
+</div>
+
+<script>
+var rows = 12;
+var playlist_page = 1;
+var backPage = function(){
+	if(playlist_page<=1){
+		return;
+	}
+	playlist_page = playlist_page - 1;
+	$('#playlist').datagrid('gotoPage',playlist_page);
+	console.log('backPage()',playlist_page);
+};
+
+var forwardPage = function(){
+	var total = $('#playlist').datagrid('getData').total;
+	var max=total/rows;
+	if (playlist_page >= max){
+		return;
+	}
+	playlist_page = playlist_page + 1;
+	console.log('forwardPage()',playlist_page);
+	$('#playlist').datagrid('gotoPage',{page:playlist_page,callback:function(page){console.log(page)}});
+	console.log('forwardPage()',playlist_page);
+}
+
+var deleteSong=function(){
+	var row = $('#playlist').datagrid('getSelected');
+	if (isNull(row)){
+		var options = {  
+			title: "操作提示",  
+			msg: "select a row first ！",  
+			showType: 'slide',  
+			timeout: 5000  
+		};  
+		$.messager.show(options);
+		return
+	}
+	$.post('deleteSong.dspy',row,function(s){
+		if (s.status=='OK'){
+			var options = {  
+				title: "操作提示",  
+				msg: "成功！",  
+				showType: 'slide',  
+				timeout: 5000  
+			};  
+			$.messager.show(options);
+			$('#playlist').datagrid('reload');
+		} else {
+			var options = {  
+				title: "操作提示",  
+				msg: "失败",  
+				showType: 'slide',  
+				timeout: 5000  
+			};  
+			$.messager.show(options);
+		}
+	},'json');
+};
+
+var toTopSong=function(){
+	var row = $('#playlist').datagrid('getSelected');
+	if (isNull(row)){
+		var options = {  
+			title: "操作提示",  
+			msg: "select a row first ！",  
+			showType: 'slide',  
+			timeout: 5000  
+		};  
+		$.messager.show(options);
+		return
+	}
+	$.post('toTopSong.dspy',row,function(s){
+		if (s.status=='OK'){
+			var options = {  
+				title: "操作提示",  
+				msg: "成功！",  
+				showType: 'slide',  
+				timeout: 5000  
+			};  
+			$.messager.show(options);
+			$('#playlist').datagrid('reload');
+		} else {
+			var options = {  
+				title: "操作提示",  
+				msg: "失败",  
+				showType: 'slide',  
+				timeout: 5000  
+			};  
+			$.messager.show(options);
+		}
+	},'json');
+};
+
+var wc = WidgetCalls.createNew();
+
+wc.init('playlist_tb');
+
+wc.add('playlist_tb','delete',deleteSong);
+
+wc.add('playlist_tb','toTop',toTopSong);
+wc.add('playlist_tb','back_page',backPage);
+wc.add('playlist_tb','forward_page',forwardPage);
+
+
+var buttonStatus = function(power_status){
+	if (power_status=='stoped'){
+		document.getElementById("pc_next").disabled=true;
+		document.getElementById("pc_replay").disabled=true;
+		document.getElementById("pc_mute").disabled=true;
+		document.getElementById("pc_track").disabled=true;
+		document.getElementById("pc_pause").disabled=true;
+		document.getElementById("pc_volumedec").disabled=true;
+		document.getElementById("pc_volumeinc").disabled=true;
+	} else {
+		document.getElementById("pc_next").disabled=false;
+		document.getElementById("pc_replay").disabled=false;
+		document.getElementById("pc_mute").disabled=false;
+		document.getElementById("pc_track").disabled=false;
+		document.getElementById("pc_pause").disabled=false;
+		document.getElementById("pc_volumedec").disabled=false;
+		document.getElementById("pc_volumeinc").disabled=false;
+	}
+}
+var power = function(){
+	remoteCall('./playcontrol/powerOnOrOff.dspy','POST','json',{},function(d){
+			if(d.status=='OK')
+			{
+				buttonStatus(d.status);
+			} else 
+			{
+				showError(d);
+			}
+		},
+		showError
+	);
+};
+
+var play_next=function(){
+	remoteCall('./playcontrol/playNext.dspy','POST','json',{},function(d){
+			if (d.status=='OK')
+			{
+			} else 
+			{
+				showError(d);
+			}
+		},
+		showError
+	);
+};
+
+var play_replay=function(){
+	remoteCall('./playcontrol/replay.dspy','POST','json',{},function(d){
+			if (d.status=='OK')
+			{
+			} else 
+			{
+				showError(d);
+			}
+		},
+		showError
+	);
+};
+
+var swich_track=function(){
+	remoteCall('./playcontrol/toggleTrack.dspy','POST','json',{},function(d){
+			if (d.status=='OK')
+			{
+			} else 
+			{
+				showError(d);
+			}
+		},
+		showError
+	);
+};
+var play_or_pause=function(){
+	remoteCall('./playcontrol/togglePause.dspy','POST','json',{},function(d){
+			if (d.status=='OK')
+			{
+			} else 
+			{
+				showError(d);
+			}
+		},
+		showError
+	);
+};
+var volume_dec=function(){
+	remoteCall('./playcontrol/volumeDown.dspy','POST','json',{},function(d){
+			if (d.status=='OK')
+			{
+			} else 
+			{
+				showError(d);
+			}
+		},
+		showError
+	);
+};
+
+var volume_inc=function(){
+	remoteCall('./playcontrol/volumeUp.dspy','POST','json',{},function(d){
+			if (d.status=='OK')
+			{
+			} else 
+			{
+				showError(d);
+			}
+		},
+		showError
+	);
+};
+
+var volume_mute=function(){
+	remoteCall('./playcontrol/toggleMute.dspy','POST','json',{},function(d){
+			if (d.status=='OK')
+			{
+			} else 
+			{
+				showError(d);
+			}
+		},
+		showError
+	);
+};
+buttonStatus('{{player.playStatus}}');
+</script>
+
+
+

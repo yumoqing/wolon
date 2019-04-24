@@ -1,0 +1,76 @@
+{
+    "__ctmpl__": "jsoneditor",
+    "data": {
+        "roottype": "SQLDS",
+        "rootname": "sqlds",
+        "_jename__": "sqlds",
+        "includemeta": true,
+        "registerTypes": [
+            {
+                "datatype": "SQLDS",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "sqldesc",
+                        "datatype": "SQLDESC",
+                        "registed": true,
+                        "required": true
+                    },
+                    {
+                        "name": "arguments",
+                        "datatype": "ARGUMENTS",
+                        "registed": true,
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "datatype": "SQLDESC",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "sql_string",
+                        "datatype": "text",
+                        "required": true
+                    },
+                    {
+                        "name": "sortfield",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "db",
+                        "datatype": "str",
+                        "required": true
+                    }
+                ]
+            },
+            {
+                "datatype": "ARGUMENTS",
+                "basetype": "ARRAY",
+                "allowedTypes": [
+                    "ARGUMENT"
+                ]
+            },
+            {
+                "datatype": "ARGUMENT",
+                "basetype": "OBJECT",
+                "fields": [
+                    {
+                        "name": "name",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "type",
+                        "datatype": "str",
+                        "required": true
+                    }
+                ]
+            }
+        ]
+    },
+    "__metadata__": {
+        "__jename__": "jsoneditor"
+    }
+}

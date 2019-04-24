@@ -1,0 +1,82 @@
+<div id="logoc" style="width:40px;margin_left:2px" class="lbox">
+	<a href="http://www.kmerit.com/" target="new">
+		<img src="{{absurl(request,'/imgs/kmeritLogo32x32.png')}}" />
+	</a>
+</div>
+<div id="menuc" style="width:400px;height:100%;" class="lbox"></div>
+<div id="userc" style="width:100px;height:100%;" class="rbox"></div>
+<script>
+d = {
+	id:"cfaem",
+	menubar:true,
+	registerfunction:"mainfunc",
+	submenu:[
+		{
+			name:"profile",
+			label:"业务概览",
+			icon:"icon-person",
+			submenu:[
+				{
+					name:"业务概览",
+					registerfunction:"profileAnalysis",
+					submenu:[
+						{
+							name:"启动自动数据更新",
+							registerfunction:"startAutoChangePlot"
+						},{
+							name:"停止自动数据更新",
+							registerfunction:"stopAutoChangePlot"
+						}
+					]
+				}
+			]
+		},
+		{
+			name:"thirdparty",
+			label:"参与人分析",
+			icon:"icon-person",
+			submenu:[
+				{
+					name:"融资人分析",
+					registerfunction:"issuerAnalysis"
+				},
+				{
+					name:"主承人分析",
+					registerfunction:"brokerAnalysis"
+				}
+			]
+		},
+		{
+			name:"help",
+			label:"POC帮助",
+			icon:"icon-help",
+			submenu:[
+				{
+					name:"操作说明",
+					registerfunction:"usrManual"
+				}
+			]
+		}
+	]
+}
+var mainfunc = function(d){
+	console.log(d[0]);
+	d = d[0];
+	if (d.data.url){
+		remoteWidget(d.data.url,{},
+			$('#cfaemain').layout('panel','center'),
+			'replace',function(e){$.messager.alert(e);});
+	} else {
+		$.messager.alert(d.data.label||d.data.name + ': not implement');
+	}
+};
+
+var rf = RegisterFunction.createNew();
+rf.register('mainfunc',mainfunc);
+var s = tmplRender('menu',d);
+console.log(s);
+
+$('#menuc').html(s);
+$.parser.parse($('#menuc'));
+
+</script>

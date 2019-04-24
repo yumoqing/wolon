@@ -1,0 +1,40 @@
+<div id="payment_cashflow">
+</div>
+<div id="income_cashflow">
+</div>
+<script>
+var data1 = {
+	"title":"收入现金流",
+	"height":"225px",
+	"widgettype":"echarts",
+	"url":"{{absurl(request,'./rf_income_cashflow.dspy')}}?rfid={{request.args.get('rf_id')[0]}}",
+	"dimension":"timeunit",
+	"series":[
+		{
+			"name":"租金",
+			"indicator":"amount"
+		}
+	]
+};
+
+var data2 = {
+	"title":"支出现金流",
+	"height":"225px",
+	"widgettype":"echarts",
+	"url":"{{absurl(request,'./rf_payment_cashflow.dspy')}}?rfid={{request.args.get('rf_id')[0]}}",
+	"dimension":"timeunit",
+	"series":[
+		{
+			"name":"投资额",
+			"indicator":"amount"
+		}
+	]
+};
+
+var txt = tmplRender('bar',data1);
+console.log('txt=',txt);
+$(txt).appendTo($('#income_cashflow'));
+var txt = tmplRender('bar',data2);
+console.log('txt=',txt);
+$(txt).appendTo($('#payment_cashflow'));
+</script>

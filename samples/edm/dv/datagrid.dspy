@@ -1,0 +1,76 @@
+def nlTrim(s):
+	s = ''.join(s.split("'"))
+	return s.split('\n')[0]
+	
+print('args=',request.args)
+id=request.args.get('id',[None])[0]
+
+editable = request.args.get('editable',[False])[0]
+dbname,tablename = id.split(':')
+crud = CRUD(dbname)
+fields = crud.I(tablename)
+
+fs = [ crud.defaultIOField(f) for f in fields ]
+#meta = Meta()
+#fs = [ meta.setDefault(f,dbname+':'+f['name']) for f in fs ]
+[ f.update({'label':nlTrim(f['label'])}) for f in fs ]
+
+id = crud.dbname+':'+tablename
+name = dbname + '_' + tablename
+
+b = absurl(request,'./RP.dspy?id=%s' % id)
+
+data = {
+	"__ctmpl__":"datagrid",
+	"data":{
+		"widget_name":name,
+		"widgettype":"datagrid",
+		"icon":"icon-table",
+		"editable":False,
+		"title":tablename,
+		"url":absurl(request,'./RP.dspy?id=%s' % id),
+		"dnd":True,
+		"view":"bufferview",
+		"fields":fs,
+		"options":{
+			"pageSize":60,
+			"autoRowHeight":False
+		},
+		"toolbar": {
+			"tools":[
+				{
+					"name":"filter",
+					"icon":"icon-filter",
+					"label":"filter"
+				}
+			]
+		}
+	}
+}
+
+if editable:
+	data['data']["toolbar"]['tools'] = data['data']["toolbar"]['tools'] + [
+					{
+						"name":"add",
+						"icon":"icon-add",
+						"label":"add"
+					},
+					{
+						"name":"delete",
+						"icon":"icon-remove",
+						"label":"delete"
+					},
+					{
+						"name":"edit",
+						"icon":"icon-edit",
+						"label":"update"
+					}
+				]
+	data['data']["editable"] = True
+	data['data']["deleteURL"] = absurl(request,'./D.dspy?id=%s' % id)
+	data['data']["appendURL"] = absurl(request,'./C.dspy?id=%s' % id)
+	data['data']["updateURL"] = absurl(request,'./U.dspy?id=%s' % id)
+
+data = crud.oa.execute(name,'datagrid',data)
+
+return data

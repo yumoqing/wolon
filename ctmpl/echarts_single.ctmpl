@@ -1,0 +1,46 @@
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+
+<div id="{[=it.id]}" style="width: 100%;height:100%;"></div>
+<script>
+	console.log('echart_single.ctmpl,here');
+ var obj_{[=it.id]} = echarts.init(document.getElementById('{[=it.id]}'));
+	console.log('echart_single.ctmpl,here');
+ 
+ obj_{[=it.id]}.setOption({
+    title: {
+        text: '{[= it.title ]}'
+    },
+    tooltip: {},
+    legend: {
+        data:['{[=it.series]}']
+    },
+    xAxis: {
+        data: []
+    },
+    yAxis: {},
+    series: [{
+        name: '{[=it.series]}',
+        type: '{[=it.charttype]}',
+        data: []
+    }]
+});
+	obj_{[=it.id]}.on('click',function(arg){console.log('func1',arg);});
+	obj_{[=it.id]}.on('click',function(arg){console.log('func2',arg);});
+	console.log('echart_single.ctmpl,here');
+	var func1 = function(data){
+		obj_{[=it.id]}.setOption({
+			xAxis: {
+				data: data.dimensions
+			},
+			series: [{
+				name: '{[=it.series]}',
+				data: data.measures
+			}]
+		});
+	};
+	remoteJson('{[=it.url]}',func1);
+	widgetCreated('echart_single','{[=it.id]}');
+	
+</script>

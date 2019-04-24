@@ -1,0 +1,21 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc={
+		"sql_string":"""select
+a.*,
+c.m_indicator as lm_indicator,
+case when c.m_indicator is null then 1
+else (a.m_indicator - c.m_indicator)/c.m_indicator * 100 
+end as inc_pz
+from ymindicators a left join (select distinct month_id,l_month_id from datedimension) b on a.m_dim = b.month_id
+	left join ymindicators c on b.l_month_id = c.m_dim and a.productname=c.productname and a.indname = c.indname
+where a.m_dim=${m_dim}$
+		"""
+	}
+	return desc
+
+ns={
+	"m_dim":request.args.get('m_dim',['3_2017_10'])[0]
+}
+print(ns)
+return [i for i in sql('cfae',ns)]

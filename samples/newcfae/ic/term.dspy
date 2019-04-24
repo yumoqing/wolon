@@ -1,0 +1,7 @@
+data=[
+{'term':'1Y及以下','amount':'200'},
+{'term':'1Y-3Y','amount':'500'},
+{'term':'3Y-5Y','amount':'230'},
+{'term':'5Y以上','amount':'260'},
+]
+return data

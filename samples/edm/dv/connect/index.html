@@ -1,0 +1,30 @@
+<div id="connectmain" style="width:100%;height:100%"></div>
+
+<script>
+var d={
+	"id":"connectLayout",
+	"fit":true,
+	"options":{
+		"west":{
+			"width":"300px",
+			"href":"./dv/connect/showConnects.html",
+			"collapsible":true,
+			"border":true
+		},
+		"center":{
+			"id":"mainarea",
+			"href":"./dv/connect/connectMain.html",
+			"width":"150px",
+			"border":false
+		},
+		"east":{
+			"width":"80px",
+			"collapsible":true,
+			"border":true
+		}
+	}
+}
+// $('#main').html(tmplRender('layout',d));
+$(tmplRender('layout',d)).appendTo($('#connectmain'));
+$.parser.parse('#connectmain');
+</script>

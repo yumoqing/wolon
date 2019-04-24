@@ -1,0 +1,168 @@
+/*
+数据顺序
+[x_field,y_field,size_field,subdimension,dimension]
+数据定义
+var d = {
+	"id":"top20amplitude",
+	"class":"chartbox",
+	"charttype":"bubble",
+	"width":"300px",
+	"left":60,
+	"height":"600px",
+	"title":"振幅最大",
+	"url":"stock_maxamp.dspy",
+	"dimension":"instrument_id", 主维度 - legend
+	"subdimension":"trade_date", 子维度 - Label
+	"x_field":"valumns",
+	"y_field":"p_close",
+	"size_field":"turnover",
+	"contextmenu":{
+		"items":[
+			{
+				"name":"test1",
+				"url":"http://www.baidu.com",
+			},
+			{
+				"name":"test2",
+				"url":"http://www.sina.com.cn",
+			}
+		],
+		"function":"doTest"
+	}
+}
+*/
+{[=tmplRender('echarts',it)]}
+<script>
+obj_{[=it.id]}.getValue = function(params){
+	var series = obj_{[=it.id]}.obj.getOption().series;
+	var d = series[params.seriesIndex].data[params.dataIndex];
+	var data = {
+		event:params.event,
+		data:{
+			{[=it.dimension]}:d[4],
+			{[=it.subdimension]}:d[3],
+			{[=it.size_field]}:d[2],
+			{[=it.y_field]}:d[1],
+			{[=it.x_field]}:d[0]
+		}
+	};
+	return data;
+};
+
+obj_{[=it.id]}.setDataOption = function(data){
+		obj_{[=it.id]}.data = data;
+		var series = new Array();
+		var legend = new Array();
+		var dp = new Array();
+		var legend_name = '';
+		var dlist = new Array();
+		for (var i=0;i<data.length;i++){
+			if(data[i].{[=it.dimension]} != legend_name){
+				if (legend_name != ''){  /* 保存上一个series 数据 */
+					series.push({
+						name:legend_name,
+						type:'scatter',
+						data:dp,
+						symbolSize: function (data) {
+							return Math.sqrt(data[2]) / 5e2;
+						},
+						label: {
+							emphasis: {
+								show: true,formatter: function (param) {
+									return param.data[3];
+								},
+								position: 'top'
+							}
+						},
+						itemStyle: {
+							normal: {
+								shadowBlur: 10,
+								shadowColor: 'rgba(120, 36, 50, 0.5)',
+								shadowOffsetY: 5,
+								color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+									offset: 0,
+									color: 'rgb(251, 118, 123)'
+								}, {
+									offset: 1,
+									color: 'rgb(204, 46, 72)'
+								}])
+							}
+						}		
+					});
+					dp = new Array();
+				}
+				legend.push(data[i].{[=it.dimension]});
+				legend_name = data[i].{[=it.dimension]};
+			}
+			dlist = new Array();
+			dlist.push(data[i].{[=it.x_field]});
+			dlist.push(data[i].{[=it.y_field]});
+			dlist.push(data[i].{[=it.size_field]});
+			dlist.push(data[i].{[=it.subdimension]});
+			dlist.push(data[i].{[=it.dimension]});
+			dp.push(dlist); 
+		};
+
+		if (legend_name != ''){  /* 保存上一个series 数据 */
+			series.push({
+				name:legend_name,
+				type:'scatter',
+				data:dp,
+				symbolSize: {[=it.sizefunc]},
+				label: {
+					emphasis: {
+						show: true,formatter: function (param) {
+							return param.data[3];
+						},
+						position: 'top'
+					}
+				},
+				itemStyle: {
+					normal: {
+						shadowBlur: 10,
+						shadowColor: 'rgba(120, 36, 50, 0.5)',
+						shadowOffsetY: 5,
+						color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+							offset: 0,
+							color: 'rgb(251, 118, 123)'
+						}, {
+							offset: 1,
+							color: 'rgb(204, 46, 72)'
+						}])
+					}
+				}		
+			});
+			dp = new Array();
+		}
+
+		return {
+			title: {
+				text: '{[=it.title]}'
+			},
+			legend: {
+				right: 10,
+			},
+			xAxis: {
+				splitLine: {
+					lineStyle: {
+						type: 'dashed'
+					}
+				}
+			},
+			yAxis: {
+				splitLine: {
+					lineStyle: {
+						type: 'dashed'
+					}
+				},
+				scale: true
+			},
+			legend:{
+				right:10,
+				data:legend
+			},
+			series: series
+		};
+};
+obj_{[=it.id]}.setValue({});
+</script>

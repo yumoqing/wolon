@@ -1,0 +1,131 @@
+/*
+基于D3的Venn图模板
+dimension:返回数据的维度字段，这个字段要按照“a.b.c"格式用.分隔数据部分
+			如，三种产品：债券，债权，股票，dimension字段的值可以是：‘债券’，
+			‘债权’，‘股票’，‘债券.股票’，‘债券.债权’，‘债权.股票’，‘债券.债权.股票’,
+indicator：返回数据的指标字段，
+
+data格式
+{
+	id:
+	width:
+	class:
+	height:
+	url:
+	dimension:
+	indicator:
+}
+*/
+<div id="{[=it.id]}" class="{[=it.class||'lbox']}" style="width:{[=it.width||'100%']};height:{[=it.height||'100%']}" >
+</div>
+<script>
+document.getElementById('{[=it.id]}').oncontextmenu = function () { return false; };
+obj_{[=it.id]} = {
+	obj:venn.VennDiagram()
+                 .width("{[=it.width||400]}")
+                 .height("{[=it.height||300]}"),
+	setValue:function(d){
+		{[?it.url]}
+		remoteCall('{[=it.url]}','GET','json',d,obj_{[=it.id]}.loadData,
+			function(e){
+				$.messager.alert('error');
+			}
+		);
+		{[?]}
+		
+	},
+	options:{
+		colors:['white', 'red', 'blue', 'green'],
+	},
+	onClick:function(d,i){
+		var wc = WidgetCalls.createNew();
+		wc.execute('{[=it.id]}','onClick',d);
+	},
+	onDblclick:function(d,i){
+		var wc = WidgetCalls.createNew();
+		wc.execute('{[=it.id]}','onDblclick',d);
+	},
+	onMouseout:function(d,i){
+		var wc = WidgetCalls.createNew();
+		wc.execute('{[=it.id]}','onMouseout',d);
+	},
+	onMouseover:function(d,i){
+		var wc = WidgetCalls.createNew();
+		wc.execute('{[=it.id]}','onMouseover',d);
+	},
+	loadData:function(data){
+		var ds = [];
+		var colours = ['white', 'red', 'blue', 'green'];
+		{[?it.colors]}
+		colours = {[=dump(it.colors)]};
+		{[?]}
+		for(var i=0;i<data.length;i++){
+			var d = {
+				sets:data[i].{[=it.dimension]}.split('.'),
+				size:data[i].{[=it.indicator]}
+			};
+			ds.push(d);
+		}
+		console.log('dataset=',ds);
+		d3.select("#{[=it.id]}").datum(ds).call(obj_{[=it.id]}.obj);
+		
+		d3.selectAll("#{[=it.id]} .venn-circle path")
+			.style("fill-opacity", 0)
+			.style("stroke-width", 10)
+			.style("stroke-opacity", .5)
+			.style("fill", function(d,i) { return colours[i]; })
+			.style("stroke", function(d,i) { return colours[i]; });
+
+		d3.selectAll("#{[=it.id]} .venn-circle text")
+			.style("fill", function(d,i) { return colours[i]})
+			.style("font-weight", "100");
+			
+		if(obj_{[=it.id]}.hasOwnProperty('onDblclick')){
+			d3.selectAll("#{[=it.id]} .venn-circle")
+			.on("dblclick", function(d, i) {
+					console.log("dblclick event=",d,i);
+					obj_{[=it.id]}.onDblclick(d,i);
+			});
+		}
+		if(obj_{[=it.id]}.hasOwnProperty('onClick')){
+			d3.selectAll("#{[=it.id]} .venn-circle")
+				.on("click", function(d, i) {
+					console.log("click event=",d,i);
+					obj_{[=it.id]}.onClick(d,i);
+				});
+			
+		}
+		if(obj_{[=it.id]}.hasOwnProperty('onContextmenu')){
+			d3.selectAll("#{[=it.id]} .venn-circle")
+				.on("contextmenu", function(d, i) {
+					console.log("contextmenu event=",d,i);
+					obj_{[=it.id]}.onContextmenu(d,i);
+				});
+			
+		}
+		d3.selectAll("#{[=it.id]} .venn-circle")
+			.on("mouseover", function(d, i) {
+				var node = d3.select(this).transition();
+				node.select("path").style("fill-opacity", .2);
+				node.select("text").style("font-weight", "100")
+								   .style("font-size", "36px");
+			})
+			.on("mouseout", function(d, i) {
+				var node = d3.select(this).transition();
+				node.select("path").style("fill-opacity", 0);
+				node.select("text").style("font-weight", "100")
+								   .style("font-size", "24px");
+			});
+			
+		if(obj_{[=it.id]}.hasOwnProperty('onLoaded')){
+			obj_{[=it.id]}.onLoaded(data);
+		}
+  		
+		
+	},
+	getValue:function(){
+		return {}
+	}
+};
+obj_{[=it.id]}.setValue({});
+</script>

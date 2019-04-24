@@ -1,0 +1,39 @@
+{% include "header.tmpl" %}
+
+<script src="/myjs/oneofcontext.js" ></script>
+<div>
+<input id="values" name="values" type="text" onchange="javscript:$('#pttest').oneofcontext('refresh')" />
+</div>
+<div id="pttest" style="width:500px;height:400px;" >
+</div>
+<script>
+function checkWhich(){
+	v = $('#values').val();
+	console.log('values=',v);
+	if (v=='1'){
+		return true;
+	}
+	return false;
+}
+var o = $('#pttest').oneofcontext({
+	items:[
+		{
+			name:'page1',
+			icon:'icon-save',
+			label:'Page 1',
+			theOne:function(){ return checkWhich();},
+			remoteWidgets:[
+				"{{absurl(request,'./form11.tmpl')}}"
+			]
+		},{
+			name:'page2',
+			label:'Page 2',
+			theOne:function(){ return !checkWhich();},
+			remoteWidgets:[
+				"{{absurl(request,'./video.html')}}"
+			]
+		}
+	]
+});
+</script>
+{% include "footer.tmpl" %}

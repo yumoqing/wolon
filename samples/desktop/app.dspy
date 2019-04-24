@@ -1,0 +1,23 @@
+return [{
+	"id" : "0",
+	"text" : "站长素材",
+	"href":"http://sc.chinaz.com/?",
+	"icon" : "/imgs/internetke.png"
+},
+{
+	"id" : "1",
+	"text" : "我的电脑",
+	"href":"http://sc.chinaz.com/?material/",
+	"icon" : "/imgs/computer.png"
+}, {
+	"id" : "2",
+	"text" : "回收站",
+	"href":"http://sc.chinaz.com/?effects/",
+	"icon" : "/imgs/bin.png"
+},{
+	"id" : "3",
+	"text" : "网络连接",
+	"href":"http://sc.chinaz.com/?share/",
+	"icon" : "/imgs/dns.png"
+}
+]

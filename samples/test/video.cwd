@@ -1,0 +1,10 @@
+__widget_description__={
+	__ctmpl__:"video",
+	data:{
+		id:'video1',
+		title:'tttt',
+		url:"{{absurl(request,request.args.get('video',['b6.mp4'])[0])}}",
+		width:"360",
+		height:"240",
+	}
+}

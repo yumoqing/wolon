@@ -1,0 +1,11 @@
+{% include "header.tmpl" %}
+<div id="editor" width="100%" height="100%" ></div> 
+<script>
+	var editor;
+	KindEditor.ready(function(K){
+		 editor = K.create('#editor', {
+                });
+
+	});
+</script>
+{% include "footer.tmpl" %}

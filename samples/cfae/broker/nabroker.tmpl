@@ -1,0 +1,27 @@
+__widget_description__={
+	__ctmpl__:"treegrid",
+	data:{
+		id:"treegridtest",
+		title:"企业特性，地区主承人",
+		url:"{{absurl(request,'./nabroker.dspy')}}",
+		idField:"naid",
+		treeField:"dimname",
+		fields:[
+			{
+				name:"dimname",
+				width:"220px",
+				label:"关键字",
+				iotype:"text"
+			},{
+				name:"amount",
+				label:"主承金额",
+				iotype:"text"
+			}
+		],
+		options:{
+			pagination:false,
+			dnd:false,
+			pageSize:60
+		}
+	}
+}

@@ -1,0 +1,283 @@
+/*
+form 格式
+
+form对象格式
+id: 给定dom唯一值，如果给定了widget_name，则此id将会被重置
+parentid：父form的id
+widget_name:给定唯一的类型，如果不能指定唯一的id，那么需给定一个widget_name，系统自动生成一个唯一的id
+fields:数组，数组中元素，描述输入字段
+subforms ：描述子fom的对象，格式后面说明
+url：提交后post的url，可选项
+dataurl：读取数据的url
+class：类
+ischild:是否子form
+fieldwidth：一个字段的宽度，包含字段的label和input
+labelwidth：label的宽度
+inputwidth：input的宽度
+toolbar：定义功能按钮，对象类型
+leftwidth：可选项，标题显示宽度（百分比），必须和rightwidth同时出现
+rightwidth：可选项，输入框显示宽度（百分比）
+groups：分组对象，每个属性对应一个组输入数据
+onCreated:创建完成调用
+
+fields数组格式
+[field,...]
+
+field对象格式
+name：字段名字，此名字也是提交给后台的名字中
+title：字段显示名字，用于用户识别字段
+iotype：数据输入类型
+required：可选项，说明该字段必须输入
+width：字段显示宽度
+height：字段显示高度
+value：字段值
+dec：小数精度
+
+iotype支持的类型有：
+date：输入日期类型，提供日期选择
+textarea：输入多行数据
+datetime：输入日期和时间，提供日期时间选择
+int：输入整数
+float：输入浮点数
+email:输入有限地址
+url：输入url
+phone：输入电话号码
+password：输入密码
+urlcode：输入从后台获取选项的选择项
+codes：输入固定选项的选择项
+file：输入文件
+
+subforms 的格式：
+type：子form的类型，支持：page，tabs，oneOf
+remoteWidgets：不同的form的URL列表
+
+*/
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+
+<div id="{[=it.id]}" class="easyui-layout" 
+style="width:{[=it.width||'100%']};height:{[=it.height||'100%']}"
+>
+<div data-options="region:{[?it.toolposition=='bottom']}'south'{[??]}'north'{[?]},split:true" style="height:{[?it.ischild]}'0px'{[??]}40px{[?]};background:#ccc" >
+<div id="{[=it.id]}_c"></div>
+</div>
+<div id="{[=it.id]}_body" 
+	data-options="region:'center'" style="padding:1px" >
+{[~ it.fields :f]}
+    <div class="form_field" id="{[=it.id]}_field_{[=f.name]}">
+		{[ if (f.iotype == 'hidden'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" type="hidden" value="{[=f.value]}"/>
+		{[ } else if (f.iotype == 'textarea'){ ]}
+			<p><label for="{[=f.name]}">{[=f.title||f.label||f.name||'']}:</label></p>
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-textbox" data-options="{[?f.required]}required:true,{[?]}multiline:true" style="width:{[=f.width||'300px']};height:{[=f.height||'100px']}" />
+		{[ } else { ]}
+        <div style="position:relative;float:left;width:{[=it.leftwidth||'39%']};">
+			<label for="{[=f.name]}">{[=f.label||f.name||'']}:</label>
+		</div>
+        <div style="position: relative;float:right;{[=it.rightwidth||'60%']};">
+		{[ if (f.iotype == 'date'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-datebox" data-options="{[?f.required]}required:true,{[?]}sharedCalendar:'#form_{[=f.name]}_cc'" style="width:{[=f.width||"100%"]}"/>
+			<div id="#form_{[=f.name]}_cc" class="easyui-calendar"></div>
+		{[ } else if (f.iotype == 'str'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-textbox" data-options="{[?f.required]}required:true,{[?]}multiline:false" style="width:{[=f.width||'300px']}" />
+		{[ } else if (f.iotype == 'datetime'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-datetimebox" data-options="{[?f.required]}required:true{[?]}" style="width:{[=f.width||"100%"]}" value="{[=f.value||'']}" />
+		{[ } else if (f.iotype == 'int'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-numberbox" data-options="{[?f.required]}required:true,{[?]}" style="width:{[=f.width||"100%"]}" value="{[=f.value||'']}" />
+		{[ } else if (f.iotype == 'float'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-numberbox" data-options="{[?f.required]}required:true,{[?]}min:0,precision:{[=f.dec]}" style="width:{[=f.width||"100%"]}" value="{[=f.value||'']}" />
+		{[ } else if (f.iotype == 'email'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" type="email" class="easyui-validatebox" data-options="{[?f.required]}required:true{[?]}" style="width:{[=f.width||"100%"]}" value="{[=f.value||'']}" />
+		{[ } else if (f.iotype == 'url'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" type="url" class="easyui-validatebox" data-options="{[?f.required]}required:true{[?]}" style="width:{[=f.width||"100%"]}" value="{[=f.value||'']}" />
+		{[ } else if (f.iotype == 'phone'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" type="tel" class="easyui-validatebox" data-options="{[?f.required]}required:true{[?]}" style="width:{[=f.width||"100%"]}" value="{[=f.value||'']}" />
+		{[ } else if (f.iotype == 'password'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-passwordbox" data-options="{[?f.required]}required:true{[?]}" style="width:{[=f.width||"100%"]}" value="{[=f.value||'']}" />
+		{[ } else if (f.iotype == 'urlcodes'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-urlcombobox" 
+				data-options="{[?f.required]}required:true,{[?]}valueField: '{[=f.valueField]}', textField: '{[=f.textField]}', url: '{[=f.url]}', onSelect: function(rec){var d=rec.{[=f.valueField]};var mc=WidgetCalls.createNew();mc.execute('{[=it.id]}_{[=f.name]}','onSelect',d,null);}" />
+		{[ } else if (f.iotype == 'codes'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-combobox" 
+				data-options='{[?f.required]}required:true,{[?]}valueField: "value", textField: "label", data:{[=dump(f.data)]}, onSelect: function(rec){var d=rec.{[=f.valueField]};var mc=WidgetCalls.createNew();mc.execute("{[=it.id]}_{[=f.name]}","onSelect",d,null);}' />
+		{[ } else if (f.iotype == 'file'){ ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-filebox" 
+		{[ } else { ]}
+			<input id="{[=it.id]}_i_{[=f.name]}" name="{[=f.name]}" class="easyui-textbox" data-options="{[?f.required]}required:true{[?]}" type="{[=f.iotype||'text']}_111" value="{[=f.value||'']}" style="width:{[=f.width||"100%"]}" />
+		{[ } ]}
+		{[ } ]}
+		
+		</div>
+	</div>
+{[~]}
+</div>
+</div>
+<script>
+var obj_{[=it.id]} = {
+	setValue:function(d){
+		{[~ it.fields :f]}
+		var obj = $('#{[=it.id]}_i_{[=f.name]}');
+		console.log('form.ctmpl:setValue():{[=it.id]}_i_{[=f.name]}',obj);
+		{[?  f.iotype=='date']}
+		obj.datebox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='hidden']}
+		obj.value = d['{[=f.name]}'||''];
+		{[?? f.iotype=='textarea' || f.iotype=='str']}
+		obj.textbox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='datetime']}
+		obj.datetimebox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='int']}
+		obj.numberbox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='float']}
+		obj.numberbox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='email']}
+		obj.textbox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='url']}
+		obj.textbox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='phone']}
+		obj.textbox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='password']}
+		obj.passwordbox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='urlcode']}
+		obj.urlcombobox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='codes']}
+		obj.combobox('setValue',d['{[=f.name]}']||'');
+		{[?? f.iotype=='file']}
+		obj.filebox('setValue',d['{[=f.name]}']||'');
+		{[??]}
+		console.log('herere');
+		obj.textbox('setValue',d['{[=f.name]}']||'');
+		console.log('here');
+		{[?]}
+		{[~]}
+		/*
+		$('#{[=it.id]} .subform')
+		*/
+	},
+	getValue:function(){
+		var d = {};
+		{[~ it.fields :f]}
+		var obj = $('#{[=it.id]}_i_{[=f.name]}');
+		console.log('form.ctmpl:getValue():{[=it.id]}_i_{[=f.name]}',obj);
+		{[?  f.iotype=='date']}
+		d['{[=f.name]}'] = obj.datebox('getValue');
+		{[?? f.iotype=='hidden']}
+		d['{[=f.name]}'] = obj.value;
+		{[?? f.iotype=='textarea' || f.iotype=='str']}
+		d['{[=f.name]}'] = obj.textbox('getValue');
+		{[?? f.iotype=='datetime']}
+		d['{[=f.name]}'] = obj.datetimebox('getValue');
+		{[?? f.iotype=='int']}
+		d['{[=f.name]}'] = obj.numberbox('getValue');
+		{[?? f.iotype=='float']}
+		d['{[=f.name]}'] = obj.numberbox('getValue');
+		{[?? f.iotype=='email']}
+		d['{[=f.name]}'] = obj.textbox('getValue');
+		{[?? f.iotype=='url']}
+		d['{[=f.name]}'] = obj.textbox('getValue');
+		{[?? f.iotype=='phone']}
+		d['{[=f.name]}'] = obj.textbox('getValue');
+		{[?? f.iotype=='password']}
+		d['{[=f.name]}'] = obj.passwordbox('getValue');
+		{[?? f.iotype=='urlcode']}
+		d['{[=f.name]}'] = obj.urlcombobox('getValue');
+		{[?? f.iotype=='codes']}
+		d['{[=f.name]}'] = obj.combobox('getValue');
+		{[?? f.iotype=='file']}
+		d['{[=f.name]}'] = obj.filebox('getValue');
+		{[??]}
+		d['{[=f.name]}'] = obj.textbox('getValue');
+		{[?]}
+		{[~]}
+		console.log("form.ctmpl:getValue():date gotten=",d);
+		return d;
+	},
+	readonly:function(bool){
+		{[~ it.fields :f]}
+		var obj = $('#{[=it.id]}_i_{[=f.name]}');
+		{[?  f.iotype=='date']}
+		obj.datebox('readonly',bool);
+		{[?? f.iotype=='textarea' || f.iotype=='str']}
+		obj.textbox('readonly',bool);
+		{[?? f.iotype=='datetime']}
+		obj.datetimebox('readonly',bool);
+		{[?? f.iotype=='int']}
+		obj.numberbox('readonly',bool);
+		{[?? f.iotype=='float']}
+		obj.numberbox('readonly',bool);
+		{[?? f.iotype=='email']}
+		obj.textbox('readonly',bool);
+		{[?? f.iotype=='url']}
+		obj.textbox('readonly',bool);
+		{[?? f.iotype=='phone']}
+		obj.textbox('readonly',bool);
+		{[?? f.iotype=='password']}
+		obj.passwordbox('readonly',bool);
+		{[?? f.iotype=='urlcode']}
+		obj.urlcombobox('readonly',bool);
+		{[?? f.iotype=='codes']}
+		obj.combobox('readonly',bool);
+		{[?? f.iotype=='file']}
+		obj.filebox('readonly',bool);
+		{[??]}
+		obj.textbox('readonly',bool);
+		{[?]}
+		{[~]}
+	},
+	clear:function(d){
+		obj_{[=it.id]}.setValue({});
+		return d;
+	},
+	toolcall:function(d){
+		if (d==undefined) {
+			console.log("data is null,return ");
+			return d;
+		}
+		if (d.action=='clear'){
+			return obj_{[=it.id]}.clear(d);
+		}
+		var data = obj_{[=it.id]}.getValue();
+		var mc = WidgetCalls.createNew();
+		mc.execute('{[=it.id]}',d.action,data,null);
+		console.log('EEEEEEEEEEEEEEEEEEE,{[=it.id]}',WidgetCalls.calls['{[=it.id]}'],d.action);
+		return;
+	},
+	enableSubmit:function(f){
+	},
+	disableSubmit:function(){
+	},
+};
+$(function(){
+	$('#{[=it.id]}').form({
+		url:"{[=it.url]}",
+		onSubmit:obj_{[=it.id]}.submit,
+		success:function(data){
+			alert(data);
+		}
+	});
+	{[?it.remoteWidgets]}
+	{[=remoteWidgets(it.remoteWidgets,{},$(it.id+'_body'),'append',function(e){$.messager.alert(e);})]}
+	{[?]}
+	$.parser.parse($('#{[=it.id]}'));
+	var wc = WidgetCalls.createNew();
+	wc.init('{[=it.id]}_tb');
+	wc.add('{[=it.id]}_tb','*',obj_{[=it.id]}.toolcall);
+});
+{[? !it.ischild ]}
+{[?it.menubar]}
+{[it.toolbar.id=it.id + '_mb';]}
+$(tmplRender('menu',{[=dump(it.menubar)]})).appendTo($('#{[=it.id]}_c'));
+{[?]}
+{[?it.toolbar]}
+{[it.toolbar.id=it.id + '_tb';]}
+$(tmplRender('toolbar',{[=dump(it.toolbar)]})).appendTo($('#{[=it.id]}_c'));
+{[?]}
+{[?it.subforms]}
+{[it.subforms.id=it.id+'subforms';]}
+$(tmplRender("subforms",{[=dump(it.subforms)]})).appendTo($("#{[=it.id]}_body"));
+{[?]}
+{[?]} /* !it.ischild */
+</script>
+
+

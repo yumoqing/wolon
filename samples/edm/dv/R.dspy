@@ -1,0 +1,11 @@
+print('args=',request.args)
+id=request.args.get('id',[None])[0]
+ns = {
+}
+[ns.update({k:request.args.get(k)[0]}) for k in request.args if k not in ['id','_'] and request.args.get(k)[0] is not '' ]
+print('ns=',ns)
+dbname,tablename = id.split(':')
+crud = CRUD(dbname)
+ret = [i for i in crud.R(tablename,NS=ns) ]
+#print(ret)
+return ret

@@ -1,0 +1,56 @@
+___widget_description__ = {
+	__ctmpl__:'datagrid',
+	data:{
+		id:"top10brokers",
+		widgettype:"datagrid",
+		title:"十大承销商排名",
+		class:"basebox",
+		idField:"id",
+		url:"{{absurl(request,'./top10.dspy')}}",
+		fields:[
+			{
+				name:"id",
+				label:"排名",
+				iotype:"text"
+			},{
+				name:"broker",
+				label:"承销商",
+				iotype:"text"
+			},{
+				name:"amount",
+				label:"金额（亿元）",
+				iotype:"number"
+			},{
+				name:"flag",
+				label:"flag",
+				hidden:true,
+				iotype:"text"
+			}
+		],
+		options:{
+			rownumbers:false,
+			columns:[[
+			{
+				width:'20%'
+			},{
+				width:'50%'
+			},{
+				width:'30%',
+				align:'right',
+				formatter:function(value,row,i){
+					if (row.flag == 0)
+						return money(value);
+					var img="greenup.png";
+					if (row.flag<0){
+						img = "reddown.png";
+					} else if (row.flag > 0){
+						img = "greenup.png";
+					}
+					return '<span>' + value + '%<img src="/imgs/' + img + '" /></span>';
+				}
+			},{}
+			]]
+		}
+		
+	}
+}

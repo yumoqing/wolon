@@ -1,0 +1,52 @@
+<div id="dbtree_container" style="width:100%;height:100%"></div>
+<script>
+var d = {
+	"id":"dbtree",
+	"tools":[
+		{
+			"name":"add"
+		},{
+			"name":"delete"
+		}
+	],
+	"contextmenu":
+	[
+		{
+			"type":"database",
+			"submenu":
+			[
+				{
+					"label":"sql script",
+					"name":"sqlscript"
+				},{
+					"label":"sql builder",
+					"name":"sqlbuilder"
+				}
+			]
+		},{
+			"type":"table",
+			"submenu":
+			[
+				{
+					"label":"view structure",
+					"name":"v_structure"
+				},{
+					"label":"view data",
+					"name":"v_data"
+				}
+			]
+		},{
+			"type":null,
+			"submenu":[]
+		}
+	],
+	"url":"./dv/dbtree.dspy",
+	"drag":true,
+	"editable":false
+};
+var data = tmplRender("tree",d);
+
+$("#dbtree_container").html(data);
+
+$.parser.parse($("#dbtree_container"));
+</script>

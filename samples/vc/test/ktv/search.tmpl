@@ -1,0 +1,152 @@
+<div id='search_container' class="container100">
+<div id="search_tb">
+<button onclick="javascript:backPage()" >上页</button>
+<input name="singor" 
+	type="text" oninput="getResult(event)" 
+	>
+<button onclick="forwardPage();">下页</button>
+<button onclick="repotMiss();">报缺</button>
+</div>
+</div>
+<script>
+var rows = 12;
+var singor = '';
+var search_page = 1;
+var repotMiss = function(){
+};
+
+var backPage = function(){
+	if(search_page<=1){
+		return;
+	}
+	search_page = search_page - 1;
+	$('#songlist').datagrid('gotoPage',search_page);
+	console.log('search.tmpl,backPage()',search_page);
+};
+
+var forwardPage = function(){
+	var total = $('#songlist').datagrid('getData').total;
+	var max=total/rows;
+	if (search_page >= max){
+		return;
+	}
+	search_page = search_page + 1;
+	$('#songlist').datagrid('gotoPage',{page:search_page,callback:function(page){console.log(page)}});
+	console.log('search.tmpl,forwardPage()',search_page);
+};
+
+var resetInput = function(){
+	$("input[name='singor']").val('');
+};
+var orderIt=function(d){
+	console.log("mc data=",d);
+	$.post('orderSong.dspy',d.row,function(s){
+		if (s.status=='OK'){
+			var options = {  
+				title: "操作提示",  
+				msg: "成功！",  
+				showType: 'slide',  
+				timeout: 5000  
+			};  
+			$.messager.show(options);
+		} else {
+			var options = {  
+				title: "操作提示",  
+				msg: "失败",  
+				showType: 'slide',  
+				timeout: 5000  
+			};  
+			$.messager.show(options);
+		}
+	},'json');
+	return d;
+};
+var getResult = function(e){
+	console.log('getResult()');
+	var d = {};
+	singor = e.target.value;
+	search_page = 1;
+	$('#songlist').datagrid('gotoPage',{page:search_page,callback:function(page){console.log(page)}});
+};
+
+var sd = {
+	"id":"songlist",
+	"title":"歌曲清单",
+	"url":"{{absurl(request,'./search.dspy')}}",
+	"idField":"songid",
+	"fields":[
+		{
+			"name":"songid",
+			"iotype":"text",
+			"label":"grage",
+			"hidden":true,
+			"opps":"f"
+		},
+		{
+			"name":"singer",
+			"iotype":"text",
+			"label":"歌手",
+			"width":"170",
+			"opps":"f"
+		},
+		{
+			"name":"songname",
+			"iotype":"text",
+			"label":"歌名",
+			"width":"240",
+			"opps":"f"
+		},
+	],
+	"options":{
+		"toolbar":"#search_tb",
+		"pagination":false,		
+		"rownumbers":false,
+		"queryParams":{
+			"rows":rows,
+			"page":function(){return search_page;},
+			"singor":function(){return singor;}
+		},
+		onDblClickRow:function(index,row){
+			console.log('row=',row);
+			d = {
+				songid:row.songid,
+				ordertype:0
+			};
+			console.log('d=',d);
+			$.post("{{absurl(request,'./orderSong.dspy')}}",d,function(s){
+				
+				if (s.status=='OK'){
+					var options = {  
+						title: "操作提示",  
+						msg: "成功！",  
+						showType: 'slide',  
+						timeout: 5000  
+					};  
+					$.messager.show(options);
+					$('#playlist').datagrid('reload');
+				} else {
+					var options = {  
+						title: "操作提示",  
+						msg: "失败",  
+						showType: 'slide',  
+						timeout: 5000  
+					};  
+					$.messager.show(options);
+				}
+			},'json');
+		}
+	}
+}
+
+$(function(){
+	$(tmplRender('datagrid',sd)).appendTo($('#search_container'));
+	var wc = WidgetCalls.createNew();
+	wc.init('songlist');
+	wc.add('songlist','onDblClickRow',orderIt);
+	$('#singor').bind('input propertychange', getResult);
+	$('#songname').bind('input propertychange', getResult);
+	$.parser.parse($('#search_container'));
+});
+
+
+</script>

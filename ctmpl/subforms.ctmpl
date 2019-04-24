@@ -1,0 +1,28 @@
+/*
+subforms 格式
+{
+	title:'ererge',
+	type：子form的类型，支持：page，tabs，oneOf
+	remoteWidgets：不同的form的URL列表
+	items:[
+		{
+			title:'label1',
+			icon:'icon-save',
+			remoteWidgets:[
+				'url1'
+			]
+		},{
+			title:'label2',
+			icon:'icon-edit',
+			remoteWidgets:[
+				'url2'
+			]
+		}
+	]
+}
+*/
+
+{[?it.type=='tabs']}
+{[=tmplRender('tabs',it)]}
+{[??it.type=='page']}
+{[?]}

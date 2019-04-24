@@ -1,0 +1,35 @@
+{
+    "__ctmpl__":"layout",
+    "data":{
+	"id":"mainlayout",
+        "regions":{
+            "north":{
+                "height":"50px",
+                "remoteWidgets":[
+                    "{{absurl(request,'./topzone.tmpl')}}"
+                ]
+            },
+            "south":{
+                "height":"33px",
+                "remoteWidgets":[
+                    "{{absurl(request,'./southZone.tmpl')}}"
+                ]
+            },
+            "center":{
+                "remoteWidgets":[
+                    "{{absurl(request,'./maintable.tmpl')}}"
+                ]
+
+            },
+            "west":{
+                "width":"150px",
+                "remoteWidgets":[
+                    "{{absurl(request,'./functionlists.tmpl')}}"
+                ]
+            }
+        }
+    },
+    "__metadata__":{
+        "__jename__":"layout"
+    }
+}

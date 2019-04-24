@@ -1,0 +1,25 @@
+d={
+	__widget__:'toolbar',
+	data:{
+                min_width:60,
+                inline:true,
+                leftimg_url:'/imgs/leftarrow.png',
+                rightimg_url:'/imgs/rightarrow.png',
+		tools:[
+			{
+				img_url:"/easyui/themes/icons/filesave.png",
+				name:"save",
+				label:"保存",
+				handler:function(){
+					$.messager.show({title:"提示",msg:"保存成功"});
+				}
+			},
+			{
+				img_url:"/imgs/cashflow.png",
+				name:"cashflow",
+				label:"现金流",
+				handler:cashflow
+			}
+		]
+	}
+}

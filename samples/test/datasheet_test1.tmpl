@@ -1,0 +1,103 @@
+{% include "header.tmpl" %}
+<div>
+
+</div>
+<div id="main" style="width:100%;height:350px">replace me </div>
+<script>
+console.log('this=',this);
+var d = {
+	"unitwidth":300,
+	"labelwidth":100,
+	"data_url":"datasheet_test1.dspy",
+	"readonly":false,
+	"fielddesc_url_wewe":"",
+	"fields":[
+		{
+			"name":"field1",
+			"iotype":"str",
+			"defaultvalue":"default text",
+			"required":true
+		},{
+			"name":"field2",
+			"iotype":"switch",
+			"defaultvalue":false
+		},{
+			"name":"field3",
+			"iotype":"date",
+			"defaultvalue":"2018-04-30"
+		},{
+			"name":"field4",
+			"unitcnt":2,
+			"iotype":"url",
+			"defaultvalue":"2018-04-30"
+		},{
+			"name":"field5",
+			"iotype":"code",
+			"textField":"songname",
+			"valueField":"songid",
+			"url":"/edm/dv/R.dspy?id=ktv:songs"
+		},{
+			"name":"field6",
+			"iotype":"select",
+			"textField":"songname",
+			"valueField":"songid",
+			"url":"/edm/dv/R.dspy?id=ktv:songs"			
+		},{
+			"name":"field7",
+			"iotype":"bool",
+		},{
+			"name":"field8",
+			"iotype":"scripteditor",
+			"unitcnt":2,
+			"valueheight":"400px",
+		},{
+			"name":"field9",
+			"iotype":"password",
+		},{
+			"name":"field10",
+			"iotype":"tag",
+			"textField":"songname",
+			"valueField":"songid",
+			"url":"/edm/dv/R.dspy?id=ktv:songs"			
+			
+		}
+	],
+	"toolbar":{
+		"position":"south",
+		"tools":[
+			{
+				"icon":"icon-save",
+				"name":"submit",
+				"tip":"hahaha",
+				"handler":function(e){
+					var ds = $(this).parents('.datasheet');
+					var d = ds.datasheet('getValue');
+				}
+			},
+			{
+				"icon":"icon-clear",
+				"name":"clear",
+				"handler":function(e){console.log('hahah,e=',e,this);}
+			}
+		]
+	}
+}
+console.log('dataoption_dump(d)=',dataoption_dump(d));
+console.log('rrrrrrr',d);
+$('#main').datasheet(d);
+console.log('ttttttt',d);
+function showdata(){
+	var d = $('.datasheet').datasheet('getValue');
+	console.log('data=',d);
+	alert(dump(d));
+}
+function disablefield1(){
+	var d = $('.datasheet').datasheet('disable','field1');
+}
+function enablefield1(){
+	var d = $('.datasheet').datasheet('enable','field1');
+}
+console.log('kkkkkkkkkk',d);
+
+</script>
+{% include "footer.tmpl" %}

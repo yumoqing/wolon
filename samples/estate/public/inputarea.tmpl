@@ -1,0 +1,25 @@
+<div id="inputChat">
+</div>
+<script>
+$(function(){
+	$('#inputChat').textbox({
+		width:"98%",
+		icons: [{
+			iconCls:'icon-send',
+			handler: function(e){
+				var msg=$(e.data.target).textbox('getValue');
+				if(msg==''){
+					$.messager.show({title:'提示',msg:'不能发空消息'});
+					return;
+				}
+				$('<div class="mymsg">' + msg + '</div>').appendTo($('#msgZone'));
+				$(e.data.target).textbox('setValue','');
+				/*
+				getCurrentPeer();
+				sendMessage(p,msg);
+				*/
+			}
+		}]
+	})
+});
+</script>

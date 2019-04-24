@@ -1,0 +1,42 @@
+<div id="login" width="100%" height="100%">
+</div>
+<script>
+var d = {
+	title:"用户签到",
+	unitwidth:300,
+	labelwidth:100,
+	toolbar_position:"south",
+	fields:[
+		{
+			name:"userid",
+			iotype:"str",
+			label:"登录名"
+		},
+		{
+			name:"passwd",
+			iotype:"password",
+			label:"用户密码"
+		}
+	],
+	toolbar:{
+		tools:[
+			{
+				img_url:"/easyui/themes/icons/filesave.png",
+				name:"login",
+				label:"登录",
+				handler:function(e){
+					var target=this;
+					var ds = $(target).parents('.datasheet');
+					var d = ds.datasheet('getValue');
+					console.log('d=',d);
+					logined(d.userid);
+				}
+			}
+		]
+	}
+};
+$(function(){
+	$('#login').datasheet(d);
+});
+
+</script>

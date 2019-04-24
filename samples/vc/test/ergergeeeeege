@@ -1,0 +1,15 @@
+{
+    "__ctmpl__":"jsoneditor",
+    "data":{
+        "roottype":"vec",
+        "rootname":"evreve",
+        "_jename__":"vvew",
+        "includemeta":true,
+        "registerTypes":[
+
+        ]
+    },
+    "__metadata__":{
+        "__jename__":"jsoneditor"
+    }
+}

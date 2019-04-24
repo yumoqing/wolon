@@ -1,0 +1,3 @@
+r = [ i for i in folderInfo(abspath('/vc'),'/') ]
+
+return r

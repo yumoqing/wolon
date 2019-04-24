@@ -1,0 +1,44 @@
+@runSQLResultFields
+def fields_sql(db,ns):
+	desc = {
+		"sql_string":request.args.get('sql')[0]
+	}
+	return desc
+	
+def datagrid(fs,id,sqlid):
+	d = {
+		"widget_name":id,
+		"iconCls":"icon-save",
+		"title":"SQL result",
+		"url":absurl(request,"./getSQLResult.dspy?sqlid=%s" % sqlid),
+		"view":"bufferview",
+		"options":{
+			"pageSize":50,
+			"pagination":False
+		}
+	}
+	fields = [ 
+		{
+			"name":i['name'].lower(),
+			"label":i['name'],
+			"iotype":"text"
+		} for i in fs
+	]
+	d.update({'fields':fields})
+	ret = {
+			"__ctmpl__":"datagrid",
+			"data":d
+		}
+	#print("datagrid() return ",ret)
+	return ret
+	
+print("request args=",request.args)
+db = request.args.get('db')[0]
+sql = request.args.get('sql')[0]
+sqlid = request.args.get('sqlid')[0]
+id=request.args.get('id')[0]
+sessiondata().set(sqlid,{'sql':sql,'db':db})
+fs=[ i for i in fields_sql(db,{}) ]
+data = datagrid(fs,id,sqlid)
+print("db=",db,"sql=",sql,"sqlid=",sqlid,'id=',id,'data=',data)
+return data

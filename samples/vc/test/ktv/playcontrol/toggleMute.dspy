@@ -1,0 +1,7 @@
+player.toggleMute(None)
+ret = {
+	'status':'OK',
+	'mutestatus':player.muteStatus,
+}
+print(ret)
+return ret

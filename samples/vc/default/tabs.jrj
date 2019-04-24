@@ -1,0 +1,86 @@
+{
+    "__ctmpl__": "jsoneditor",
+    "data": {
+        "__jename__": "tabs",
+        "roottype": "widgetdesc",
+        "rootname": "__widget_description__",
+        "registerTypes": [
+            {
+                "datatype": "widgetdesc",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "__ctmpl__",
+                        "datatype": "str",
+                        "required": true,
+                        "defaultvalue": "tabs",
+                        "readonly": true
+                    },
+                    {
+                        "name": "data",
+                        "datatype": "tabsdata",
+                        "required": true,
+                        "registed": true
+                    }
+                ]
+            },
+            {
+                "datatype": "tabsdata",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "id",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "items",
+                        "required": true,
+                        "datatype": "tabs",
+                        "registed": true
+                    }
+                ]
+            },
+            {
+                "datatype": "tabs",
+                "basetype": "ARRAY",
+                "allowedTypes": [
+                    "tab"
+                ]
+            },
+            {
+                "datatype": "tab",
+                "basetype": "OBJECT",
+                "allowNewAttributes": false,
+                "fields": [
+                    {
+                        "name": "title",
+                        "datatype": "str",
+                        "required": true
+                    },
+                    {
+                        "name": "remoteWidgets",
+                        "required": true,
+                        "datatype": "urls",
+                        "registed": true
+                    },
+                    {
+                        "name": "closable",
+                        "required": true,
+                        "datatype": "bool",
+                        "defaultvalue": true
+                    }
+                ]
+            },
+            {
+                "datatype": "urls",
+                "basetype": "ARRAY",
+                "allowedTypes": [
+                    "url"
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,215 @@
+{% include "header.tmpl" %}
+
+
+<div id="vc_menu" style="width:100%">
+	<a id="vc_menu_mb_0" href="javascript:void(0)" >file</a>
+	<a id="vc_menu_mb_1" href="javascript:void(0)" >test</a>
+	<a id="vc_menu_mb_2" href="javascript:void(0)" >orgin</a>
+</div>
+<div id="vc_menu_menus">
+<div id="vc_menu_0" class="easyui-menu" data-options="onClick:obj_vc_menu_0.onClick" style="width:120px;">
+	<div id="vc_menu_0_0" data-options="name:'new',icon:'icon-new',oops:true">
+		<span>new</span>
+		<div style="width:120px;">
+			<div id="vc_menu_0_0_0" data-options="name:'layout',oops:true">
+				<span>layout</span>
+				<div style="width:120px;">
+					<div id="vc_menu_0_0_0_0" data-options="name:'layout',registerfunction:'newfile',icon:'icon-layout',oops:true">
+						<span>layout</span>
+					</div>
+					<div id="vc_menu_0_0_0_1" data-options="name:'tabs',registerfunction:'newfile',icon:'icon-tabs',oops:true">
+						<span>tabs</span>
+					</div>
+					<div id="vc_menu_0_0_0_2" data-options="name:'accordion',registerfunction:'newfile',icon:'icon-accordion',oops:true">
+						<span>accordion</span>
+					</div>
+				</div>
+			</div>
+			<div id="vc_menu_0_0_1" data-options="name:'menu & bar',oops:true">
+				<span>menu & bar</span>
+				<div style="width:120px;">
+					<div id="vc_menu_0_0_1_0" data-options="icon:'icon-menu',registerfunction:'newfile',name:'menu',oops:true">
+						<span>menu</span>
+					</div>
+					<div id="vc_menu_0_0_1_1" data-options="icon:'icon-toolbar',registerfunction:'newfile',name:'toolbar',oops:true">
+						<span>toolbar</span>
+					</div>
+				</div>
+			</div>
+			<div id="vc_menu_0_0_2" data-options="name:'present',icon:'icon-presennt',oops:true">
+				<span>present</span>
+				<div style="width:120px;">
+					<div id="vc_menu_0_0_2_0" data-options="icon:'icon-datagrid',registerfunction:'newfile',name:'datagrid',oops:true">
+						<span>datagrid</span>
+					</div>
+					<div id="vc_menu_0_0_2_1" data-options="icon:'icon-tree',registerfunction:'newfile',name:'tree',oops:true">
+						<span>tree</span>
+					</div>
+					<div id="vc_menu_0_0_2_2" data-options="icon:'icon-treegrid',registerfunction:'newfile',name:'treegrid',oops:true">
+						<span>treegrid</span>
+					</div>
+					<div id="vc_menu_0_0_2_3" data-options="icon:'icon-datalist',registerfunction:'newfile',name:'datalist',oops:true">
+						<span>datalist</span>
+					</div>
+					<div id="vc_menu_0_0_2_4" data-options="icon:'icon-formattext',registerfunction:'newfile',name:'formattext',oops:true">
+						<span>formattext</span>
+					</div>
+				</div>
+			</div>
+			<div id="vc_menu_0_0_3" data-options="name:'charts',icon:'icon-chart',oops:true">
+				<span>charts</span>
+				<div style="width:120px;">
+					<div id="vc_menu_0_0_3_0" data-options="icon:'icon-pie',registerfunction:'newfile',name:'pie',oops:true">
+						<span>pie</span>
+					</div>
+					<div id="vc_menu_0_0_3_1" data-options="name:'bar',registerfunction:'newfile',icon:'icon-bar',oops:true">
+						<span>bar</span>
+					</div>
+					<div id="vc_menu_0_0_3_2" data-options="icon:'icon-line',registerfunction:'newfile',name:'line',oops:true">
+						<span>line</span>
+					</div>
+					<div id="vc_menu_0_0_3_3" data-options="icon:'icon-map',registerfunction:'newfile',name:'bmap',oops:true">
+						<span>bmap</span>
+					</div>
+				</div>
+			</div>
+			<div id="vc_menu_0_0_4" data-options="icon:'icon-form',registerfunction:'newfile',name:'form',oops:true">
+				<span>form</span>
+			</div>
+			<div id="vc_menu_0_0_5" data-options="name:'server script',icon:'icon-sscript',oops:true">
+				<span>server script</span>
+				<div style="width:120px;">
+					<div id="vc_menu_0_0_5_0" data-options="icon:'icon-dspy',registerfunction:'newfile',name:'dapy',oops:true">
+						<span>dapy</span>
+					</div>
+					<div id="vc_menu_0_0_5_1" data-options="icon:'icon-sqlds',registerfunction:'newfile',name:'sqlds',oops:true">
+						<span>sqlds</span>
+					</div>
+					<div id="vc_menu_0_0_5_2" data-options="icon:'icon-xlsxds',registerfunction:'newfile',name:'xlsxds',oops:true">
+						<span>xlsxds</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="vc_menu_0_1" data-options="name:'open',registerfunction:'openfile',icon:'icon-open',oops:true">
+		<span>open</span>
+	</div>
+	<div id="vc_menu_0_2" data-options="name:'save',registerfunction:'savefile',icon:'icon-save',oops:true">
+		<span>save</span>
+	</div>
+	<div id="vc_menu_0_3" data-options="name:'saveas',registerfunction:'saveasfile',icon:'icon-saveas',oops:true">
+		<span>saveas</span>
+	</div>
+</div>
+<script>
+obj_vc_menu_0 = {
+	outargs:{},
+	callee:null,
+	disable:function(id){
+		console.log('disable,vc_menu_0,id=',id);
+		var els = $('#' + id);
+		if (els.length>0){
+			var item = $('#vc_menu_0').menu('getItem',els[0]);
+			$('#vc_menu_0').menu('disableItem',item.target);
+		} else {
+			console.log('item not find',id);
+		}
+	},
+	enable:function(id){
+		console.log('enable,vc_menu_0,id=',id);
+		var els = $('#' + id);
+		if (els.length>0){
+			var item = $('#vc_menu_0').menu('getItem',els[0]);
+			$('#vc_menu_0').menu('enableItem',item.target);
+		} else {
+			console.log('item not find',id);
+		}
+	},
+	change:function(id,newd){
+		console.log('change,vc_menu_0,id=',id);
+		var els = $('#' + id);
+		if (els.length>0){
+			var item = $('#vc_menu_0').menu('getItem',els[0]);
+			if (newd.hasOwnProperty('label')){
+				$('#vc_menu_0').menu('setText',{target:item.target,text:newd.label});
+			}
+			if (newd.hasOwnProperty('icon')){
+				$('#vc_menu_0').menu('setIcon',{target:item.target,iconCls:newd.icon});
+			}
+		} else {
+			console.log('item not find',id);
+		}
+	},
+	onClick:function(item){
+		console.log('item=',item);
+		var d = {
+			'id':'vc_menu_0',
+			'action':item.name,
+			'data':$.extend(item,obj_vc_menu_0.outargs)
+		};
+		if(item.hasOwnProperty('registerfunction')){
+			var rf = RegisterFunction.createNew();
+			console.log('registerfunction',d);
+			rf.call(item.registerfunction,d);
+			return;
+		}
+		var rf = RegisterFunction.createNew();
+		console.log('registerfunction',d);
+		rf.call('mainfunc',d);
+		return;
+	},
+	defaultAction:function(data){
+		$.messager.alert('info',data.action+':' + i18n('not implemented yet'));
+		return data;
+	},
+	setValue:function(d){
+		obj_vc_menu_0.outargs = d.data;
+		$('#vc_menu_0').menu('show',{left: d.event.pageX,top: d.event.pageY});
+	}
+};
+$(function(){
+	$.parser.parse($('#vc_menu_0'));
+	widgetCreated('menu','vc_menu_0');
+	var mc = WidgetCalls.createNew();
+	mc.add('vc_menu_0','#',obj_vc_menu_0.defaultAction);
+});
+</script>
+<div id="mm" class="easyui-menu" style="width:120px;">
+    <div>New</div>
+    <div>
+        <span>Open</span>
+    </div>
+    <div data-options="iconCls:'icon-save'">Save</div>
+    <div class="menu-sep"></div>
+    <div>
+        <span>Open</span>
+        <div style="width:150px;">
+            <div><b>Word</b></div>
+            <div>Excel</div>
+            <div>PowerPoint</div>
+			<div>
+				<span>media</span>
+				<div style="width:150px;">
+					<div><b>Word</b></div>
+					<div>Excel</div>
+					<div>PowerPoint</div>
+				</div>
+			</div>
+        </div>
+	</div>
+</div>
+</div>
+<script>
+$('#vc_menu_mb_0').menubutton({  menu:'#vc_menu_0'});
+var smenu = {id:"vc_menu_1",registerfunction:"mainfunc",submenu:[{name:'test',registerfunction:'showtest',icon:'icon-showtest'}]};
+menubody=tmplRender('menu',smenu);
+console.log('menubody=',menubody);
+$(menubody).appendTo($('#vc_menu_menus'));
+$('#vc_menu_mb_1').menubutton({  menu:'#vc_menu_1'});
+$('#vc_menu_mb_2').menubutton({  menu:'#mm'});
+</script>
+<div>egewgewrgew</div>
+<div class="lbox">jkewgewkjgejkwrgjkerwjkgewrkjfewrg</div>
+</body>
+</html>

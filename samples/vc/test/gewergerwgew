@@ -1,0 +1,15 @@
+{
+    "__ctmpl__":"jsoneditor",
+    "data":{
+        "roottype":"ewg",
+        "rootname":"gew",
+        "_jename__":"ewrg",
+        "includemeta":true,
+        "registerTypes":[
+
+        ]
+    },
+    "__metadata__":{
+        "__jename__":"jsoneditor"
+    }
+}

@@ -1,0 +1,63 @@
+__widget_description__ = {
+	"__ctmpl__" :"line",
+	"data":{
+		"id":"stock1",
+		"widgettype":"echarts",
+		"class":"chartbox",
+		"width":"500px",
+		"height":"300px",
+		"title":"产品统计",
+		"url":"product.dspy",
+		"dimension":"catelogname",
+		"series":[
+			{
+				"name":"累计",
+				"indicator":"total_cnt"
+			},
+			{
+				"name":"本年",
+				"indicator":"year_cnt"
+			},
+			{
+				"name":"本月",
+				"type":"bar",
+				"indicator":"month_cnt"
+			},
+			{
+				"name":"本日",
+				"indicator":"day_cnt"
+			}
+		],
+		"contextmenu":[
+			{
+				"type":"amplitude",
+				"identifier":"function(data){return true;}",
+				"func":"doTest",
+				"submenu":
+				[
+					{
+						"label":"sql script",
+						"name":"sqlscript"
+					},{
+						"label":"sql builder",
+						"name":"sqlbuilder"
+					}
+				]
+			},
+			{
+				"type":"p_change",
+				"func":"doTest",
+				"submenu":
+				[
+					{
+						"label":"p_change 1",
+						"name":"p_change1"
+					},{
+						"label":"p_change 2",
+						"name":"p_change2"
+					}
+				]
+			}
+		]
+	}
+}

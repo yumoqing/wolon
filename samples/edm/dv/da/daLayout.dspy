@@ -1,0 +1,27 @@
+dbname = request.args.get('dbname',[None])[0]
+id = request.args.get('id',['0'])[0]
+print('sqlLayout.dspy','id=',id+ "_layout")
+return {
+	"data":{
+		"__ctmpl__":"layout",
+		"__target__":"$('body')",
+		"data":{
+			"id":id + "_layout",
+			"border":True,
+			"options":{
+				"north":{
+					"height":"40px",
+					"href":absurl(request,"./daToolbar.tmpl?dbname=" + dbname+'&id='+id),
+				},
+				"west":{
+					"width":"50%",
+					"content":"<div style='width:100%;height:100%;background-color:#1f1f1f;'>test</div>"
+				},
+				"east":{
+					"width":"50%",
+					"href":absurl(request,"./dsAccordion.tmpl?dbname=" + dbname + '&id=' + id),
+				}
+			}
+		}
+	}
+}

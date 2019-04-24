@@ -1,0 +1,7 @@
+return {
+	#'status':'OK',
+	#'next':player.orderList.nextinfo(),
+	#'info':player.orderList.playinfo(),
+	#'order':player.orderList.orderlist(),
+	'play':player.orderList.play(),
+}

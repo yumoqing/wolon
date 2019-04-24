@@ -1,0 +1,21 @@
+def getRoot():
+        return visualcoding().userroot.get(userid,visualcoding().default_root)
+
+
+root=request.args.get('root',[getRoot()])[0]
+path=request.args.get('id',[''])[0]
+if len(path)>0:
+	path = '/'.join(path.split('_#_'))
+print('root=',root,'path=',path,':',userid)
+r = [ i for i in folderInfo(abspath(root),path) ]
+for i in r:
+	if i['type']=='dir':
+		i['state'] = 'closed'
+	i['id'] = '_#_'.join(i['id'].split('/'))
+
+ret={
+	'total':len(r),
+	'rows':r
+}
+print(ret)
+return ret

@@ -1,0 +1,37 @@
+{% include "header.tmpl" %}
+
+<script src="/myjs/pagingContext.js" ></script>
+<div>
+<input id="values" name="values" type="text" />
+</div>
+<div id="pttest" style="width:500px;height:400px;background:#f00000">
+</div>
+<script>
+var o = $('#pttest').pagingcontext({
+	onTouchEnd:function(points){
+		var v = '';
+		debug('onToucchEnd',points);
+		for (var i=0;i<points.length;i++){
+			v += '(' + points[i].x + ','+points[i].y + '),';
+		}
+		$('#values').val(v);
+	},
+	items:[
+		{
+			name:'page1',
+			icon:'icon-save',
+			label:'Page 1',
+			remoteWidgets:[
+				"{{absurl(request,'./form11.tmpl')}}"
+			]
+		},{
+			name:'page2',
+			label:'Page 2',
+			remoteWidgets:[
+				"{{absurl(request,'./form12.tmpl')}}"
+			]
+		}
+	]
+});
+</script>
+{% include "footer.tmpl" %}

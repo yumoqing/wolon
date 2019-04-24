@@ -1,0 +1,20 @@
+{% include "header.tmpl" %}
+<div id="dbc_tabs" ></div>
+<script>
+var d = {
+	id:"dbc_tabs",
+	narrow:true,
+	items:[
+		{
+			title:"home",
+			icon:"icon-home",
+			url:"./dm/main.html",
+			closable:false
+		}
+	]
+};
+$('body').html(tmplRender('tabs',d));
+console.log('dbc_workarea.html',"here");
+$.parser.parse($('body'));
+</script>
+{% include "footer.tmpl" %}

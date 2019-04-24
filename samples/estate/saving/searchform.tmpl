@@ -1,0 +1,6 @@
+<button onclick="showSearchCondition()">检索条件</button>
+<script>
+function showSearchCondition(){
+	popWindow("{{absurl(request,'./searchform1.tmpl')}}",{title:'输入查询条件'});
+}
+</script>

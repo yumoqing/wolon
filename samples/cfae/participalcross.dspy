@@ -1,0 +1,20 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc={
+		"sql_string":"""
+select '融资人' as catelogname,
+(select count(1) from participals a left join product b on a.participalid = b.issuerid where a.catelogname = N'融资人' and b.issuerid is null) as noissue,
+(select count(1)  from issuercrosssale where crosscnt = 1) as  nocross,
+(select count(1) from issuercrosssale where crosscnt = 2)  cross1 ,
+(select count(1) from issuercrosssale where crosscnt = 3)  cross2
+union
+select N'主承人' as catelogname,
+(select count(1) from participals a left join product b on a.participalid = b.brokerid where a.catelogname = N'主承人' and b.brokerid is null) as noissue,
+(select count(1)  from brokercrosssale where crosscnt = 1) as  nocross,
+(select count(1) from brokercrosssale where crosscnt = 2)  cross1 ,
+(select count(1) from brokercrosssale where crosscnt = 3)  cross2
+"""
+	}
+	return desc
+	
+return [ i for i in sql('cfae',{}) ]

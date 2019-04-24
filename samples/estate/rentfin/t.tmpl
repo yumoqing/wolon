@@ -1,0 +1,8 @@
+{% include "header.tmpl" %}
+<div id="test"></div>
+<script>
+console.log('t.tmpl:here1');
+remoteWidgets(['./rentfinView.tmpl'],{},$('body'),'GET',showError);
+console.log('t.tmpl:here2');
+</script>
+{% include "footer.tmpl" %}

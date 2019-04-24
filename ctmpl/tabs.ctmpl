@@ -1,0 +1,94 @@
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+<div id="{[=it.id]}" ></div>
+<script>
+var obj_{[=it.id]} = {
+	add:function(label,url,icon){
+		$('#{[=it.id]}').tabs('add',
+			{
+				title:label,
+				label:label,
+				iconCls:icon,
+				closable:true,
+				selected:true
+			}
+		);
+		$('#{[=it.id]}').tabs('select',label);
+		if (typeof(url) == typeof([])){
+			remoteWidgets(url,{},$('#{[=it.id]}').tabs('getTab',label),'replace',function(e){$.messager.alert(e);});
+		} else {
+			remoteWidget(url,{},$('#{[=it.id]}').tabs('getTab',label),'replace',function(e){$.messager.alert(e);});
+		}
+	},
+	addOrSelect:function(label,url,icon){
+		var f = $('#{[=it.id]}').tabs('getTab',label);
+		if(isNull(f) || f.length==0){
+			obj_{[=it.id]}.add(label,url,icon);
+		} else {
+			$('#{[=it.id]}').tabs('select',label);
+		}
+	}
+};
+var opts = $.extend(
+	{
+		fit:true,
+		border:true,
+		onSelect:function(title,index){
+			var tab = $('#{[=it.id]}').tabs('getSelected');
+			/*
+			var url = tab.href;
+			var title = tab.attr("title");
+			console.log("tab=",tab,"title=",title,'url=',url);
+			tab.panel('refresh', tab.attr('href'));
+			*/
+			var mc = WidgetCalls.createNew();
+			var data = {
+				data:{
+				title:title,
+				index:index
+				},
+				id:'{[=it.id]}',
+				action:'onSelect'
+			};
+			mc.execute('{[=it.id]}','onSelect',data,null);
+		},
+		onUnselect:function(title,index){
+			var mc = WidgetCalls.createNew();
+			var data = {
+				data:{
+				title:title,
+				index:index
+				},
+				id:'{[=it.id]}',
+				action:'onUnselect'
+			};
+			mc.execute('{[=it.id]}','onUnselect',data,null);
+		},
+	},
+	{[?it.options]}
+	{[=dump(it.options)]},
+	{[?]}
+	{
+		id:'{[=it.id]}'
+	}
+);
+$('#{[=it.id]}').tabs(opts);
+{[~ it.items :i]}
+$('#{[=it.id]}').tabs('add',{[=dump(i)]});
+{[~]}
+$(document).ready(function(){
+{[~ it.items :i ]}
+	{[?i.remoteWidgets]}
+remoteWidgets({[=dump(i.remoteWidgets)]},{},
+	$('#{[=it.id]}').tabs('getTab','{[=i.title]}'),'replace',function(e){console.log(e);});
+	{[?]}
+{[~]}
+
+	$.parser.parse($('#{[=it.id]}'));
+	widgetCreated('tabs','{[=it.id]}');
+	$('#{[=it.id]}').tabs('select','{[=it.items[0].title]}');
+});
+
+</script>
+

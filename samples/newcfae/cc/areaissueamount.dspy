@@ -1,0 +1,37 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc={
+		"sql_string":"""
+select 
+	a.seriename,
+	a.area,
+	b.longitude,
+	b.latitude,
+	a.issueamount
+from (
+select '$[datedim_value]$' as seriename,
+	area,
+	sum(issueamount) as issueamount
+from issuerview a
+where a.$[datedim]$ = ${datedim_value}$
+group by area
+) a left join earthlocation b
+on a.area = b.addressname
+		"""
+	}
+	return desc
+
+years = [
+'2004','2005','2006','2007','2008',
+'2009','2010','2011','2012','2013','2014','2015','2016','2017'
+]
+
+ns = {
+	'datedim':request.args.get('datedim',['year_value'])[0],
+	'datedim_value':years[random.randint(0,len(years)-1)],
+}
+
+ret = [ r for r in sql('cfae',ns) ]
+if len(ret)==0:
+	print("null data",request.args)
+return ret

@@ -1,0 +1,161 @@
+<div id="meta_container" style="width:100%;height:100%"></div>
+<script>
+var d = {
+	id:"metatree",
+	widgettype:"tree",
+	options:{
+		title:"meta data",
+		onBeforeLoad:function(node,params){
+			console.log('onBeforeLoad ....',node,params);
+			if(node){
+				params.id = node.id+'#'+node.nodetype;
+			}
+			return true;
+		}
+	},
+	"contextmenu":
+	[
+		{
+			"type":"domains",
+			identifier:function(node){console.log(node);return node.nodetype=='domains';},
+			"registerfunction":"modal_url_call",
+			"submenu":[
+				{
+					"name":"newdomain",
+					"url":"{{absurl(request,'./domain_datasheet.tmpl')}}",
+					"label":"new domain"
+				}
+			]
+		},
+		{
+			"type":"domain",
+			identifier:function(node){return node.nodetype=='domain';},
+			"registerfunction":"maintabs_url_call",
+			"submenu":[
+				{
+					"name":"modifydomain",
+					"label":"modify domain",
+				},
+				{
+					"name":"deletedomain",
+					"label":"delete domain",
+				}
+			]
+		},
+		{
+			"type":"udts",
+			identifier:function(node){console.log(node);return node.nodetype=='udts';},
+			"registerfunction":"maintabs_url_call",
+			"submenu":
+			[
+				{
+					"label":"create udt",
+					"name":"createudt"
+				}
+			]
+		},
+		{
+			"type":"udt",
+			identifier:function(node){console.log(node);return node.nodetype=='udt';},
+			"registerfunction":"maintabs_url_call",
+			"submenu":
+			[
+				{
+					"label":"copy udt",
+					"name":"copyudt"
+				},				{
+					"label":"paste udt",
+					"name":"pasteudt"
+				},
+				'-',
+				{
+					"label":"add udt",
+					"name":"addudt"
+				},
+				{
+					"label":"modify udt",
+					"name":"modifyudt"
+				},
+				{
+					"label":"delete udt",
+					"name":"deleteudt"
+				}
+			]
+		},
+		{
+			"type":"atoms",
+			identifier:function(node){console.log(node);return node.nodetype=='atoms';},
+			"submenu":
+			[
+				{
+					"label":"new atom",
+					"name":"newatom"
+				}
+			]
+		},
+		{
+			"type":"atom",
+			identifier:function(node){console.log(node);return node.nodetype=='atom';},
+			"submenu":
+			[
+				{
+					"label":"copy atom",
+					"name":"copyatom"
+				},
+				{
+					"label":"paste atom",
+					"name":"pasteatom"
+				},
+				'-',
+				{
+					"label":"delete atom",
+					"name":"deleteatom"
+				},
+				{
+					"label":"update atom",
+					"name":"updateatom"
+				}
+			]
+		},
+		{
+			"type":"tables",
+			identifier:function(node){console.log(node);return node.nodetype=='tables';},
+			"submenu":
+			[
+				{
+					"label":"create table",
+					"name":"createtable"
+				}
+			]
+		},
+		{
+			"type":"table",
+			identifier:function(node){console.log(node);return node.nodetype=='table';},
+			"submenu":
+			[
+				{
+					"label":"copy table",
+					"name":"copyatom"
+				},
+				{
+					"label":"paste table",
+					"name":"pasteatom"
+				},
+				'-',
+				{
+					"label":"view table",
+					"name":"v_data"
+				}
+			]
+		}
+	],
+	"url":"./meta/metatree.dspy",
+	"drag":true,
+	"editable":false
+};
+var data = tmplRender("tree",d);
+
+$("#meta_container").html(data);
+
+$.parser.parse($("#meta_container"));
+</script>

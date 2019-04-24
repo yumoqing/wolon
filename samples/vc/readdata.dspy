@@ -1,0 +1,25 @@
+#readdata.dspy
+
+url = request.args.get('data',[None])[0]
+if url==None:
+	print('data arg miss')
+	return {}
+f = openfile(absurl(request,url),'r')
+if f is None:
+	return {
+		"status":"error",
+		"errortype":"open error",
+		"errmsg":url + ':cannt open',
+	}
+b = f.read()
+f.close()
+a = b.split('__widget_description__ = ')
+if len(a)>1:
+	a = a[1]
+else:
+	a = a[0]
+data = json.loads(a)
+if data.get('__metadata__',False):
+	del data['__metadata__']
+
+return json.dumps(data,indent=4)

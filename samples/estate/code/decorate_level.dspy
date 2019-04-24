@@ -1,0 +1,6 @@
+desc = {
+	"data_sheet":"decorate_level",
+	"data_from":2
+}
+x = xlsxdata(abspath(absurl(request,'./code.xlsx')),desc)
+return x.getData({})

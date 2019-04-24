@@ -1,0 +1,42 @@
+/*
+{
+	id:"34r3",
+	width:100,
+	height:100,
+	class:'vbox',
+	formater:'position:{x},{y}',
+	data:{
+		x:100,
+		y:200
+	}
+}
+*/
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+
+<div id="{[=it.id]}" 
+	class="{[=it.class]}" 
+	style="width:{[=it.width||'100%']};height:{[=it.height||'100%']}" 
+></div>
+<script>
+obj_{[=it.id]} = {
+	data:{},
+	formater:'{[=it.formater]}',
+	setValue:function(d){
+		obj_{[=it.id]}.data = d;
+		var ct = ClientTemplate.createNew();
+		console.log('formattext.ctmpl:setValue()',ct);
+		var txt = ct.tmplTextRender('{[=it.formater]}',d);
+		console.log('formattext.ctmpl:setValue()','{[=it.formater]}',txt);
+		$('#{[=it.id]}').html(txt);
+		$.parser.parse($('#{[=it.id]}'));
+	},
+	getValue:function(d){
+		return (obj_{[=it.id]}.data);
+	}
+};
+{[?it.data]}
+obj_{[=it.id]}.setValue({[=dump(it.data)]});
+{[?]}
+</script>

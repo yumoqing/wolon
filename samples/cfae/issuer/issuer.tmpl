@@ -1,0 +1,10 @@
+<div id="issuer_container">
+</div>
+<script>
+var urls = [
+	"{{absurl(request,'./productcross.tmpl')}}"
+];
+
+remoteWidgets(urls,{},$('#issuer_container'),'replace',function(e){$.messager.alert(e);});
+
+</script>

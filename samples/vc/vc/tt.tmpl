@@ -1,0 +1,9 @@
+{% include "header.tmpl" %}
+<div id="f"></div>
+<script>
+var urls=["/vc/editfile.dspy?url=/vc/test/tt/gf/ttt.tmpl"];
+remoteWidgets(urls,{},$('body'),'append',function(e){alert(e);});
+
+</script>
+{% include "footer.tmpl" %}
+	

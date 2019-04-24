@@ -1,0 +1,18 @@
+d = {
+	__ctmpl__:"datagrid",
+	data:{
+	title:"选择出房",
+	checkbox:true,
+	idField:"f1",
+	url:"{{absurl(request,'./sellfin_grid.xlsxds')}}",
+	fields:[
+		{"name":"f1","label":"\u623f\u5c4b\u7f16\u53f7","type":"str","listhide":false,"inputhide":false,"frozen":false},{"name":"f2","label":"\u6240\u5c5e\u5c0f\u533a","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"str"},{"name":"f3","label":"\u623f\u5c4b\u6237\u578b","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"code","url":"\/estate\/code\/house_shape.dspy","valueField":"f1","textField":"f2"},{"name":"f4","label":"\u5efa\u7b51\u9762\u79ef","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"str"},{"name":"f5","label":"\u5efa\u9020\u5e74\u4ee3","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"str"},{"name":"f6","label":"\u623f\u5c4b\u671d\u5411","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"str"},{"name":"f7","label":"\u623f\u5c4b\u7c7b\u578b","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"code","url":"\/estate\/code\/house_catelog.dspy","valueField":"f1","textField":"f2"},{"name":"f8","label":"\u6240\u5728\u697c\u5c42","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"number"},{"name":"f9","label":"\u88c5\u4fee\u7a0b\u5ea6","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"code","url":"\/estate\/code\/decorate_level.dspy","valueField":"f1","textField":"f2"},{"name":"f10","label":"\u623f\u5c4b\u4f30\u503c","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"number"},{"name":"f11","label":"\u552e\u4ef7","type":"str","listhide":false,"inputhide":false,"frozen":false,"iotype":"number"}
+		],
+	options:{
+		checkOnSelect: false, selectOnCheck: false,
+
+		rownumbers:false
+	}
+	}
+	
+}

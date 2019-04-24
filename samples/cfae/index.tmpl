@@ -1,0 +1,84 @@
+{% include "header.tmpl" %}
+<script src="/myjs/easyuiExt.js"></script>
+<script src="{{absurl(request,'./contextmenufuncs.js')}}"></script>
+<script>
+
+var rf=RegisterFunction.createNew();
+autoflag = false;
+rf.register('startAutoChangePlot',function(d){
+	var years = ['2004','2005','2006','2007','2008',
+					'2009','2010','2011','2012','2013','2014','2015','2016','2017'];
+	var position = 0;
+	var timer;
+	autoflag = true;
+	timer = window.setInterval(function(){
+		if (autoflag){
+			d = {
+				type:'year_value',
+				value:years[position]
+			};
+			changeDatedim(d);
+			position ++;
+			if(position>=years.length){
+				position = 0;
+			}
+		} else {
+			window.clearInterval(timer);
+			position = 0;
+		}
+	},3000);
+});
+rf.register('stopAutoChangePlot',function(d){
+	autoflag = false;
+});
+rf.register('showIsserIssueProfile',function(d){
+	console.log('showIsserIssueProfile',d);
+});
+
+rf.register('issuerAnalysis',function(d){
+	obj_cfaemain_tabs.addOrSelect('融资人分析',[
+		"{{absurl(request,'./issuer/productcross.tmpl')}}",
+		"{{absurl(request,'./issuer/issuerlist.tmpl')}}"
+	],'icon-table');
+});
+rf.register('brokerAnalysis',function(d){
+	obj_cfaemain_tabs.addOrSelect('主承人分析',"{{absurl(request,'./broker/broker.tmpl')}}",'icon-table');
+});
+rf.register('usrManual',function(d){
+	obj_cfaemain_tabs.addOrSelect('操作手册',[
+		"{{absurl(request,'./help/manual.tmpl')}}"
+	],'icon-help');
+
+});
+rf.register('profileAnalysis',function(d){
+	obj_cfaemain_tabs.addOrSelect('业务概览',"{{absurl(request,'./workarea.tmpl')}}",'icon-table');
+});
+changeIssuerList = function(d){
+	console.log('changeIssuerList()',d);
+	var classify = d.sets.join('.');
+	obj_issuerlist.setValue({classify:classify});
+}
+changeDatedim=function(d){
+	console.log('changeDatedim(),d=',d);
+	var data = {
+		datedim:d.type,
+		datedim_value:d.value
+	};
+	if (d.type=='total')
+		data = {};
+	eval('obj_profiletitle.setValue(data)');
+	eval('obj_areaissueamount.setValue(data)');
+	eval('obj_producttypeissueamount.setValue(data)');	
+	eval('obj_ratingissueamount.setValue(data)');	
+	eval('obj_termissueamount.setValue(data)');	
+	eval('obj_monthlyIndicators.setValue(data)');	
+}
+var wc=WidgetCalls.createNew();
+wc.add('tree:cfaedatetree','created',function(d){
+	var wc=WidgetCalls.createNew();
+	wc.add('cfaedatetree','onClick',changeDatedim);
+	wc.add('productcross','onClick',changeIssuerList);
+});
+remoteWidget("{{absurl(request,'./mainlayout.tmpl')}}",{},$('body'),'replace',function(e){$.messager.alert(e);});	
+</script>
+{% include "footer.tmpl" %}

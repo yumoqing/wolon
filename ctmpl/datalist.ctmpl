@@ -1,0 +1,175 @@
+{[? !it.id]}
+{[setIdByCatelog(it);]}
+{[?]}
+<div id="{[=it.id]}" class="{[=it.class||'lbox']}" width="{[=it.width||'100%']}" height="{[=it.height||'100%']}"></div>
+{[?it.toolbar]}
+<div id="{[=it.id]}_tb"></div>
+{[?]}
+<script>
+{[?it.toolbar]}
+	{[='var tbopts = {' ]}
+		id:'{[=it.id]}_tb',
+		tools:[
+		{[var i=0;]}
+		{[~ it.toolbar.tools :t]}
+			{[='{']}
+			text:"{[=t.label||t.text||t.name]}",
+			icon:"{[=t.icon]}",
+			name:"{[=t.name]}"
+			{[='}']}{[?i<it.toolbar.tools.length -1]},{[?]}
+			{[i++;]}
+		{[~]}
+		]
+	{[='}']};
+	var d = tmplRender('toolbar',tbopts);
+	$('#{[=it.id]}_tb').html(d);
+{[?]}
+var opts = objExt(	
+	{
+		checkbox:false,
+		lines:true,
+		loadFilter: function(data){
+			if (data.d){
+				return data.d;
+			} else {
+				return data;
+			}
+		},
+		onAfterEdit : function (rowIndex, rowData, changes) {
+			$('#save,#undo').hide();
+			var inserted = $('#{[=it.id]}').datalist('getChanges', 'inserted');
+			var updated = $('#{[=it.id]}').datalist('getChanges', 'updated');
+			console.log('onAfterEdit():data=',rowData);
+			var url = info =  '';
+
+			if (inserted.length > 0) {
+				url = '{[=it.appendURL]}';
+				info = '{[=i18n('add')]}';
+			}
+			
+			if (updated.length > 0) {
+				url = '{[=it.updateURL]}';
+				info = '{[=i18n('update')]}';
+			}
+			console.log(rowData,changes);
+			$.ajax({
+				type : 'POST',
+				url : url,
+				data : rowData,
+				beforeSend : function () {
+					$('#{[=it.id]}').datalist('loading');
+				},
+				success : function (data) {
+					if (data) {
+						$('#{[=it.id]}').datalist('loaded');
+						$('#{[=it.id]}').datalist('reload');
+						$('#{[=it.id]}').datalist('unselectAll');
+						$.messager.show({
+							title : '{[=i18n('hint')]}',
+							msg : data + ' records ' + info + 'ed',
+						});
+						obj_{[=it.id]}.editRow = -1;
+					}
+				},
+			});
+		},
+		onRowContextMenu : function(e,index,row) {
+			var mc = WidgetCalls.createNew();
+			var d = {'index':index,'row':row,event:e};
+			mc.execute('{[=it.id]}','onRowContextMenu',d,null);
+		},
+		onClickRow:function(index,row) {
+			var mc = WidgetCalls.createNew();
+			var d = {'index':index,'row':row};
+			console.log('datagird.ctmpl:onClickRow() d=',d);
+			mc.execute('{[=it.id]}','onClickRow',d,null);
+		},
+		onSelect : function(index,row){
+			var mc = WidgetCalls.createNew();
+			var d = {
+					'index':index,
+					'row':row
+			};
+			console.log('datagird.ctmpl:onSelect() d=',d);
+			mc.execute('{[=it.id]}','onSelect',d,null);
+		},
+		onDblClickRow : function (index, row) {
+			var mc = WidgetCalls.createNew();
+			var d = {
+				'index':index,
+				'row':row
+			};
+			console.log('datagird.ctmpl:onDblClickRow() d=',d);
+			mc.execute('{[=it.id]}','onDblClickRow',d,null);
+		},
+		onLoadSuccess:function(data){
+			{[?it.dnd]}$('#{[=it.id]}').datalist('enableDnd');{[?]}
+			console.log('datalist.ctmpl,onLoadSuccess,data=',data);
+		},
+		{[? it.checkbox]}
+		onCheck:function(index,row){
+			var mc = WidgetCalls.createNew();
+			var d = {'index':index,'row':row};
+			mc.execute('{[=it.id]}','onCheck',d,null);
+			return true;
+		},
+		{[?]}
+		onBeforeDrop:function(target,source,point){
+			console.log("target",target,"source",source);
+			return {[? it.dropdeny===1]}false{[??]}true{[?]};
+		},
+		{[?toolbar]}
+		onToolClick:function(data){
+			var action = data.action;
+			if (action=='#' || action == '*'){
+				action = data.org_action;
+			}
+			var rows = $('#{[=it.id]}').datalist('getChecked');
+			if (rows.length == 0) {
+				$.messager.alert(i18n('please select a row'));
+				return;
+			}
+			var mc=WidgetCalls.createNew();
+			if (action == 'add'){
+				return obj_{[=it.id]}.add();
+			}
+			if (action == 'delete'){
+				return obj_{[=it.id]}.delete();
+			}
+			if (action == 'edit'){
+				return obj_{[=it.id]}.edit();
+			}
+			if (action == 'filter'){
+				return objj_{[=it.id]}.filter();
+			}
+			mc.execute('{[=it.id]}',action,rows,null);
+		},
+		{[?]}
+		onBeforeDrag:function(node){
+			return {[? it.dragdeny===1 ]}false{[??]}true{[?]};
+		}
+	},
+	{[?it.options]}{[=dump(it.options)]},{[?]}
+	{
+		url: '{[=it.url]}',
+{[?it.title]}
+		title:'{[=it.title]}',
+{[?]}
+{[?it.icon]}
+		iconCls:'{[=it.icon]}',
+{[?]}
+{[?it.toolbar]}
+		toolbar:'#{[=it.id]}_tb',
+{[?]}
+		valueField:'{[=it.valueField]}',
+		textField:'{[=it.textField]}'
+	}
+	
+);
+
+$('#{[=it.id]}').datalist(opts);
+{[?it.dnd]}
+$('#{[=it.id]}').datalist('enableDnd');
+{[?]}
+widgetCreated('datalist','{[=it.id]}');
+</script>

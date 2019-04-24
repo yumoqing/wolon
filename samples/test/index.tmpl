@@ -1,0 +1,19 @@
+{% include "header.tmpl" %}
+
+<script>
+
+remoteCall('/vc/readdata.dspy?data=/vc/test/product.tmpl','get','json',{},function(d){
+	console.log(Object.prototype.toString.apply(d),d);
+	},
+	function(e){
+		$.messager.alert('error:error',e);
+	});
+remoteCall('/test/je.json','get','json',{},function(d){
+	console.log(Object.prototype.toString.apply(d),d);
+	},
+	function(e){
+		$.messager.alert('error:error',e);
+	});
+
+</script>
+{% include "footer.tmpl" %}

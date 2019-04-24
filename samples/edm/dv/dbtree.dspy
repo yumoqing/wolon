@@ -1,0 +1,69 @@
+#database tree
+def getTableNodes(db):
+	sqlor = getSqlor(db)
+	try:
+		tables = sqlor.tables()
+		ret = []
+		for t in tables:
+			title = t['title']
+			if title is None or title == '':
+				title = t['name']
+			ret.append({
+				"id":"%s:%s" % (db,t['name']),
+				"text":t['name']+'[' + title + ']',
+				"iconCls":"icon-table",
+				"state":"closed",
+				"nodetype":"table",
+			})
+		closeSqlor(db,sqlor)
+		return ret
+	except Exception as e:
+		closeSqlor(db,sqlor)
+		print('eeeeeeeeeeeeeeeee',e)
+		return e
+
+def getTableFieldsNode(db,table):
+	sqlor = getSqlor(db)
+	try:
+		fields = sqlor.fields(table)
+		ret = []
+		for f in fields:
+			title = f['title']
+			if title is None or title == '':
+				title= f['name']
+			ret.append({
+				"id":"%s:%s:%s" % (db,table,f['name']),
+				"text":f['name'] + '[' + title + ']',
+				"iconCls":"icon-field",
+				"state":"open",
+				"nodetype":"field",
+			})
+		closeSqlor(db,sqlor)
+		return ret
+	except Exception as e:
+		closeSqlor(db,sqlor)
+		print(e)
+		return e
+	
+		
+print(request.args)		
+id = request.args.get('id',None)
+if id is None:
+	retdata = []
+	for db in databases.keys():
+		retdata.append({
+			"id":db,
+			"iconCls":"icon-database",
+			"text":db,
+			"state":"closed",
+			"nodetype":"database",
+		})
+	return retdata
+id = id[0]
+ids = id.split(':')
+idcnt = len(ids)
+if idcnt == 1:
+	print("List Table...",id)
+	return getTableNodes(id)
+if idcnt == 2:
+	return getTableFieldsNode(ids[0],ids[1])

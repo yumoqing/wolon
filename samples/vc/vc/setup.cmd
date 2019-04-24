@@ -1,0 +1,1 @@
+xcopy . %1\wwwroot\vc /S /E /C /I /Q /Y /h /r

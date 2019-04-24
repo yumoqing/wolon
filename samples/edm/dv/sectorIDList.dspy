@@ -1,0 +1,4 @@
+
+crud = CRUD('ambi')
+ret = [i for i in crud.R('sector')]
+return ret

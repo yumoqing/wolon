@@ -1,0 +1,6 @@
+{% include "header.tmpl" %}
+<script>
+remoteWidget('{{request.args.get('url')[0]}}',{},$('body'),'replace',function(e){$.messager.alert('error',e);});
+</script>
+
+{% include "footer.tmpl" %}

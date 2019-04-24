@@ -1,0 +1,17 @@
+<script>
+var d = {
+	id:"dbc_tabs",
+	narrow:true,
+	items:[
+		{
+			title:"home",
+			iconCls:"icon-save",
+			url:"./dm/main.html",
+			closable:false
+		}
+	]
+};
+$('#connectLayout').layout('panel','center').html(tmplRender('tabs',d));
+console.log('dbc_workarea.html',"here");
+$.parser.parse($('#connectLayout').layout('panel','center'));
+</script>

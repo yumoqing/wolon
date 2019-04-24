@@ -1,0 +1,34 @@
+@runSQLIterator
+def sql(dbname,ns):
+	desc={
+		"sql_string":"""
+select '$[datedim_value]$' as seriename,
+	$<groupname1>$$[groupname1]$
+	$<groupname2>$,$[groupname2]$
+	$<groupname3>$,$[groupname3]$
+	$<groupname4>$,$[groupname4]$
+	$</groupname4>$
+	$</groupname3>$
+	$</groupname2>$
+	,$</groupname1>$
+	sum(issueamount) as issueamount
+from issuerview a
+where a.$[datedim]$ = ${datedim_value}$
+$<groupname1>$group by $[groupname1]$
+	$<groupname2>$,$[groupname2]$
+	$<groupname3>$,$[groupname3]$
+	$<groupname4>$,$[groupname4]$
+	$</groupname4>$
+	$</groupname3>$
+	$</groupname2>$
+	$</groupname1>$
+		"""
+	}
+	return desc
+
+ns = request2ns()
+print(ns)
+ret = [ r for r in sql('cfae',ns) ]
+if len(ret)==0:
+	print("null data",request.args)
+return ret

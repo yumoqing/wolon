@@ -1,0 +1,128 @@
+/*
+jsoneditor 数据格式
+id：节点id
+name：数据名字
+value：数据值
+datatype：数据类型
+valueField：数据值域
+textField：数据名称域
+precision:小数位
+required：必选项
+data:code类型的数据，格式为：[{valueField:1,textField:'egee'},...]
+*/
+{[var atomtype=['str','text','url','number','date','bool','code','urlcode'];]}
+{[?atomtype.notcontains(it.datatype)]}
+<span id="{[=it.id]}_menuc" 
+	onclick="var d = {event:arguments[0],id:'{[=it.id]}'};$(this).parents('.jsoneditor').jsoneditor('showContextmenu',d);" >
+	<img src="/imgs/add.png"/>
+</span>
+{[?]} /*notcontains*/
+/*显示key的输入框 */
+{[?it.name]}
+{[?!it.anydata]}
+<input id="{[=it.id]}_k" readonly class="easyui-textbox jsoneditor-{[=it.basetype||it.datatype]}" value="{[=it.title||it.name]}"
+ style="width:{[=it.keywidth||'90px']};valign:top;align:right" />:
+{[??]} /* it.anydata */
+<input id="{[=it.id]}_k" class="easyui-textbox jsoneditor-{[=it.basetype||it.datatype]}" value="{[=it.name]}" 
+data-options="onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeName',{id:'{[=it.id]}',value:nv});}"
+style="width:{[=it.keywidth||'90px']};valign:top;align:right" 
+/>:
+{[?]} /* it.anydata */
+{[??]} /* name */
+<span id="{[=it.id]}_t" class="jsoneditor-{[=it.basetype||it.datatype]}" >[{[=it.datatype]}]</span>
+{[?]}
+/*显示值域的输入框 */
+{[?it.datatype=="str"]}
+<input id="{[=it.id]}_v" class="easyui-textbox" value="{[=it.value||it.defaultvalue||'']}" {[?it.required]}required="true"{[?]} 
+data-options="onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeValue',{id:'{[=it.id]}',value:nv});}"
+style="width:{[=it.valuewidth||'200px']}" 
+{[?it.readonly]}readonly{[?]}
+/>
+{[?? it.datatype=="url"]}
+<input id="{[=it.id]}_v" 
+	class="easyui-textbox" 
+	 value="{[=it.value||it.defaultvalue||'']}"
+	data-options="oops:true{[?it.precision]},precision:{[=it.precision]}{[?]}" 
+data-options="onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeValue',{id:'{[=it.id]}',value:nv});}{[?it.required]},required:true"{[?]}"
+style="width:{[=it.valuewidth||'200px']}" 
+{[?it.readonly]}readonly{[?]}
+/><img src="/imgs/find.png" onclick="$(this).parents('.jsoneditor').jsoneditor('searchUrl','{[=it.id]}')" />
+{[?? it.datatype=="number"]}
+<input id="{[=it.id]}_v" 
+	class="easyui-numberbox" 
+	 value="{[=it.value||it.defaultvalue||'']}"
+	data-options="oops:true{[?it.precision]},precision:{[=it.precision]}{[?]}" 
+data-options="onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeValue',{id:'{[=it.id]}',value:nv});}{[?it.required]},required:true"{[?]}"
+style="width:{[=it.valuewidth||'200px']}" 
+{[?it.readonly]}readonly{[?]}
+/>
+{[??it.datatype=='text']}
+<input id="{[=it.id]}_v" class="easyui-textbox" 
+	value="{[=it.value||it.defaultvalue||'']}"
+	{[?it.required]}required="true"{[?]} 
+data-options="multiline:true,onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeValue',{id:'{[=it.id]}',value:nv});}"
+style="width:{[=it.valuewidth||'400px']};height:{[=it.valueheight||'300px']}" 
+{[?it.readonly]}readonly{[?]}
+/>
+{[??it.datatype=='jsscript']}
+<div id="{[=it.id]}_v" class="easyui-scripteditor"
+	value="{[=it.value||it.defaultvalue||'']}"
+	{[?it.required]}required="true"{[?]} 
+data-options="onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeValue',{id:'{[=it.id]}',value:nv});}"
+style="width:{[=it.valuewidth||'400px']};height:{[=it.valueheight||'300px']}" 
+{[?it.readonly]}readonly{[?]}
+> </div>
+{[?? it.datatype=="date"]}
+<input id="{[=it.id]}_v" type="text" class="easyui-datebox" 
+	value="{[=it.value||it.defaultvalue||'']}" 
+	{[?it.required]}required="required"{[?]} 
+data-options="onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeValue',{id:'{[=it.id]}',value:nv});}"
+style="width:{[=it.valuewidth||'100px']}" 
+{[?it.readonly]}readonly{[?]}
+/>
+{[?? it.datatype=="bool"]}
+<input id="{[=it.id]}_v" 
+	class="easyui-combobox" data-options="
+		valueField: 'value',
+		textField: 'label',
+		data:[{value:true,label:'True'},{value:false,label:'False'}],
+		onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeValue',{id:'{[=it.id]}',value:nv});}"
+{[?it.required]}required="required"{[?]}
+ value="{[=it.value]}"
+style="width:{[=it.valuewidth||'60px']}" 
+{[?it.readonly]}readonly{[?]}
+/>
+{[?? it.datatype=="code"]}
+<input id="{[=it.id]}_v" 
+	class="easyui-combobox" data-options="
+		valueField: '{[=it.valueField]}',
+		textField: '{[=it.textField]}',
+		{[?it.multiple]}multiple:true,{[?]}
+		data: {[=dump(it.data)]},
+		onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeValue',{id:'{[=it.id]}',value:nv});}"
+{[?it.required]}required="required"{[?]}
+ value="{[=it.value||it.defaultvalue||'']}"
+style="width:{[=it.valuewidth||'200px']}" 
+{[?it.readonly]}readonly{[?]}
+/>
+{[?? it.datatype=="urlcode"]}
+<input id="{[=it.id]}_v" 
+	class="easyui-combobox" data-options="
+		valueField: '{[=it.valueField]}',
+		textField: '{[=it.textField]}',
+		url: '{[=it.url]}',
+		{[?it.multiple]}multiple:true,{[?]}
+		onChange:function(nv,ov){$(this).parents('.jsoneditor').jsoneditor('setNodeValue',{id:'{[=it.id]}',value:nv});}" 
+ {[?it.required]}required="required"{[?]}
+ value="{[=it.value||it.defaultvalue||'']}"
+ style="width:{[=it.valuewidth||'200px']}" 
+{[?it.readonly]}readonly{[?]}
+/>
+{[?]}
+{[?it.required]}
+<font color="red">*</font>
+{[??]}
+<span onclick="$(this).parents('.jsoneditor').jsoneditor('deleteNode','{[=it.id]}');">
+<img src="/imgs/delete.png" />
+</span>
+{[?]}

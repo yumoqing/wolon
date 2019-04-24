@@ -1,0 +1,87 @@
+descs={
+	"无":"""
+	select * from participals where participalid not in (select issuerid from product) and catelogname=N'融资人'
+	""",
+	"债券":"""
+	select * 
+	from participals 
+	where participalid in (
+		select issuerid from product where substring(producttype,1,2)=N'债券'
+	) and catelogname=N'融资人'
+	""",
+	"债权":"""
+	select * 
+	from participals 
+	where participalid in (
+		select issuerid from product where substring(producttype,1,2)=N'债权'
+	) and catelogname=N'融资人'
+	""",
+	"国金":"""
+	select * 
+	from participals 
+	where participalid in (
+		select issuerid from product where substring(producttype,1,2)=N'国金'
+	) and catelogname=N'融资人'
+	""",
+	"债券.国金":"""
+	select * 
+	from participals 
+	where participalid in (
+		select issuerid from product where substring(producttype,1,2) in (N'国金',N'债券')
+	) and catelogname=N'融资人'
+	""",
+	"债券.债权":"""
+	select * 
+	from participals 
+	where participalid in (
+		select issuerid from product where substring(producttype,1,2) in (N'债权',N'债券')
+	) and catelogname=N'融资人'
+	""",
+	"国金.债权":"""
+	select * 
+	from participals 
+	where participalid in (
+		select issuerid from product where substring(producttype,1,2) in (N'国金',N'债权')
+	) and catelogname=N'融资人'
+	""",
+	"债券.债权.国金":"""
+	select * 
+	from participals 
+	where participalid in (
+		select issuerid from product
+	) and catelogname=N'融资人'
+	""",
+	"all":"""select * from participals where catelogname=N'融资人'"""
+}
+
+@runSQLIterator
+def sql(dbname,ns):
+	desc = {
+		"sql_string":descs.get(ns['classify'],'all'),
+		"paging":{
+			"rowsname":"rows",
+			"pagename":"page",
+			"sortname":"sort",
+			"ordername":"order"
+		},
+	}
+	return desc
+
+@runSQLIterator
+def count(dbname,ns):
+	desc = {
+		"sql_string":descs.get(ns['classify'],'all'),
+		"count":True,
+	}
+	return desc
+print(request.args)
+ns={
+	"classify":request.args.get('classify',['all'])[0],
+	"rows":int(request.args.get('rows',['50'])[0]),
+	"page":int(request.args.get('page',['1'])[0]),
+	"sort":"participalid"
+}
+cntRecs = [ i for i in count('cfae',ns) ]
+recs = [ i for i in sql('cfae',ns) ]
+data = {'total':cntRecs[0].rcnt,'rows':recs}
+return data

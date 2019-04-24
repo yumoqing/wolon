@@ -1,0 +1,6 @@
+player.replay()
+ret = {
+	"status":"OK",
+}
+printf("ret=",ret)
+return ret

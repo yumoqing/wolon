@@ -1,0 +1,46 @@
+__widget_description__={
+	__ctmpl__:'bubble',
+	data:{
+		id:"eventinfect",
+		class:"chartbox",
+		charttype:"bubble",
+		left:60,
+		width:((document.body.clientWidth-50)*3/10) + 'px',
+		height:((document.body.clientHeight-50)*4/10 - 4) + 'px',
+		title:"固定收益类相关事件影响指数",
+		url:"{{absurl(request,'./eventinfect.dspy')}}",
+		sizefunc:"function(d){return d[2]*2.3;}",
+		dimension:"dimension",
+		subdimension:"event",
+		x_field:"edate",
+		y_field:"prillivege",
+		size_field:"indicator",
+		options:{
+			xAxis : [
+			   {
+					name : '日期',
+					type : 'value',
+					splitNumber: 4,
+					scale: true,
+					max:5,
+					axisLabel : {
+						formatter:function(v){
+							var ds = ['2017-01-01','2017-04-01','2017-07-01','2017-10-01','2017-12-31','2018-04-01'];
+							console.log(v);
+							return ds[Math.round(v)];
+							return v;
+							/*
+							*/
+						}
+					}
+				}
+			],
+			tooltip:{
+				formatter:function(a){
+					return a.data[3] + '<br>' + money(a.data[2]);
+				},
+				trigger:'item'
+			}
+		}
+	}
+}

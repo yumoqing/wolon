@@ -1,0 +1,19 @@
+#showtest.dspy
+
+text = request.args.get('text')[0]
+tmpl = """
+{% include "header.tmpl" %}
+<script>
+var d = """ + text + """
+var html = tmplRender(d.__ctmpl__,d.data);
+$('body').html(html);
+$(function(){
+	$.parser.parse($('body'));
+});
+</script>
+{% include "footer.tmpl" %}
+"""
+
+rzttext = renders(tmpl,{})
+print(rzttext)
+return rzttext

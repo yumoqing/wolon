@@ -1,0 +1,10 @@
+#
+dbname=request.args.get('dbname')[0]
+tablename=request.args.get('tablename')[0]
+crud = CRUD(dbname)
+info = crud.I(tablename)
+print(info)
+return {
+	"total":len(info),
+	"rows":info
+}

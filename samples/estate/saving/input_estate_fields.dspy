@@ -1,0 +1,23 @@
+
+d = {
+	"xlsxfile":"./estate.xlsx",
+	"data_sheet":"Sheet1",
+	"label_at":1,
+	"ioattrs_at":2,
+	"inputhide_at":3,
+	"data_from":4
+}
+
+x = xlsxdata(abspath(absurl(request,'./estate.xlsx')),d)
+fields = x.getBaseFieldsInfo()
+fields = [ f for f in fields if not f.get('inputhide',False) ]
+ret = []
+for f in fields:
+	del f['type']
+	del f['inputhide']
+	del f['listhide']
+	del f['frozen']
+	ret.append(f)
+return ret
+# return fields
+return [ f for f in fields if not f.get('inputhide',False) ]

@@ -1,0 +1,56 @@
+<!DOCTYPE html>  
+<html xmlns="http://www.w3.org/1999/xhtml">  
+  <head>  
+    <meta name="viewport" content="width=device-width,initial-scale=1">  
+    <style type="text/css">  
+        
+      /* Direct all pointer events to JavaScript code. */  
+      .touch{  
+        -ms-touch-action: none; /* set for IE */  
+        touch-action: none; /* set for Edge */  
+      }  
+  
+    </style>  
+  </head>  
+  <body>  
+    <h1>Touch event compatible with different browser and IE version.</h1>  
+    <br/>  
+  
+    <div id="monitor">  
+        Coordinate: X-0, Y-0  
+    </div>  
+  
+    <div id="holder" class="touch" style="height:200px;background-color:rgb(103, 195, 215)">  
+      Moving your finger on this div block, your will see coordinate on the above changed as your moving.  
+    </div>  
+      
+    <script src="/jquery/jquery.js"></script>  
+    <script type="text/javascript">  
+      
+      window.onload = function()  
+      {  
+          if(window.PointerEvent) //IE 11 & Edge  
+          {  
+              $('#holder').on('pointermove', printcoordinate);  
+          }   
+          else if(window.MSPointerEvent) //IE10  
+          {  
+              $('#holder').on('MSPointerMove', printcoordinate);  
+          }  
+          else //Chrome, Safari  
+          {  
+              $('#holder').on('touchmove', printcoordinate);  
+          }  
+  
+          function printcoordinate(e)  
+          {  
+                var pointerEnabled = window.PointerEvent || window.MSPointerEvent;  
+                var touches = pointerEnabled ? e.originalEvent : e.originalEvent.touches[0];  
+  
+                $('#monitor').html("Coordinate: X-" + touches.pageX + ", Y-" + touches.pageY);  
+          }  
+      }  
+  
+    </script>  
+  </body>  
+</html>

@@ -1,0 +1,44 @@
+d={
+	__widget__:"datasheet",
+	data:{
+		unitwidth:300,
+		labelwidth:100,
+		fields:[
+			{"name":"f4","label":"\u6240\u5c5e\u5c0f\u533a","iotype":"str"},
+			{"name":"f5","label":"\u623f\u5c4b\u6237\u578b","iotype":"code","url":"\/estate\/code\/house_shape.dspy","valueField":"f1","textField":"f2"},
+			{"name":"f6","label":"\u6240\u5728\u4f4d\u7f6e","iotype":"str"},{"name":"f7","label":"\u7ecf\u7eac\u5ea6","iotype":"str"},
+			{"name":"f11","label":"\u623f\u5c4b\u7c7b\u578b","iotype":"code","url":"\/estate\/code\/house_catelog.dspy","valueField":"f1","textField":"f2"},
+			{"name":"f13","label":"\u6240\u5728\u697c\u5c42","iotype":"number"},
+			{"name":"f14","label":"\u88c5\u4fee\u7a0b\u5ea6","iotype":"code","url":"\/estate\/code\/decorate_level.dspy","valueField":"f1","textField":"f2"},
+			{"name":"f15","label":"\u623f\u672c\u5e74\u9650","iotype":"number"},
+			{"name":"f17","label":"\u552f\u4e00\u4f4f\u623f","iotype":"code","url":"\/estate\/code\/yesno_code.dspy","textField":"f2","valueField":"f1"},
+			{"name":"f18","label":"\u8f66\u4f4d","iotype":"str"},
+			{	
+				"name":"f21",
+				"label":"\u623f\u5c4b\u4f30\u503c",
+				"iotype":"code",
+				"url":"\/estate\/code\/valueperiod_code.dspy",
+				"textField":"f2",
+				"valueField":"f1"
+			}
+		]
+		
+			,
+		toolbar:{
+			position:"north",
+			tools:[
+				{
+					name:"search",
+					label:"查询",
+					icon:"icon-search",
+					img_url:"/easyui/themes/icons/search.png",
+					handler:function(){
+						$('#modalWindow').window('close');
+						var ds = $(this).parents('.datasheet');
+						var data = ds.datasheet('getValue');
+					}
+				}
+			]
+		}
+	}
+}

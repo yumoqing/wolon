@@ -1,0 +1,166 @@
+.wrapper  {
+  width: 100%;
+  font-size: 0;
+  text-align: center;
+}
+
+.wrapper > div {
+	display: inline-block;    /* 如需支持IE8以下版本，用浮动来做 */
+	width: calc(100% / 3.09);    /* 此处运用了一个css3的表达式，将div三等分，IE8及以上可以支持，当然也可以根据需要设置固定值 */
+	width: -webkit-calc(100% /3.09); /*3.09 排除margin的宽度*/
+	width: -moz-calc(100% / 3.09);
+	height: 100%;
+}
+/*
+div {
+	display:inline-block;
+	width:20%;
+	height:30%;
+	background:green;
+	font-size:12px;
+	position:relative;
+	vertical-align:middle;
+	&:nth-child(2n){
+		background:orange;
+	}
+	&:before{
+		content:"";
+		display:inline-block;
+		padding-bottom:100%;
+		width:.1px;
+		vertical-align:middle;
+	}
+	span {
+		display:inline-block;
+		vertical-align:middle;
+		font-size:4em;
+		color:#fff;
+	}
+}
+*/
+.basebox{
+	width:100%;
+	height:100%;
+}
+.rc_tl {
+	position: relative;
+	box-sizing: border-box;
+	display:block;
+	float: left;
+	overflow:auto;
+  	width:30%;
+	height:65%;
+	border:1px solid #ccc;
+	overflow:auto;
+}
+
+.rc_tr {
+	position: relative;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	display:block;
+	float: left;
+	overflow:auto;
+  	width:30%;
+	height:65%;
+	border:1px solid #ccc;
+	overflow:auto;
+}
+
+.rc_tc {
+	position: relative;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	display:block;
+	float: left;
+	overflow:auto;
+  	width:40%;
+	height:65%;
+	border:1px solid #ccc;
+	overflow:auto;
+}
+
+.rc_bl {
+	position: relative;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	display:block;
+	float: left;
+	overflow:auto;
+  	width:30%;
+	height:35%;
+	border:1px solid #ccc;
+	overflow:auto;
+}
+
+.rc_bl {
+	position: relative;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	display:block;
+	float: left;
+	overflow:auto;
+  	width:70%;
+	height:35%;
+	border:1px solid #ccc;
+	overflow:auto;
+}
+
+div{
+  display: inline-block;
+  width: 20%;
+  background: green;
+  font-size: 12px;
+  position: relative;
+  vertical-align: middle;
+  
+  
+  &:nth-child(2n){
+    background: orange;
+  }
+  
+  &:before {
+    content:"";
+    display: inline-block;
+    padding-bottom: 100%;
+    width: .1px;
+    vertical-align: middle;
+  }
+  span {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 4em;
+    color: #fff;
+  }
+
+div{
+  display: inline-block;
+  width: 20%;
+  background: green;
+  font-size: 12px;
+  position: relative;
+  vertical-align: middle;
+  
+  
+  &:nth-child(2n){
+    background: orange;
+  }
+  
+  &:before {
+    content:"";
+    display: inline-block;
+    padding-bottom: 100%;
+    width: .1px;
+    vertical-align: middle;
+  }
+  span {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 4em;
+    color: #fff;
+  }
+
+作者：知乎用户
+链接：https://www.zhihu.com/question/31753528/answer/53213721
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。

@@ -1,0 +1,25 @@
+__widget_desctription__ = {
+	__ctmpl__:'line',
+	data:{
+		"id":"ratingissueamount",
+		"widgettype":"echarts",
+		"class":"chartbox",
+		"width":"500px",
+		"height":"300px",
+		"title":"主体评级(元)",
+		"url":"{{absurl(request,'./protypeissueamount.dspy?groupname1=rating')}}",
+		"charttype":"line",
+		"dimension":"rating",
+		"series":[
+			{
+				name:"发行额",
+				"indicator":"issueamount",
+			}
+		],
+		options:{
+			grid:{
+				x:'100px'
+			}
+		}
+	}
+}

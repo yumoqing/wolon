@@ -1,0 +1,35 @@
+.rentfin_info {
+	width:200px;
+	height:310px;
+	margin:3px;
+	background-color:#555555;
+	border:2px solid #bebebe;
+}
+
+.estate_info {
+	width:200px;
+	height:350px;
+	margin:3px;
+	background-color:#555555;
+	border:2px solid #bebebe;
+}
+
+.label {
+	text-align:right;
+	width:70px;
+}
+
+.value {
+	text-align:left;
+	margin-left:3px;
+	color:#f19240;
+}
+
+.datasheet {
+	align:center;
+	text-align:center;
+}
+
+.ds_title {
+	font-size:24px;
+}

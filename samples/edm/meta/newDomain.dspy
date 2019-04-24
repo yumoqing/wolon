@@ -1,0 +1,32 @@
+@runSQL
+def ins(db,ns):
+	desc={
+		"sql_string":"""insert into domains 
+		(
+			domain_id,
+			domain_name,
+			domain_title,
+			dbname,
+			driver,
+			coding,
+			kwargs,
+			auth_mode 
+		) values (
+			${domain_id}$,
+			${domain_name}$,
+			${domain_title}$,
+			${dbname}$,
+			${driver}$,
+			${coding}$,
+			${kwargs}$,
+			${auth_mode}$ 
+		)"""
+	}
+	return desc
+
+ns = request2ns(request);
+ns['domain_id'] = uuid()
+ins('metadb',ns);
+return {
+	"status":"OK"
+}

@@ -1,0 +1,9 @@
+{% include "header.tmpl" %}
+<script>
+var urls=[
+	"{{absurl(request,'../vc/menu.tmpl')}}"
+]
+remoteWidgets(urls,{},$('body'),'replace',function(e){console.log(e);});
+
+</script>
+{% include "footer.tmpl" %}

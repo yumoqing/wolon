@@ -1,0 +1,14 @@
+{% include "header.tmpl" %}
+<script>
+$(function(){
+var opts = {
+	loadUrl : { //远程数据加载路径
+		app : 'json/app.js', //app数据
+		startMenu : 'test/startmenu.json', //开始菜单数据
+		widget : 'json/widget.js'
+	},
+}
+$('body').app(opts);
+});
+</script>
+{% include "footer.tmpl" %}

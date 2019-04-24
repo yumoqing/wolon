@@ -1,0 +1,56 @@
+#
+def datagrid(dbname,tablename):
+	fields = [ 
+		{
+			"name":'name',
+			"label":'name',
+			"iotype":"text"
+		},
+		{
+			"name":'title',
+			"label":'title',
+			"iotype":"text"
+		},
+		{
+			"name":'type',
+			"label":'type',
+			"iotype":"text"
+		},
+		{
+			"name":'length',
+			"label":'length',
+			"iotype":"text"
+		},
+		{
+			"name":'dec',
+			"label":'dec',
+			"iotype":"text"
+		}
+		
+	]
+	d = {
+		"widget_name":'fs_' + dbname+'_'+tablename,
+		"iconCls":"icon-field",
+		"title":"table fields",
+		"url":absurl(request,"./tablefields.dspy?dbname=%s&tablename=%s" % (dbname,tablename)),
+		"view":"bufferview",
+		"dnd":True,
+		"dropdeny":True,
+		"fields":fields,
+		"options":{
+			"pageSize":50,
+			"pagination":False,
+		}
+	}
+	ret = {
+		"__ctmpl__":"datagrid",
+		"data":d
+	}
+
+	return ret
+	
+id = request.args.get('id',[None])[0]
+dbname,tablename = id.split(':')
+ret = datagrid(dbname,tablename)
+#print(ret)
+return ret

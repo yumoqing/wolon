@@ -1,0 +1,9 @@
+import requests
+import ujson as json
+
+addr = request.args.get('address')[0]
+city = request.args.get('city')[0]
+url = "https://api.map.baidu.com/geocoder/v2/?ak=2751be473d2178b3870bec049baf3753&output=json&address=" + addr + "&city=" + city
+s = requests.get(url)
+d = json.loads(s.text,'utf-8');
+return d

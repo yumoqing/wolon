@@ -1,0 +1,6 @@
+print("playlist.dspy",request.args)
+rows = int(request.args.get('rows',['50'])[0])
+page = int(request.args.get('page',['1'])[0])
+ret = player.orderList.orderlist(page,rows)
+printf(ret)
+return ret

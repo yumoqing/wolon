@@ -1,0 +1,56 @@
+<table width="100%" height="100%">
+<tr height="60%">
+<td id="rc_tl" width="30%">
+上左
+</td>
+<td id="rc_tr" width="70%" >
+
+</td>
+</tr>
+<tr height="40%">
+<td id="rc_bl" width="30%">
+下左
+</td>
+<td id="rc_br" width="70%">
+下右
+</td>
+</tr>
+</table>
+<script>
+$(function(){
+	remoteWidgets([
+		"{{absurl(request,'./areaissueamount.tmpl')}}"
+		],
+		{},
+		$('#rc_tr'),
+		'replace',
+		function(e){}
+	);
+
+	remoteWidgets([
+			"{{absurl(request,'./productdailyrate.tmpl')}}"
+		],
+		{},
+		$('#rc_tl'),
+		'replace',
+		function(e){}
+	);
+	remoteWidgets([
+		"{{absurl(request,'./avgratetrend.tmpl')}}"
+		],
+		{},
+		$('#rc_br'),
+		'replace',
+		function(e){}
+	);
+	remoteWidgets([
+		"{{absurl(request,'./section.tmpl')}}"
+		],
+		{},
+		$('#rc_bl'),
+		'replace',
+		function(e){}
+	);
+
+});
+</script>

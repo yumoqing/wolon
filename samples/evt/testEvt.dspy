@@ -1,0 +1,7 @@
+print("testEvt.dspy")
+try:
+	EventEngine.product('evt.test','testid',request.args)
+except Exception as e:
+	print("testEvt.dspy:Exception",e)
+print("testEvt.dspy")
+return None

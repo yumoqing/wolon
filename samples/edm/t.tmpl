@@ -1,0 +1,36 @@
+{% include "header.tmpl" %}
+<script>
+var d = {
+	__tmpl__:"tabs",
+	data:{
+        "items":[
+            {
+                "title":"基本信息",
+				"remoteWidgets":[
+					"/edm/da/baseinfo.tmpl?db=metadb"
+				],
+                "closable":false
+            },
+            {
+                "title":"字段",
+				"remoteWidgets":[
+					"/edm/da/fieldsedit.tmpl?db=metadb"
+				],
+                "closable":false
+            },
+            {
+                "title":"约束",
+				"remoteWidgets":[
+					"/edm/da/contraint.tmpl?db=metadb"
+				],
+                "closable":false
+            }
+        ]
+	}
+}
+/*
+$(tmplRender(d.__tmpl__,d.data)).appendTo($('body'));
+*/
+remoteWidget('./da/fieldsedit.tmpl',{db:'metadb'},$('body'),'replace',showError);
+</script>
+{% include "footer.tmpl" %}
