@@ -5,4 +5,4 @@ def sql(db,ns):
 		"sql_string":"select * from product"
 	}
 
-return await sql('cfae',{"page":1,"rows":10,"sort":"productid"})
+return await sql('fadb',{"page":1,"rows":10,"sort":"productid"})
