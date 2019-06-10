@@ -3,106 +3,120 @@ props={
 	cls: class for the hierarchy
 	element: root component 
 	dataurl: get remote children
-	children: children
 }
 */
 const rootcls={
 }
-const element={
+const hierarchynode={
 }
 
-class placeholder {
-	width:"16px";
-	height:"16px";
+const placeholder = {
+	position:"relative",
+	float:"left",
+	display:"block",
+	width:"16px",
+	height:"16px"
 }
-const nodeExpandedCls={
+
+const childrenOpen={
+	display:"block"
 }
-const nodeColapsedCls={
+const childrenClose={
+	display:"none"
 }
 	
 
 class Placeholder extends React.Component {
 	render(){
-		return <img className={placeholder} src="/imgs/empty.png" />
+		return <img src="/imgs/empty.png" />
 	}
 }
 
 class BinStateImage extends React.Component {
 	constructor(props){
 		super(props);
-		this.state = { status:0};
+		this.state = { status:props.state?props.state:0};
+		console.log('binstateimage=',this.state.status);
 	}
 	onChange = () => {
+		const v = this.state.status==1 ? 0 : 1;
 		this.setState({
-			status : this.state.status ? 0 : 1
+			status : v
 		});
+		console.log('binstateimage=',v);
 		if (this.props.onChange){
-			this.props.onChange(this.state.status);
+			this.props.onChange(v);
 		}
 	}
 	render(){
-		if (this.state.status){
-			return <img src={this.props.img1} 
-				onClick={this.onChange}
-				></img>
-		}
-		return <img src={this.props.img0} onClick={this.onChange}></img>
+		const img = this.state.status? this.props.img1 : this.props.img0;
+		return <img src={img} onClick={this.onChange} ></img>
 	}
 }
 
-/*
 class HierarchyNode extends React.Component {
 	constructor(props){
 		super(props);
-		this.state = { cls:nodeColapsedCls}
+		this.state = { open:0}
 	}
 	toggleSubnode(status){
-		this.setState({status:status});
+		console.log('status=',status)
+		this.setState({open:status});
 	}
 	render(){
+		const openStatus = this.state.open;
+		console.log('openStatus=',openStatus);
 		return (
-			<div className={rootcls}>
-				<div className={elementCls} >
-				{ this.props.children.length>0 ?
-					<BinStateImage img0="/img1/arrowright.png"
-						img1="/imgs/arrowdown.png"
-						onChange={this.toggleSubNodes} />
-				: <PlaceHolder /> }
-				<this.props.element /> 
-				{ this.props.children.length > 0 &&
-					this.props.children.map((C) =>
-						<div className={nodeCls}>
-							<PlaceHolder />
-							<C></C>
-						</div>
-				}
+			<div className='hierarchy_node'>
+				<div className="hierarchy_node_line" >
+					<div class="box">
+					{ this.props.children ?
+					<BinStateImage img0="/imgs/arrow_right.png"
+						img1="/imgs/arrow_left.png" 
+						state={openStatus}
+						onChange={this.toggleSubnode.bind(this)} />
+					: <Placeholder /> 
+					}
+					</div>
+					<div class="box">
+						{this.props.element}
+					</div>
 				</div>
+				{ this.props.children &&
+					<div className={openStatus?'hierarchy_children_open'
+							:'hierarchy_children_close' } >
+						<div className="box">
+						<Placeholder />
+						</div>
+						<div className="box">
+							{this.props.children}
+						</div>
+					</div>
+				}
 			</div>
 		);
 	}
 }
 
-root=<span>I'm Root</span>;
-children = [
-	<HierarchyNode element='node1' children={[]} >,
-	<HierarchyNode element='node2' children={[]} >,
-	<HierarchyNode element='node3' children={[]} >,
-	<HierarchyNode element='node4' children={[]} >,
-	<HierarchyNode element='node5' children={[]} >,
-];
+const root=<span>I am Root</span>;
 ReactDOM.render(
-	<HierarchyNode element={root} children={chldren} >
-	</Hierarchy>,
-	document.getElementById('app')
-);
-*/
-const afunc = () => {
-	console.log('clicked');
-}
-
-ReactDOM.render(
-	<BinStateImage img0="/imgs/arrow_right.png"
-					img1="/imgs/arrow_left.png"
-					/>,
+	<HierarchyNode element={root} >
+		<h1>This is a test</h1>
+		<p>test a colapsable div</p>
+		<HierarchyNode element="Node1">
+			<HierarchyNode element="Node1.1">
+				<HierarchyNode element="Node1.1.1">
+				</HierarchyNode>
+				<HierarchyNode element="Node1.1.2">
+				</HierarchyNode>
+				<HierarchyNode element="Node1.1.3">
+				</HierarchyNode>
+				<HierarchyNode element="Node1.1.4">
+				</HierarchyNode>
+			</HierarchyNode>
+		</HierarchyNode>
+		<HierarchyNode element="Node2" />
+	</HierarchyNode>
+	,
 	document.getElementById('app')
 );

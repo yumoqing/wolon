@@ -482,3 +482,23 @@ html, body {
 .bluebg {
 	background-color:blue;
 }
+
+.hierarchy_node {
+	display:block;
+	float:none;
+}
+.hierarchy_node_line {
+	display:block;
+	float:none;
+}
+
+.hierarchy_children_open {
+	display:block;
+}
+
+.hierarchy_children_close {
+	display:none;
+}
+.box {
+	float:left;
+}
