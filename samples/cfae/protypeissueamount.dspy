@@ -1,5 +1,5 @@
 @runSQLIterator
-def sql(dbname,ns):
+def sql(dbname,ns,callback=None):
 	desc={
 		"sql_string":"""
 select '$[datedim_value]$' as seriename,
@@ -28,7 +28,7 @@ $<groupname1>$group by $[groupname1]$
 
 ns = request2ns()
 print(ns)
-ret = [ r for r in sql('cfae',ns) ]
+ret = await sql('cfae',ns)
 if len(ret)==0:
 	print("null data",request.args)
 return ret

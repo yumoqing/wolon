@@ -1,37 +1,84 @@
-#assetpoolstree.dspy
-
-def level1():
-	return [ {
-		"id":"distinct:%s" % i,
-		"type":"assettype",
-		"value":i,
-		"text":i,
+#datetree.dspy
+@runSQLIterator
+def years(dbname,ns,callback=None):
+	desc={
+		"sql_string":"""
+		select distinct year_value from datedimension where odate<=${today}$
+		order by year_value
+		"""
+	}
+	return desc
+	
+def yearconv(pt,pid,r):
+	return {
+		"id":"year_value:%s" % r.year_value,
+		"type":"year_value",
+		"value":r.year_value,
+		"text":r.year_value,
 		"iconCls":"icon-dimension",
 		"state":"closed",
 		"pid":None,
 		"pt":None
-	} for i in ['北京','上海','深圳','杭州','苏州','其他'] ]
+	}
 
-def level2():
-	return [
-		 {
-		"id":"distinct:%s" % i,
-		"type":"leaf",
-		"value":i,
-		"text":i,
+	
+@runSQLIterator
+def months(dbname,ns,callback=None):
+	desc={
+		"sql_string":"""
+		select distinct month_value,month_id from datedimension
+		where year_value = ${year_value}$
+		"""
+	}
+	return desc
+
+def monthconv(pt,pid,r):
+	return {
+		"id":"month_id:" + r.month_id,
+		"type":"month_id",
+		"value":r.month_id,
+		"text":r.month_value+'月',
 		"iconCls":"icon-dimension",
 		"state":"closed",
-	} for i in ['0 - 1年','1-3年','3-5年','5年以上']
-	]
+		"nodetype":"month",
+		"pid":pid,
+		"ptype":pt
+	}
+	
+@runSQLIterator
+def days(dbname,ns,callback=None):
+	desc={
+		"sql_string":"""
+		select distinct odate from datedimension
+		where month_id = ${month_id}$
+		"""
+	}
+	return desc
+
+def dayconv(pt,pid,r):
+	return {
+		"id":"odate:" + r.odate,
+		"type":"odate",
+		"value":r.odate,
+		"text":r.odate,
+		"iconCls":"icon-dimension",
+		"state":None,
+		"nodetype":"day",
+		"pid":pid,
+		"ptype":pt
+	}
 	
 
 ns = request2ns()
-id = ns.get('id',None)
+id = ns.get('id')
+print('args=',ns)
+r = curDatetime()
+today = '%04d-%02d-%02d' % (r.year,r.month,r.day)
 if id is None:
 	return [
 		{
-			"id":"assetpools:" + 'total',
-			"text":'资产池',
+			"id":"total:" + 'total',
+			"text":'total',
 			"iconCls":"icon-dimension",
 			"state":'closed',
 			"nodetype":"total",
@@ -41,9 +88,14 @@ if id is None:
 	]
 
 ids = id.split(':')
-if ids[0]=='assetpools':
-	return level1()
-if ids[0]=='distinct':
-	return level2
+if ids[0]=='total':
+	_years = await years('cfae',{'today':today})
+	return [ yearconv(None,None,r) for r in _years ]
+if ids[0]=='year_value':
+	_months = await months('cfae',{'month_id':ids[1]})
+	return [ monthconv(ids[0],ids[1],r) for r in _months ]
+if ids[0]=='month_id':
+	_days = days('cfae',{'month_id':ids[1]})
+	return [ dayconv(ids[0],ids[1],r) for r in _days ]
 print('id','not found')
 	

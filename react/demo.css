@@ -1,0 +1,12 @@
+span{
+    display: block;
+}
+.calendarDiv {
+    width: 400px;
+    height: 200px;
+    background-color: pink;
+}
+.calendarTitle{
+    background-color: gray;
+    text-align: center;
+}
