@@ -28,7 +28,7 @@ const childrenClose={
 
 class Placeholder extends React.Component {
 	render(){
-		return <img src="/imgs/empty.png" />
+		return <img src="/imgs/empty.png" width="16px" height="16px"/>
 	}
 }
 
@@ -54,7 +54,7 @@ class BinStateImage extends React.Component {
 	}
 }
 
-class HierarchyNode extends React.Component {
+class Hierarchy extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = { open:0}
@@ -82,6 +82,7 @@ class HierarchyNode extends React.Component {
 						{this.props.element}
 					</div>
 				</div>
+				<br />
 				{ this.props.children &&
 					<div className={openStatus?'hierarchy_children_open'
 							:'hierarchy_children_close' } >
@@ -100,23 +101,23 @@ class HierarchyNode extends React.Component {
 
 const root=<span>I am Root</span>;
 ReactDOM.render(
-	<HierarchyNode element={root} >
+	<Hierarchy element={root} >
 		<h1>This is a test</h1>
 		<p>test a colapsable div</p>
-		<HierarchyNode element="Node1">
-			<HierarchyNode element="Node1.1">
-				<HierarchyNode element="Node1.1.1">
-				</HierarchyNode>
-				<HierarchyNode element="Node1.1.2">
-				</HierarchyNode>
-				<HierarchyNode element="Node1.1.3">
-				</HierarchyNode>
-				<HierarchyNode element="Node1.1.4">
-				</HierarchyNode>
-			</HierarchyNode>
-		</HierarchyNode>
-		<HierarchyNode element="Node2" />
-	</HierarchyNode>
+		<Hierarchy element="Node1">
+			<Hierarchy element="Node1.1">
+				<Hierarchy element="Node1.1.1">
+				</Hierarchy>
+				<Hierarchy element="Node1.1.2">
+				</Hierarchy>
+				<Hierarchy element="Node1.1.3">
+				</Hierarchy>
+				<Hierarchy element="Node1.1.4">
+				</Hierarchy>
+			</Hierarchy>
+		</Hierarchy>
+		<Hierarchy element="Node2" />
+	</Hierarchy>
 	,
 	document.getElementById('app')
 );
