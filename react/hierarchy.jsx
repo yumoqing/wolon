@@ -35,6 +35,7 @@ class Placeholder extends React.Component {
 class BinStateImage extends React.Component {
 	constructor(props){
 		super(props);
+		console.log('data=',props.data);
 		this.state = { status:props.state?props.state:0};
 		console.log('binstateimage=',this.state.status);
 	}
@@ -67,8 +68,8 @@ class Hierarchy extends React.Component {
 		const openStatus = this.state.open;
 		console.log('openStatus=',openStatus);
 		return (
-			<div className='hierarchy_node'>
-				<div className="hierarchy_node_line" >
+			<div className='hierarchy'>
+				<div className="hierarchy_line clearfix" >
 					<div class="box">
 					{ this.props.children ?
 					<BinStateImage img0="/imgs/arrow_right.png"
@@ -82,10 +83,9 @@ class Hierarchy extends React.Component {
 						{this.props.element}
 					</div>
 				</div>
-				<br />
 				{ this.props.children &&
-					<div className={openStatus?'hierarchy_children_open'
-							:'hierarchy_children_close' } >
+					<div className={openStatus?'hierarchy hierarchy_children_open clearfix'
+							:'hierarchy hierarchy_children_close clearfix' } >
 						<div className="box">
 						<Placeholder />
 						</div>
@@ -99,9 +99,15 @@ class Hierarchy extends React.Component {
 	}
 }
 
+const data={
+	a:100,
+	b:90,
+	c:'322222'
+};
+
 const root=<span>I am Root</span>;
 ReactDOM.render(
-	<Hierarchy element={root} >
+	<Hierarchy element={root} data={data} >
 		<h1>This is a test</h1>
 		<p>test a colapsable div</p>
 		<Hierarchy element="Node1">

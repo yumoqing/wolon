@@ -483,13 +483,22 @@ html, body {
 	background-color:blue;
 }
 
-.hierarchy_node {
+.hierarchy {
+	display:block;
+	float:none;
+	clear:both;
+}
+.hierarchy_line {
 	display:block;
 	float:none;
 }
-.hierarchy_node_line {
-	display:block;
-	float:none;
+
+.clearfix:after{
+	content: ".";  /*设置内容，必须有内容，没有，则无法实现效果*/
+	visibility: hidden;  /*将标签隐藏*/
+	height:0;  /*设置标签的高度为0*/
+	display: block;  /*设置标签为块级标签*/
+	clear: both;  /*设置清除float浮动*/
 }
 
 .hierarchy_children_open {
